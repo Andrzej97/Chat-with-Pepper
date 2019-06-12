@@ -1,0 +1,22 @@
+Milestone1: do końca maja
+- research w tematyce, dostępnych technologiach
+- pierwsza próba interakcji z robotem
+- przetestowanie podstawowego trybu działania text to speech oraz speech to text
+- testowanie różnych platform do budowy chatbota
+- wybór platformy do budowy chatbota
+- wybór rozwiązania speech to text
+Milestone2: do końca czerwca
+- budowa prototypu chatbota do tematyki general
+- konfiguracja rozwiązania speech to text
+- uruchomienie pierwszej wersji do przetestowania wykorzystującej robota
+Milestone3 (największy): do połowy września	=> do poprawy: do podziału na dwa / trzy mniejsze milestony
+- rozwój algorytmu chatbota:
+	- poszerzenie tematyki general
+	- obsługa tematyki uczelni, wydziału
+	- wprowadzenie zaawansowanych technik  (tzw. Logic Adapters) do zapamiętywania informacji o użytkowniku
+	- testy
+Milestone4: do końca października
+- próba wbudowania stworzonego oprogramowania do robota (do przemyślenia)
+- testy - wychwycenie corner case'ów -> doskonalenie chatbota i obsługa corner case'ów
+- (opcjonalne) dołączenie opcji kontorolowanej rozmowy z robotem
+- tworzenie dokumentacji
