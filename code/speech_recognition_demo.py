@@ -1,5 +1,5 @@
 import speech_recognition as speech
-from code import bot
+import bot
 
 
 def calibrate_recognizer(noise_duration, recognizer, source):

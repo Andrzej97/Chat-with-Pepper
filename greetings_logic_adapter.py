@@ -26,6 +26,6 @@ class GreetingAdapter(LogicAdapter):
 
         selected_statement = Statement(statement.text)
         while statement.text == selected_statement.text:
-            selected_statement.text = words_list[random.randint(0, 4)].text
+            selected_statement.text = words_list[random.randint(0, len(words_list))].text
         selected_statement.confidence = 1
         return selected_statement
