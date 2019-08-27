@@ -3,13 +3,14 @@ from chatterbot.storage import SQLStorageAdapter
 
 
 class GreetingAdapter(LogicAdapter):
+
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
+        self.db = SQLStorageAdapter(database_uri='sqlite:///code/db.sqlite13')
 
     def can_process(self, statement):
         statement.text = statement.text.lower()
-        db = SQLStorageAdapter()
-        words = db.filter(conversation='greeting')
+        words = self.db.filter(conversation='greeting')
         for w in words:
             if w.text == statement.text:
                 return True
@@ -19,13 +20,10 @@ class GreetingAdapter(LogicAdapter):
         import random
         from chatterbot.conversation import Statement
 
-        words = SQLStorageAdapter().filter(conversation='greeting')
-        words_list = []
-        for w in words:
-            words_list.append(w)
-
-        selected_statement = Statement(statement.text)
-        while statement.text == selected_statement.text:
-            selected_statement.text = words_list[random.randint(0, len(words_list))].text
+        greetings = list(self.db.filter(conversation='greeting'))
+        greetings_request = list(self.db.filter(conversation='greeting_response'))
+        response_text = greetings[random.randint(0, len(greetings) - 1)].text + ' '
+        response_text += greetings_request[random.randint(0, len(greetings_request) - 1)].text
+        selected_statement = Statement(response_text)
         selected_statement.confidence = 1
         return selected_statement
