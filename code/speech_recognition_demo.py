@@ -1,4 +1,5 @@
 import speech_recognition as speech
+
 import bot
 
 
@@ -29,7 +30,7 @@ def startSpeechRecognition():
         calibrate_recognizer(2, r, source)
         while True:
             cmd = speech_recognizer()
-            print(bot.get_response(cmd))
+            print(bot.get_bot_response(cmd))
 
 
 startSpeechRecognition()

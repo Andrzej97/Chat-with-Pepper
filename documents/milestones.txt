@@ -20,3 +20,5 @@ Milestone4: do końca października
 - testy - wychwycenie corner case'ów -> doskonalenie chatbota i obsługa corner case'ów
 - (opcjonalne) dołączenie opcji kontorolowanej rozmowy z robotem
 - tworzenie dokumentacji
+
+

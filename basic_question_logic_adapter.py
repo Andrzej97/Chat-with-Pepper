@@ -1,17 +1,18 @@
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
+
 class BasicQuestionAdapter(LogicAdapter):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.db = SQLStorageAdapter(database_uri='sqlite:///code/db.sqlite13')
+        self.context = kwargs.get('conversation_context')
 
     def can_process(self, statement):
         statement_elements_set = set()
         for x in statement.text.lower().split():
             statement_elements_set.add(x)
-
         basic_requests = self.db.filter(conversation='basic_question_request')
         greeting_responses = self.db.filter(conversation='greeting_response')
         splitted_name_requests = set()

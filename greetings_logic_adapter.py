@@ -1,3 +1,6 @@
+import random
+
+from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
@@ -7,6 +10,7 @@ class GreetingAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.db = SQLStorageAdapter(database_uri='sqlite:///code/db.sqlite13')
+        self.context = kwargs.get('conversation_context')
 
     def can_process(self, statement):
         statement.text = statement.text.lower()
@@ -17,8 +21,6 @@ class GreetingAdapter(LogicAdapter):
         return False
 
     def process(self, statement, additional_respones_parameters):
-        import random
-        from chatterbot.conversation import Statement
 
         greetings = list(self.db.filter(conversation='greeting'))
         greetings_request = list(self.db.filter(conversation='greeting_response'))
