@@ -1,6 +1,8 @@
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
+from types_of_conversation import TypeOfOperation
+
 
 class BasicQuestionAdapter(LogicAdapter):
 
@@ -23,7 +25,7 @@ class BasicQuestionAdapter(LogicAdapter):
         for greeting_response in greeting_responses:
             for y in greeting_response.text.split(' '):
                 splitted_name_requests.add(y)
-        if len(statement_elements_set.intersection(splitted_name_requests)) > 0:
+        if len(statement_elements_set.intersection(splitted_name_requests)) > 1:
             return True
         return False
 
@@ -37,4 +39,5 @@ class BasicQuestionAdapter(LogicAdapter):
         response_text += basic_question_responses_end[random.randint(0, len(basic_question_responses_end) - 1)].text
         selected_statement = Statement(response_text)
         selected_statement.confidence = 1
+        selected_statement.in_response_to = TypeOfOperation.BASIC_QUESTION.value
         return selected_statement

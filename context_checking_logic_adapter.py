@@ -16,8 +16,7 @@ class ContextAdapter(LogicAdapter):
         self.type_of_request = None
 
     def can_process(self, statement):
-        print("here")
-        if self.context.is_name_request_processed:
+        if self.context.is_name_request_processed and not self.context.is_after_name_response_reaction:
             self.type_of_request = TypeOfOperation.NAME
             return True
         return False
@@ -29,7 +28,6 @@ class ContextAdapter(LogicAdapter):
 
     def process_name_request(self, statement):
 
-        print('in context Response')
         statement_list = statement.text.split()
         speaker_name = statement_list[len(statement_list) - 1]
         self.context.speaker_name = speaker_name
@@ -49,8 +47,7 @@ class ContextAdapter(LogicAdapter):
         response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
 
         selected_statement = Statement(response_text)
-        selected_statement.confidence = 1
-
-        self.context.is_name_request_processed = True
+        selected_statement.confidence = 0.4
+        selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
 
         return selected_statement

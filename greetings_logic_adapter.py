@@ -4,6 +4,8 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
+from types_of_conversation import TypeOfOperation
+
 
 class GreetingAdapter(LogicAdapter):
 
@@ -28,4 +30,6 @@ class GreetingAdapter(LogicAdapter):
         response_text += greetings_request[random.randint(0, len(greetings_request) - 1)].text
         selected_statement = Statement(response_text)
         selected_statement.confidence = 1
+        selected_statement.in_response_to = TypeOfOperation.GREETING.value
+
         return selected_statement

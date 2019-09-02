@@ -1,6 +1,7 @@
 from chatterbot import ChatBot
 
 from bot_context import BotContext
+from types_of_conversation import TypeOfOperation
 
 
 # TODO: add database cleaning method
@@ -28,19 +29,30 @@ def initialize_chatbot(context):
             {
                 'import_path': 'basic_question_logic_adapter.BasicQuestionAdapter',
                 'conversation_context': context,
-
             },
             {
                 'import_path': 'chatterbot.logic.BestMatch',
                 'default_response': 'Przepraszam ale nie rozumiem.',
-                'maximum_similarity_threshold': 0.90
+                'maximum_similarity_threshold': 0.40
             }
         ],
     )
 
 
-def get_bot_response(input, bot):
+def context_update(context, type_of_conversation):
+    if type_of_conversation == TypeOfOperation.NAME.value:
+        context.is_name_request_processed = True
+    if type_of_conversation == TypeOfOperation.GREETING.value:
+        context.is_after_greeting = True
+    if type_of_conversation == TypeOfOperation.NAME.value:
+        context.is_after_introduction = True
+    if type_of_conversation == TypeOfOperation.CONTEXT_NAME.value:
+        context.is_after_name_response_reaction = True
+
+
+def get_bot_response(input, bot, bot_context):
     response = bot.get_response(input)
+    context_update(bot_context, response.in_response_to)
     return response.text
 
 
@@ -50,11 +62,11 @@ bot = initialize_chatbot(bot_context)
 ##### some tests
 # p: person
 # r: robot
-print("p: cześć")
-print('r: ' + get_bot_response("Cześć", bot))
-print("p: fajnie, A u Ciebie?")
-print('r: ' + get_bot_response("fajnie, A u Ciebie?", bot))
-print("p: Jak się nazywasz?")
-print('r: ' + get_bot_response("Jak się nazywasz?", bot))
-print("p: ja nazywam się Witek")
-print('r: ' + get_bot_response("ja nazywam się Witek", bot))
+print("p: co robisz")
+print('r: ' + get_bot_response("co robisz", bot, bot_context))
+print("p: a ja Witek")
+print('r: ' + get_bot_response("a ja Witek", bot, bot_context))
+print("p: Co robisz?")
+print('r: ' + get_bot_response("Co robisz?", bot, bot_context))
+# print("p: ja nazywam się Witek")
+# print('r: ' + get_bot_response("ja nazywam się Witek", bot, bot_context))
