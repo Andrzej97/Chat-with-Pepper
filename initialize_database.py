@@ -21,9 +21,9 @@ db.create(text="Nauczono mnie by nie odpowiadać obcym, najpierw się poznajmy "
 db.create(text="jak masz na imię", conversation='name_request')
 db.create(text="jak się nazywasz", conversation='name_request')
 
-print(db.create(text="mam na imię , a Ty", conversation='name_response'))
-print(db.create(text="moje imię to , a Twoje", conversation='name_response'))
-print(db.create(text="nazwano mnie , a Ciebie?", conversation='name_response'))
+db.create(text="mam na imię , a Ty", conversation='name_response')
+db.create(text="moje imię to , a Twoje", conversation='name_response')
+db.create(text="nazwano mnie , a Ciebie?", conversation='name_response')
 
 db.create(text="miło cię poznać", conversation='name_response_end')
 db.create(text="bardzo mi miło", conversation='name_response_end')

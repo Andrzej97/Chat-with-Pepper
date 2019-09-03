@@ -12,10 +12,10 @@ def initialize_chatbot(context):
         storage_adapter='chatterbot.storage.SQLStorageAdapter',
         database_uri='sqlite:///code/db.sqlite13',
         logic_adapters=[
-            {
-                'import_path': 'context_checking_logic_adapter.ContextAdapter',
-                'conversation_context': context,
-            },
+            # {
+            #     'import_path': 'context_checking_logic_adapter.ContextAdapter',
+            #     'conversation_context': context,
+            # },
             {
                 'import_path': 'greetings_logic_adapter.GreetingAdapter',
                 'conversation_context': context,
@@ -62,11 +62,11 @@ bot = initialize_chatbot(bot_context)
 ##### some tests
 # p: person
 # r: robot
-print("p: co robisz")
-print('r: ' + get_bot_response("co robisz", bot, bot_context))
-print("p: a ja Witek")
-print('r: ' + get_bot_response("a ja Witek", bot, bot_context))
-print("p: Co robisz?")
-print('r: ' + get_bot_response("Co robisz?", bot, bot_context))
-# print("p: ja nazywam się Witek")
-# print('r: ' + get_bot_response("ja nazywam się Witek", bot, bot_context))
+print("p: cześć")
+print('r: ' + get_bot_response("cześć", bot, bot_context))
+print("p: u mnie okej, a u Ciebie?")
+print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
+print("p: Co robisz")
+print('r: ' + get_bot_response("Co robisz", bot, bot_context))
+print("p: witek")
+print('r: ' + get_bot_response("witek", bot, bot_context))
