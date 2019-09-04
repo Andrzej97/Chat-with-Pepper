@@ -8,7 +8,7 @@ class BasicQuestionAdapter(LogicAdapter):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = SQLStorageAdapter(database_uri='sqlite:///code/db.sqlite13')
+        self.db = SQLStorageAdapter(database_uri='sqlite:///resources/db.sqlite13')
         self.context = kwargs.get('conversation_context')
 
     def can_process(self, statement):

@@ -1,6 +1,6 @@
 from chatterbot.storage import SQLStorageAdapter
 
-db = SQLStorageAdapter(database_uri='sqlite:///./db.sqlite13')
+db = SQLStorageAdapter(database_uri='sqlite:///resources/db.sqlite13')
 
 # basic greetings
 

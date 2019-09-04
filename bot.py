@@ -10,7 +10,7 @@ def initialize_chatbot(context):
     return ChatBot(
         'greetings_bot',
         storage_adapter='chatterbot.storage.SQLStorageAdapter',
-        database_uri='sqlite:///code/db.sqlite13',
+        database_uri='sqlite:///resources/db.sqlite13',
         logic_adapters=[
             # {
             #     'import_path': 'context_checking_logic_adapter.ContextAdapter',
