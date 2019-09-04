@@ -4,7 +4,6 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-from polish_language_utils import get_proper_pronoun
 from types_of_conversation import TypeOfOperation
 
 
@@ -35,19 +34,20 @@ class ContextAdapter(LogicAdapter):
         name_response_to_update = statement_list[slice(len(statement_list) - 1)]
         name_response_to_update = ' '.join(name_response_to_update)
 
-        self.db.create(text=name_response_to_update + ' , a ' + get_proper_pronoun(name_response_to_update),
-                       conversation='name_response')
+        # self.db.create(text=name_response_to_update + ' , a ' + get_proper_pronoun(name_response_to_update),
+        #                conversation='name_response')
 
         name_conversation_end_responses = list(self.db.filter(conversation='name_response_end'))
         general_conversation_intro = list(self.db.filter(conversation='general_conversation_intro'))
 
-        response_text = name_conversation_end_responses[
-                            random.randint(0, len(name_conversation_end_responses) - 1)].text + ' '
-        response_text += self.context.speaker_name + ' ,'
-        response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
+        if len(name_conversation_end_responses) > 0 and len(general_conversation_intro) > 0:
+            response_text = name_conversation_end_responses[
+                                random.randint(0, len(name_conversation_end_responses) - 1)].text + ' '
+            response_text += self.context.speaker_name + ' ,'
+            response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
 
-        selected_statement = Statement(response_text)
-        selected_statement.confidence = 0.4
-        selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
-
-        return selected_statement
+            selected_statement = Statement(response_text)
+            selected_statement.confidence = 0.4
+            selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
+            return selected_statement
+        return Statement("Nie znam odpowiedzi", 0)

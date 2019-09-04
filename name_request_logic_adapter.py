@@ -45,31 +45,33 @@ class NameRequestAdapter(LogicAdapter):
 
     def process_name_request(self, statement):
         name_responses = list(self.db.filter(conversation='name_response'))
-        name_responses_splitted = list()
+        if len(name_responses) > 0:
+            name_responses_splitted = list()
 
-        for name_response in name_responses:
-            tmp = name_response.text.split(',')
-            if len(tmp) == 2:
-                (request1, request2) = tmp
-            name_responses_splitted.append((request1, request2))
+            for name_response in name_responses:
+                tmp = name_response.text.split(',')
+                if len(tmp) == 2:
+                    (request1, request2) = tmp
+                name_responses_splitted.append((request1, request2))
 
-        my_name = self.db.filter(conversation='my_name')
-        (response_text1, response_text2) = name_responses_splitted[random.randint(0, len(name_responses) - 1)]
+            my_name = self.db.filter(conversation='my_name')
+            (response_text1, response_text2) = name_responses_splitted[random.randint(0, len(name_responses) - 1)]
 
-        response_text = ""
-        if not self.robot_name_request:
-            response_text_buff = self.db.filter(conversation='no_introduction_message')
-            response_text += response_text_buff.__next__().text
+            response_text = ""
+            if not self.robot_name_request:
+                response_text_buff = self.db.filter(conversation='no_introduction_message')
+                response_text += response_text_buff.__next__().text
 
-        response_text += response_text1
-        response_text += my_name.__next__().text
-        response_text += response_text2
+            response_text += response_text1
+            response_text += my_name.__next__().text
+            response_text += response_text2
 
-        selected_statement = Statement(response_text)
-        selected_statement.confidence = self.confidence
-        selected_statement.in_response_to = TypeOfOperation.NAME.value
+            selected_statement = Statement(response_text)
+            selected_statement.confidence = self.confidence
+            selected_statement.in_response_to = TypeOfOperation.NAME.value
+            return selected_statement
+        return Statement("Nie znam odpowiedzi", 0)
 
-        return selected_statement
 
     def process_name_response(self, statement):
 
@@ -77,25 +79,21 @@ class NameRequestAdapter(LogicAdapter):
         speaker_name = statement_list[len(statement_list) - 1]
         self.context.speaker_name = speaker_name
 
-        # name_response_to_update = statement_list[slice(len(statement_list) - 1)]
-        # if len(name_response_to_update) > 1:
-        #     name_response_to_update = ' '.join(name_response_to_update)
-        #     self.db.create(text=name_response_to_update + ' , a ' + get_proper_pronoun(name_response_to_update),
-        #                    conversation='name_response')
-
         name_conversation_end_responses = list(self.db.filter(conversation='name_response_end'))
         general_conversation_intro = list(self.db.filter(conversation='general_conversation_intro'))
 
-        response_text = name_conversation_end_responses[
-                            random.randint(0, len(name_conversation_end_responses) - 1)].text + ' '
-        response_text += self.context.speaker_name + ' ,'
-        response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
+        if len(name_conversation_end_responses) > 0 and len(general_conversation_intro) > 0:
+            response_text = name_conversation_end_responses[
+                                random.randint(0, len(name_conversation_end_responses) - 1)].text + ' '
+            response_text += self.context.speaker_name + ' ,'
+            response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
 
-        selected_statement = Statement(response_text)
-        selected_statement.confidence = 0.4
-        selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
+            selected_statement = Statement(response_text)
+            selected_statement.confidence = 0.4
+            selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
 
-        return selected_statement
+            return selected_statement
+        return Statement("Nie znam odpowiedzi", 0)
 
     def process(self, statement, additional_respones_parameters):
 

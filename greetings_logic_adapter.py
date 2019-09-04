@@ -26,10 +26,12 @@ class GreetingAdapter(LogicAdapter):
 
         greetings = list(self.db.filter(conversation='greeting'))
         greetings_request = list(self.db.filter(conversation='greeting_response'))
-        response_text = greetings[random.randint(0, len(greetings) - 1)].text + ' '
-        response_text += greetings_request[random.randint(0, len(greetings_request) - 1)].text
-        selected_statement = Statement(response_text)
-        selected_statement.confidence = 1
-        selected_statement.in_response_to = TypeOfOperation.GREETING.value
+        if len(greetings_request) > 0 and len(greetings) > 0:
+            response_text = greetings[random.randint(0, len(greetings) - 1)].text + ' '
+            response_text += greetings_request[random.randint(0, len(greetings_request) - 1)].text
+            selected_statement = Statement(response_text)
+            selected_statement.confidence = 1
+            selected_statement.in_response_to = TypeOfOperation.GREETING.value
 
-        return selected_statement
+            return selected_statement
+        return Statement("Nie znam odpowiedzi", 0)

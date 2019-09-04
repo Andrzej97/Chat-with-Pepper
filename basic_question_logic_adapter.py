@@ -35,9 +35,11 @@ class BasicQuestionAdapter(LogicAdapter):
         basic_question_responses = list(self.db.filter(conversation='basic_question_response'))
         basic_question_responses_end = list(self.db.filter(conversation='basic_question_response_end'))
 
-        response_text = basic_question_responses[random.randint(0, len(basic_question_responses) - 1)].text
-        response_text += basic_question_responses_end[random.randint(0, len(basic_question_responses_end) - 1)].text
-        selected_statement = Statement(response_text)
-        selected_statement.confidence = 1
-        selected_statement.in_response_to = TypeOfOperation.BASIC_QUESTION.value
-        return selected_statement
+        if len(basic_question_responses) > 0 and len(basic_question_responses_end) > 0:
+            response_text = basic_question_responses[random.randint(0, len(basic_question_responses) - 1)].text
+            response_text += basic_question_responses_end[random.randint(0, len(basic_question_responses_end) - 1)].text
+            selected_statement = Statement(response_text)
+            selected_statement.confidence = 1
+            selected_statement.in_response_to = TypeOfOperation.BASIC_QUESTION.value
+            return selected_statement
+        return Statement("Nie znam odpowiedzi", 0)
