@@ -1,5 +1,8 @@
 import speech_recognition as speech
 
+import bot
+
+
 def calibrate_recognizer(noise_duration, recognizer, source):
     print(f"Please wait for {noise_duration} sec. Calibrating your mic.",
           flush=True)
@@ -12,6 +15,8 @@ def speech_recognizer(speech_language='pl-PL'):
     with speech.Microphone() as source:
         audio = r.listen(source)
     try:
+        result = r.recognize_google(audio, language=speech_language)
+        print('I recognized: ' + result)
         return r.recognize_google(audio, language=speech_language)
     except speech.UnknownValueError:
         return "repeat"
@@ -25,6 +30,7 @@ def startSpeechRecognition():
         calibrate_recognizer(2, r, source)
         while True:
             cmd = speech_recognizer()
-            print(cmd)
+            print(bot.get_bot_response(cmd))
+
 
 startSpeechRecognition()
