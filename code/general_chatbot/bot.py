@@ -1,7 +1,5 @@
 from chatterbot import ChatBot
 
-import sys
-print( sys.path)
 from code.common_utils.bot_context import BotContext
 from code.common_utils.types_of_conversation import TypeOfOperation
 
