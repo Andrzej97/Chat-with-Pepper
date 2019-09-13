@@ -58,18 +58,18 @@ def get_bot_response(input, bot, bot_context):
     return response.text
 
 
-#def run_bot():
-bot_context = BotContext()
-bot = initialize_chatbot(bot_context)
+def run_bot():
+    bot_context = BotContext()
+    bot = initialize_chatbot(bot_context)
 
-##### some tests
-# p: person
-# r: robot
-print("p: cześć")
-print('r: ' + get_bot_response("cześć", bot, bot_context))
-print("p: u mnie okej, a u Ciebie?")
-print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
-print("p: Co robisz")
-print('r: ' + get_bot_response("Co robisz", bot, bot_context))
-print("p: witek")
-print('r: ' + get_bot_response("witek", bot, bot_context))
+    ##### some tests
+    # p: person
+    # r: robot
+    print("p: cześć")
+    print('r: ' + get_bot_response("cześć", bot, bot_context))
+    print("p: u mnie okej, a u Ciebie?")
+    print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
+    print("p: Co robisz")
+    print('r: ' + get_bot_response("Co robisz", bot, bot_context))
+    print("p: witek")
+    print('r: ' + get_bot_response("witek", bot, bot_context))

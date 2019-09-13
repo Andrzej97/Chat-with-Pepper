@@ -1,1 +1,5 @@
 sentence_tokenizer.pickle
+code/__pycache__/
+code/common_utils/__pycache__/
+code/general_chatbot/__pycache__/
+code/university_chatbot/__pycache__/
