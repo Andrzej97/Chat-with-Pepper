@@ -1,6 +1,0 @@
-general_greeting:{general_greeting};
-day_greeting:{general_greeting,day_greeting};
-morning_greeting:{general_greeting,morning_greeting};
-evening_greeting:{general_greeting,night_greeting};
-night_greeting:{general_greeting,night_greeting};
-question_robot_name:{answer_robot_name};

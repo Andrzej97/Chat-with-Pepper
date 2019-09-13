@@ -1,7 +1,0 @@
-general_greeting:PL-"cześć","hej","serwus";EN-"hello","hi","hey";
-day_greeting:PL-"dzień dobry";
-morning_greeting:EN-"good morning";
-evening_greeting:EN-"good afternoon";
-night_greeting:PL-"dobry wieczór";EN-"good night";
-question_robot_name:PL-"jak masz na imię","jak ci na imię","jak się nazywasz","jak cię nazwano";EN-"what is your name";
-answer_robot_name:PL-"jestem Pepper","mam na imię pepper","nazywam się pepper";EN-"I am pepper","my name is pepper";
