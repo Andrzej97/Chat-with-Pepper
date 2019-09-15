@@ -5,6 +5,7 @@ from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
 from code.common_utils.types_of_conversation import TypeOfOperation
+from code.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenizer
 
 
 class NameRequestAdapter(LogicAdapter):
@@ -77,7 +78,9 @@ class NameRequestAdapter(LogicAdapter):
 
         statement_list = statement.text.split()
         speaker_name = statement_list[len(statement_list) - 1]
-        self.context.speaker_name = speaker_name
+        polish_sentence_tokenizer = PolishSentenceTokenizer()
+        if polish_sentence_tokenizer.is_name(speaker_name):
+            self.context.speaker_name = speaker_name
 
         name_conversation_end_responses = list(self.db.filter(conversation='name_response_end'))
         general_conversation_intro = list(self.db.filter(conversation='general_conversation_intro'))

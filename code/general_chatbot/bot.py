@@ -71,3 +71,5 @@ def run_bot():
     print('r: ' + get_bot_response("Co robisz", bot, bot_context))
     print("p: witek")
     print('r: ' + get_bot_response("witek", bot, bot_context))
+
+
