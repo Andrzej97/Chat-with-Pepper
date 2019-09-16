@@ -6,10 +6,14 @@ def main():
     initialize_database.init_database()
     bot.run_bot()
     db = DatabaseProxy()
-    #db.testing_create()
-    out = db.add_conversation(text="Informatyka jest super", tag1="agh", tag2="informatyka")
-    res = db.get_responses_list_by_tags(tag1="agh")
-    print("Database Proxy testing: count = ", db.getCount(), " out = ", out, " text = ", res[0])
+    #out = db.add_conversation(text="Kubica", tag1="agh", tag2="sport")
+    res = db.get_responses_list_by_tags(tag1="agh", tag2="sport")
+    print("Before update = tag1 = agh, tag2 = sport, text = ", res[0])
+    st_update = db.update_conversation_text("Żyła", tag1="agh", tag2="sport")
+    upd = db.get_responses_list_by_tags(tag1="agh", tag2="sport")
+    print("After update = tag1 = agh, tag2 = sport, text = ", upd[0], "text_update ", st_update)
+    print()
+    db.printDocumentsByTags(tag1="agh")
 
 if __name__ == '__main__':
     main()
