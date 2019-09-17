@@ -1,5 +1,5 @@
 from chatterbot.storage import MongoDatabaseAdapter
-from code.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
+from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
 import random
 
 class DatabaseProxy:
@@ -12,9 +12,9 @@ class DatabaseProxy:
         '''Method adds new conversation to database with specified tags
            Returns text of added conversation's statement'''
         try:
-            tags.get('name')
+            tags.get('text')
         except KeyError:
-            print("No \'name\' atribute in **tags in add_conversation()")
+            print("No \'text\' atribute in **tags in add_conversation()")
             return None
         created_statement = self.db.create(**tags)
         return created_statement.text
@@ -22,7 +22,7 @@ class DatabaseProxy:
     def get_responses_list_by_tags(self, **tags):
         '''Method returns list of statements text list which match given tags'''
         statement_results = list(self.db.filter(**tags))
-        if(len(statement_results) == 0):
+        if len(statement_results) == 0:
             raise ResponseTextByTagsNotFoundError
         text_results = []
         for statement in statement_results:
@@ -51,7 +51,7 @@ class DatabaseProxy:
 
     def remove_conversation(self, **tags):
         '''Method removes conversation specified with tags from database
-           It returns statement's text which is removed'''
+           It returns text of statement which is removed'''
         conversation_to_remove = self.get_first_response_by_tags(**tags)
         if self.is_invalid_arg(conversation_to_remove):
             return None
@@ -61,14 +61,15 @@ class DatabaseProxy:
     def update_conversation_text(self, new_text, **tags):
         '''Method updates text of statement in database with specified tags
            Returns updated statement's text'''
-        try:
-            matching_statement = list(self.db.filter(**tags))[0]
-        except IndexError:
-            print("No element found for update")
-            return None
-        matching_statement.text = new_text
-        st = self.db.update(matching_statement)
-        return st.text
+        matching_statements = list(self.db.filter(**tags))
+        if len(matching_statements) == 0:
+            raise ResponseTextByTagsNotFoundError
+        updated_statements = []
+        for matching_statement in matching_statements:
+            matching_statement.text = new_text
+            st = self.db.update(matching_statement)
+            updated_statements.append(st.text)
+        return updated_statements
 
     def getCount(self):
         '''Method returns number of documents in database'''
@@ -77,5 +78,7 @@ class DatabaseProxy:
     def printDocumentsByTags(self, **tags):
         '''Method prints documents from database with specified tags'''
         result_list = list(self.db.filter(**tags))
+        if len(result_list) == 0:
+            raise ResponseTextByTagsNotFoundError
         for result in result_list:
-            print("Document nr ", result.id, " ,text = ", result.text)
+            print("Document nr ", result.id, ", text = ", result.text)
