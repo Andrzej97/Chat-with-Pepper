@@ -21,6 +21,10 @@ To use MongoDB one should install dependencies concerning this software:
 	1. sudo apt-get update
 	2. sudo apt-get install -y mongodb
 	3. To check mongo is running correctly: sudo systemctl status mongodb
+	4. If you cannot connect to database enter mongoDB shell and create database:
+		- in terminal type 'mongo'
+		- in mongo shell type 'use PepperChatDB'
+		
 
 This is based upon https://linoxide.com/linux-how-to/install-mongodb-ubuntu/
 
