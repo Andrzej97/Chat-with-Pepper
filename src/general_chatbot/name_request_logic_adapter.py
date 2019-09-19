@@ -4,9 +4,9 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-import src.common_utils.statement_utils as statement_utils
+import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.types_of_conversation import TypeOfOperation
-from src.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenizer
+from src.common_utils.language_utils.sentence_filter_utils import PolishSentenceTokenizer
 
 
 class NameRequestAdapter(LogicAdapter):

@@ -2,7 +2,7 @@ from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
 from src.common_utils.types_of_conversation import TypeOfOperation
-import src.common_utils.statement_utils as statement_utils
+import src.common_utils.language_utils.statement_utils as statement_utils
 
 
 class BasicQuestionAdapter(LogicAdapter):

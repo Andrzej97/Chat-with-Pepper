@@ -1,4 +1,4 @@
-from src.common_utils.polish_language_utils import PolishLanguageUtils
+from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 import src.common_utils.constants as constants
 
 
