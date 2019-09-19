@@ -1,7 +1,7 @@
 from chatterbot import ChatBot
 
-from code.common_utils.bot_context import BotContext
-from code.common_utils.types_of_conversation import TypeOfOperation
+from src.common_utils.bot_context import BotContext
+from src.common_utils.types_of_conversation import TypeOfOperation
 
 
 # TODO: add database cleaning method
@@ -17,17 +17,17 @@ def initialize_chatbot(context):
             #     'conversation_context': context,
             # },
             {
-                'import_path': 'code.general_chatbot.greetings_logic_adapter.GreetingAdapter',
+                'import_path': 'src.general_chatbot.greetings_logic_adapter.GreetingAdapter',
                 'conversation_context': context,
 
             },
             {
-                'import_path': 'code.general_chatbot.name_request_logic_adapter.NameRequestAdapter',
+                'import_path': 'src.general_chatbot.name_request_logic_adapter.NameRequestAdapter',
                 'conversation_context': context,
 
             },
             {
-                'import_path': 'code.general_chatbot.basic_question_logic_adapter.BasicQuestionAdapter',
+                'import_path': 'src.general_chatbot.basic_question_logic_adapter.BasicQuestionAdapter',
                 'conversation_context': context,
             },
             {
@@ -63,13 +63,14 @@ def run_bot():
     ##### some tests
     # p: person
     # r: robot
-    print("p: cześć")
-    print('r: ' + get_bot_response("cześć", bot, bot_context))
-    print("p: u mnie okej, a u Ciebie?")
-    print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
-    print("p: Co robisz")
-    print('r: ' + get_bot_response("Co robisz", bot, bot_context))
-    print("p: witek")
-    print('r: ' + get_bot_response("witek", bot, bot_context))
+    # print("p: cześć")
+    # print('r: ' + get_bot_response("cześć", bot, bot_context))
+    # print("p: u mnie okej, a u Ciebie?")
+    # print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
+    # print("p: jestem Witek")
+    # print('r: ' + get_bot_response("mam na imię Witek", bot, bot_context))
+
+    print("p: Gdzie jest AGH")
+    print('r: ' + get_bot_response("Gdzie jest AGH", bot, bot_context))
 
 

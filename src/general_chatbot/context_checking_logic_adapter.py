@@ -4,8 +4,10 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-from code.common_utils.types_of_conversation import TypeOfOperation
-from code.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenizer
+import src.common_utils.statement_utils as statement_utils
+from src.common_utils.types_of_conversation import TypeOfOperation
+from src.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenizer
+
 
 class ContextAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
@@ -32,23 +34,17 @@ class ContextAdapter(LogicAdapter):
         polish_sentence_tokenizer = PolishSentenceTokenizer()
         if polish_sentence_tokenizer.is_name(speaker_name):
             self.context.speaker_name = speaker_name
-        name_response_to_update = statement_list[slice(len(statement_list) - 1)]
-        name_response_to_update = ' '.join(name_response_to_update)
-
-        # self.db.create(text=name_response_to_update + ' , a ' + get_proper_pronoun(name_response_to_update),
-        #                conversation='name_response')
 
         name_conversation_end_responses = list(self.db.filter(conversation='name_response_end'))
         general_conversation_intro = list(self.db.filter(conversation='general_conversation_intro'))
 
         if len(name_conversation_end_responses) > 0 and len(general_conversation_intro) > 0:
-            response_text = name_conversation_end_responses[
-                                random.randint(0, len(name_conversation_end_responses) - 1)].text + ' '
-            response_text += self.context.speaker_name + ' ,'
-            response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
+            return Statement(
+                statement_utils.prepare_statement(
+                    name_conversation_end_responses[random.randint(0, len(name_conversation_end_responses) - 1)].text,
+                    self.context.speaker_name,
+                    general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text),
+                confidence=0.4,
+                in_response_to=TypeOfOperation.CONTEXT_NAME.value)
 
-            selected_statement = Statement(response_text)
-            selected_statement.confidence = 0.4
-            selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
-            return selected_statement
-        return Statement("Nie znam odpowiedzi", 0)
+        return statement_utils.default_response()

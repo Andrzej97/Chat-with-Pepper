@@ -4,7 +4,8 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-from code.common_utils.types_of_conversation import TypeOfOperation
+import src.common_utils.statement_utils as statement_utils
+from src.common_utils.types_of_conversation import TypeOfOperation
 
 
 class GreetingAdapter(LogicAdapter):
@@ -27,11 +28,11 @@ class GreetingAdapter(LogicAdapter):
         greetings = list(self.db.filter(conversation='greeting'))
         greetings_request = list(self.db.filter(conversation='greeting_response'))
         if len(greetings_request) > 0 and len(greetings) > 0:
-            response_text = greetings[random.randint(0, len(greetings) - 1)].text + ' '
-            response_text += greetings_request[random.randint(0, len(greetings_request) - 1)].text
-            selected_statement = Statement(response_text)
-            selected_statement.confidence = 1
-            selected_statement.in_response_to = TypeOfOperation.GREETING.value
-
-            return selected_statement
-        return Statement("Nie znam odpowiedzi", 0)
+            result = Statement(
+                statement_utils.prepare_statement(
+                    greetings[random.randint(0, len(greetings) - 1)].text,
+                    greetings_request[random.randint(0, len(greetings_request) - 1)].text),
+                in_response_to=TypeOfOperation.GREETING.value)
+            result.confidence = 1
+            return result
+        return statement_utils.default_response()

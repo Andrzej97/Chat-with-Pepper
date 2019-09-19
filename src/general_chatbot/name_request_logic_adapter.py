@@ -4,18 +4,21 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-from code.common_utils.types_of_conversation import TypeOfOperation
-from code.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenizer
+import src.common_utils.statement_utils as statement_utils
+from src.common_utils.types_of_conversation import TypeOfOperation
+from src.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenizer
 
 
 class NameRequestAdapter(LogicAdapter):
+
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.db = SQLStorageAdapter(database_uri='sqlite:///resources/db.sqlite13')
         self.context = kwargs.get('conversation_context')
-        self.confidence = 0;
+        self.confidence = 0
         self.robot_name_request = False
         self.name_response = False
+        self.polish_sentence_tokenizer = PolishSentenceTokenizer()
 
     def can_process(self, statement):
         statement_elements_set = set()
@@ -30,13 +33,14 @@ class NameRequestAdapter(LogicAdapter):
         if len(statement_elements_set.intersection(
                 splitted_name_requests)) > 1:
             if self.context.is_name_request_processed and not self.context.is_after_name_response_reaction:
-                self.name_response = True
+                self.name_response = True  # case when speaker introduced himself
                 return True
-            self.confidence = 1
-            self.robot_name_request = True
+            self.confidence = 0.6
+            self.robot_name_request = True  # case when speaker asked about robot name
             return True
         if not self.context.is_after_introduction:
-            self.confidence = 0.5
+            self.confidence = 0.5  # case when there was no introduction, robot will response with its name,
+            # and ask for speaker name
             return True
         if len(statement_elements_set) == 1 and self.context.is_name_request_processed \
                 and not self.context.is_after_name_response_reaction:
@@ -58,45 +62,40 @@ class NameRequestAdapter(LogicAdapter):
             my_name = self.db.filter(conversation='my_name')
             (response_text1, response_text2) = name_responses_splitted[random.randint(0, len(name_responses) - 1)]
 
-            response_text = ""
+            response = []
             if not self.robot_name_request:
                 response_text_buff = self.db.filter(conversation='no_introduction_message')
-                response_text += response_text_buff.__next__().text
+                response.append(response_text_buff.__next__().text)
 
-            response_text += response_text1
-            response_text += my_name.__next__().text
-            response_text += response_text2
-
-            selected_statement = Statement(response_text)
-            selected_statement.confidence = self.confidence
-            selected_statement.in_response_to = TypeOfOperation.NAME.value
-            return selected_statement
-        return Statement("Nie znam odpowiedzi", 0)
-
+            response.append(response_text1)
+            response.append(my_name.__next__().text)
+            if not self.robot_name_request:
+                response.append(response_text2)
+            result = Statement(statement_utils.prepare_statement(
+                response),
+                in_response_to=TypeOfOperation.NAME.value)
+            result.confidence = 0.3
+            return result
+        return statement_utils.default_response()
 
     def process_name_response(self, statement):
-
-        statement_list = statement.text.split()
-        speaker_name = statement_list[len(statement_list) - 1]
-        polish_sentence_tokenizer = PolishSentenceTokenizer()
-        if polish_sentence_tokenizer.is_name(speaker_name):
+        speaker_name = self.find_name(list(statement.text.split()))
+        if speaker_name is None:
+            return Statement("", in_response_to=TypeOfOperation.CONTEXT_NAME.value)
+        if self.polish_sentence_tokenizer.is_name(speaker_name):
             self.context.speaker_name = speaker_name
 
         name_conversation_end_responses = list(self.db.filter(conversation='name_response_end'))
         general_conversation_intro = list(self.db.filter(conversation='general_conversation_intro'))
 
         if len(name_conversation_end_responses) > 0 and len(general_conversation_intro) > 0:
-            response_text = name_conversation_end_responses[
-                                random.randint(0, len(name_conversation_end_responses) - 1)].text + ' '
-            response_text += self.context.speaker_name + ' ,'
-            response_text += general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
-
-            selected_statement = Statement(response_text)
-            selected_statement.confidence = 0.4
-            selected_statement.in_response_to = TypeOfOperation.CONTEXT_NAME.value
-
-            return selected_statement
-        return Statement("Nie znam odpowiedzi", 0)
+            return Statement(statement_utils.prepare_statement(
+                name_conversation_end_responses[
+                    random.randint(0, len(name_conversation_end_responses) - 1)].text,
+                self.context.speaker_name,
+                general_conversation_intro[random.randint(0, len(general_conversation_intro) - 1)].text
+            ), confidence=0.4, in_response_to=TypeOfOperation.CONTEXT_NAME.value)
+        return statement_utils.default_response()
 
     def process(self, statement, additional_respones_parameters):
 
@@ -104,3 +103,9 @@ class NameRequestAdapter(LogicAdapter):
             return self.process_name_response(statement)
         else:
             return self.process_name_request(statement)
+
+    def find_name(self, sentence):
+        for word in sentence:
+            if self.polish_sentence_tokenizer.is_name(word):
+                return word
+        return None

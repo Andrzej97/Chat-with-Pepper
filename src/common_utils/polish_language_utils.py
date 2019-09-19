@@ -32,6 +32,9 @@ class PolishLanguageUtils:
         analysis_result = self.morfeusz.analyse(word)
         analysis_result_list = []
         for analysis in analysis_result:
-            analysis_result_list.append(analysis[2][3][0])
+            if len(analysis[2][3]) > 0:
+                analysis_result_list.append(analysis[2][3][0])
         return analysis_result_list
+
+
 

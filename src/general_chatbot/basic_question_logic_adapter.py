@@ -1,7 +1,8 @@
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-from code.common_utils.types_of_conversation import TypeOfOperation
+from src.common_utils.types_of_conversation import TypeOfOperation
+import src.common_utils.statement_utils as statement_utils
 
 
 class BasicQuestionAdapter(LogicAdapter):
@@ -36,10 +37,10 @@ class BasicQuestionAdapter(LogicAdapter):
         basic_question_responses_end = list(self.db.filter(conversation='basic_question_response_end'))
 
         if len(basic_question_responses) > 0 and len(basic_question_responses_end) > 0:
-            response_text = basic_question_responses[random.randint(0, len(basic_question_responses) - 1)].text
-            response_text += basic_question_responses_end[random.randint(0, len(basic_question_responses_end) - 1)].text
-            selected_statement = Statement(response_text)
-            selected_statement.confidence = 1
-            selected_statement.in_response_to = TypeOfOperation.BASIC_QUESTION.value
-            return selected_statement
-        return Statement("Nie znam odpowiedzi", 0)
+            result = Statement(statement_utils.prepare_statement(
+                basic_question_responses[random.randint(0, len(basic_question_responses) - 1)].text,
+                basic_question_responses_end[random.randint(0, len(basic_question_responses_end) - 1)].text),
+                in_response_to=TypeOfOperation.BASIC_QUESTION.value)
+            result.confidence = 1
+            return result
+        return statement_utils.default_response()

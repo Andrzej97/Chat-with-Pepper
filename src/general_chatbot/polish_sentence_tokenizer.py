@@ -1,7 +1,8 @@
-from code.common_utils.polish_language_utils import PolishLanguageUtils
-import code.common_utils.constants as constants
+from src.common_utils.polish_language_utils import PolishLanguageUtils
+import src.common_utils.constants as constants
 
-class  PolishSentenceTokenizer:
+
+class PolishSentenceTokenizer:
     def __init__(self):
         self.utils = PolishLanguageUtils()
 
@@ -9,4 +10,3 @@ class  PolishSentenceTokenizer:
         if constants.NAME in self.utils.interprate_word(name.capitalize()):
             return True
         return False
-

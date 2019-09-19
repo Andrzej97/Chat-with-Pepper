@@ -1,5 +1,5 @@
-from code.general_chatbot import bot
-from code.common_utils import initialize_database
+from src.general_chatbot import bot
+from src.common_utils import initialize_database
 
 def main():
     initialize_database.init_database()
