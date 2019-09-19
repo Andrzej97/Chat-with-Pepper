@@ -1,0 +1,6 @@
+
+
+class ResponseTextByTagsNotFoundError(Exception):
+    pass
+
+

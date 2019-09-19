@@ -10,7 +10,6 @@ from src.general_chatbot.polish_sentence_tokenizer import PolishSentenceTokenize
 
 
 class NameRequestAdapter(LogicAdapter):
-
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.db = SQLStorageAdapter(database_uri='sqlite:///resources/db.sqlite13')
