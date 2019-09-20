@@ -5,6 +5,13 @@ word_class_name = {'noun': set(['subst', 'depr'])
                    }
 
 
+def from_txt_file_to_list(path):
+    file = open(path, "r")
+    lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
+    print(lines)
+    return lines
+
+
 def get_stop_words_from_db():
     return set()  # set made of stop words from database
 
