@@ -1,7 +1,7 @@
 from chatterbot import ChatBot
 
-from code.common_utils.bot_context import BotContext
-from code.common_utils.types_of_conversation import TypeOfOperation
+from src.common_utils.bot_context import BotContext
+from src.common_utils.types_of_conversation import TypeOfOperation
 
 
 # TODO: add database cleaning method
@@ -17,17 +17,17 @@ def initialize_chatbot(context):
             #     'conversation_context': context,
             # },
             {
-                'import_path': 'code.general_chatbot.greetings_logic_adapter.GreetingAdapter',
+                'import_path': 'src.general_chatbot.greetings_logic_adapter.GreetingAdapter',
                 'conversation_context': context,
 
             },
             {
-                'import_path': 'code.general_chatbot.name_request_logic_adapter.NameRequestAdapter',
+                'import_path': 'src.general_chatbot.name_request_logic_adapter.NameRequestAdapter',
                 'conversation_context': context,
 
             },
             {
-                'import_path': 'code.general_chatbot.basic_question_logic_adapter.BasicQuestionAdapter',
+                'import_path': 'src.general_chatbot.basic_question_logic_adapter.BasicQuestionAdapter',
                 'conversation_context': context,
             },
             {
