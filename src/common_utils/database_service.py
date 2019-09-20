@@ -1,10 +1,11 @@
 from chatterbot.storage import MongoDatabaseAdapter
 from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
+from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
+from src.common_utils.custom_exceptions import CollectionNotExistsInDatabaseError
 from pymongo import MongoClient
 import random
 
 class DatabaseProxy:
-    # 'mongodb://localhost:27017/PepperChatDB'
     def __init__(self, conection_uri, database_name):
         self.database_uri = conection_uri + database_name
         self.stat_collection = MongoDatabaseAdapter(database_uri=self.database_uri)
@@ -90,23 +91,59 @@ class DatabaseProxy:
             print("Document nr ", result.id, ", text = ", result.text)
 
 
-    # part of code for collections another than statements
-    def add_new_doc_to_collection(self, collection_name, **doc):
-        collection = self.collections_db[collection_name]
-        collection.insert_one(doc)
+    # part of code for collections other than statements
+    def create_new_collection(self, collection_name):
+        if collection_name not in self.collections_db.collection_names():
+            self.collections_db.create_collection(name=collection_name)
+            return True
+        raise CollectionAlreadyExistsInDatabaseError
 
-    def get_doc_from_collection(self,collection_name, **doc):
-        collection = self.collections_db[collection_name]
-        docs_found = list(collection.find(doc))
-        for d in docs_found:
-            print("Doc = ", d)
-        return docs_found
+    def remove_collection(self, collection_name):
+        if collection_name in self.collections_db.collection_names():
+            self.collections_db.drop_collection(name_or_collection=collection_name)
+            return True
+        raise CollectionNotExistsInDatabaseError
+
+    def add_new_doc_to_collection(self, collection_name, **doc):
+        if collection_name in self.collections_db.collection_names():
+            collection = self.collections_db[collection_name]
+            res = collection.insert_one(doc)
+            return True
+        raise CollectionNotExistsInDatabaseError
+
+    def add_many_new_docs_to_collection(self, collection_name, list_of_docs):
+        if collection_name in self.collections_db.collection_names():
+            collection = self.collections_db[collection_name]
+            collection.insert_many(list_of_docs)
+            return True
+        raise CollectionNotExistsInDatabaseError
+
+    def get_docs_from_collection(self,collection_name, doc_dict):
+        if collection_name in self.collections_db.collection_names():
+            collection = self.collections_db[collection_name]
+            docs_found = list(collection.find(doc_dict))
+            return docs_found
+        raise CollectionNotExistsInDatabaseError
 
     def remove_doc_from_collection(self, collection_name, **doc):
-        collection = self.collections_db[collection_name]
-        collection.delete_one(doc)
+        if collection_name in self.collections_db.collection_names():
+            collection = self.collections_db[collection_name]
+            collection.delete_one(doc)
+            return True
+        raise CollectionNotExistsInDatabaseError
 
-    def update_doc_in_collection(self,collection_name, search_values, new_values):
-        collection = self.collections_db[collection_name]
-        values_to_update = {"$set": new_values}
-        collection.update_one(search_values, values_to_update)
+    def update_doc_in_collection(self, collection_name, search_values_dict, new_values_dict):
+        if collection_name in self.collections_db.collection_names():
+            collection = self.collections_db[collection_name]
+            values_to_update = {"$set": new_values_dict}
+            collection.update_one(search_values_dict, values_to_update) # no upsert
+            return True
+        raise CollectionNotExistsInDatabaseError
+
+    def update_many_docs_in_collection(self, collection_name, search_values_dict, new_values_dict):
+        if collection_name in self.collections_db.collection_names():
+            collection = self.collections_db[collection_name]
+            values_to_update = {"$set": new_values_dict}
+            collection.update_many(search_values_dict, values_to_update)
+            return True
+        raise CollectionNotExistsInDatabaseError
