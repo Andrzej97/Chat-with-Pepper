@@ -6,7 +6,7 @@ from chatterbot.storage import SQLStorageAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.types_of_conversation import TypeOfOperation
-from src.common_utils.language_utils.sentence_filter_utils import PolishSentenceTokenizer
+from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 
 
 class NameRequestAdapter(LogicAdapter):
@@ -17,7 +17,7 @@ class NameRequestAdapter(LogicAdapter):
         self.confidence = 0
         self.robot_name_request = False
         self.name_response = False
-        self.polish_sentence_tokenizer = PolishSentenceTokenizer()
+        self.polish_sentence_tokenizer = SentenceFilter()
 
     def can_process(self, statement):
         statement_elements_set = set()

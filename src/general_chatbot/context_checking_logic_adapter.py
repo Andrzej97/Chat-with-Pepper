@@ -6,7 +6,7 @@ from chatterbot.storage import SQLStorageAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.types_of_conversation import TypeOfOperation
-from src.common_utils.language_utils.sentence_filter_utils import PolishSentenceTokenizer
+from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 
 
 class ContextAdapter(LogicAdapter):
@@ -31,7 +31,7 @@ class ContextAdapter(LogicAdapter):
 
         statement_list = statement.text.split()
         speaker_name = statement_list[len(statement_list) - 1]
-        polish_sentence_tokenizer = PolishSentenceTokenizer()
+        polish_sentence_tokenizer = SentenceFilter()
         if polish_sentence_tokenizer.is_name(speaker_name):
             self.context.speaker_name = speaker_name
 
