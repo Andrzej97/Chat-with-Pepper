@@ -1,8 +1,6 @@
-from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 import src.common_utils.constants as constants
-import morfeusz2
-
 from src.common_utils.database_service import DatabaseProxy
+from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 
 word_class_name = {'noun': set(['subst', 'depr'])
                    }
@@ -35,7 +33,6 @@ def filter_word_form(word_form, morphologic_tag):
     return False
 
 
-
 class SentenceFilter:
     def __init__(self):
         self.utils = PolishLanguageUtils()
@@ -65,20 +62,33 @@ class SentenceFilter:
             morphologic_tag_set = set(morphologic_tag.split(':'))
         return lemat, morphologic_tag_set
 
+
+    def extract_lemma(self, word):
+        analysis_result = self.utils.morfeusz.analyse(word)
+        for element in analysis_result:
+            try:
+                lemat = element[2][1]
+            except IndexError:
+                print('No word class avaliable after analysis in: ``extract_lemat_and_morphologic_tag``')
+        return lemat
+
     def filter_stop_words(self, word):
         return word[0] not in self.stop_words
 
     def filter_sentence(self, sentence):
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split()))
         sentence_filtered = list(
-                   filter(lambda x_y: filter_word_form('noun', x_y[1]),  # python3 does not support tuple unpacking, that's why
-                          map(lambda z: self.extract_lemma_and_morphologic_tag(z), words)))
+            filter(lambda x_y: filter_word_form('noun', x_y[1]),  # python3 does not support tuple unpacking, that's why
+                   map(lambda z: self.extract_lemma_and_morphologic_tag(z), words)))
         return sentence_filtered
 
 
-input = "Kto został nowym rektorem uczelni"
-print('input: ' + input)
-sentence_filtered = SentenceFilter().filter_sentence(input)
-print('output: ')
-for sentence in sentence_filtered:
-    print("    " + sentence[0])
+# input = "Kto został nowym rektorem uczelni"
+# print('input: ' + input)
+# sentence_filtered = SentenceFilter().filter_sentence(input)
+# print('output: ')
+# for sentence in sentence_filtered:
+#     print("    " + sentence[0])
+
+
+print(SentenceFilter().extract_lemma('wydziały'))
