@@ -4,7 +4,7 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 from chatterbot.storage import SQLStorageAdapter
 
-from code.common_utils.types_of_conversation import TypeOfOperation
+from src.common_utils.types_of_conversation import TypeOfOperation
 
 
 class ContextAdapter(LogicAdapter):
