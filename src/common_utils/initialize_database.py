@@ -1,52 +1,54 @@
-from chatterbot.storage import SQLStorageAdapter
+from src.common_utils.database_service import DatabaseProxy
+
 
 def init_database():
-
-    db = SQLStorageAdapter(database_uri='sqlite:///resources/db.sqlite13')
-
+    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     # basic greetings
 
-    db.create(text="cześć", in_response_to='hej', conversation='greeting')
-    db.create(text="siemka", in_response_to='hej', conversation='greeting')
-    db.create(text="hejooo", in_response_to='hej', conversation='greeting')
-    db.create(text="witaj", in_response_to='hej', conversation='greeting')
-    db.create(text="dzień dobry", in_response_to='hej', conversation='greeting')
+    print(db.add_conversation(text="cześć", tag='greeting'))
+    db.add_conversation(text="siemka", tag='greeting')
+    db.add_conversation(text="hejooo", tag='greeting')
+    db.add_conversation(text="witaj", tag='greeting')
+    db.add_conversation(text="dzień dobry", tag='greeting')
     #
-    db.create(text="jak się masz?", conversation='greeting_response')
-    db.create(text="co u Ciebie słychać?", conversation='greeting_response')
-    db.create(text="jak leci?", conversation='greeting_response')
+    db.add_conversation(text="jak się masz?", tag='greeting_response')
+    db.add_conversation(text="co u Ciebie słychać?", tag='greeting_response')
+    db.add_conversation(text="jak leci?", tag='greeting_response')
 
-    # # name
+    # # nameChatbot
     #
-    db.create(text="Nauczono mnie by nie odpowiadać obcym, najpierw się poznajmy ", conversation='no_introduction_message')
+    db.add_conversation(text="Nauczono mnie by nie odpowiadać obcym, najpierw się poznajmy ",
+                        tag='no_introduction_message')
 
-    db.create(text="jak masz na imię", conversation='name_request')
-    db.create(text="jak się nazywasz", conversation='name_request')
+    db.add_conversation(text="jak masz na imię", tag='name_request')
+    db.add_conversation(text="jak się nazywasz", tag='name_request')
 
-    db.create(text="mam na imię , a Ty", conversation='name_response')
-    db.create(text="moje imię to , a Twoje", conversation='name_response')
-    db.create(text="nazwano mnie , a Ciebie?", conversation='name_response')
+    db.add_conversation(text="mam na imię , a Ty", tag='name_response')
+    db.add_conversation(text="moje imię to , a Twoje", tag='name_response')
+    db.add_conversation(text="nazwano mnie , a Ciebie?", tag='name_response')
 
-    db.create(text="miło cię poznać", conversation='name_response_end')
-    db.create(text="bardzo mi miło", conversation='name_response_end')
+    db.add_conversation(text="miło cię poznać", tag='name_response_end')
+    db.add_conversation(text="bardzo mi miło", tag='name_response_end')
 
     # general conversation intro
 
-    db.create(text="w czym mogę Ci pomóc?", conversation='general_conversation_intro')
-    db.create(text="o co chcesz mnie spytać?", conversation='general_conversation_intro')
+    db.add_conversation(text="w czym mogę Ci pomóc?", tag='general_conversation_intro')
+    db.add_conversation(text="o co chcesz mnie spytać?", tag='general_conversation_intro')
 
-    db.create(text="Pepper", conversation='my_name')
+    db.add_conversation(text="Pepper", tag='my_name')
 
     # basic question
 
-    db.create(text="u mnie wszystko okej", conversation='basic_question_response')
-    db.create(text="u mnie w porządku", conversation='basic_question_response')
-    db.create(text="wszystko super", conversation='basic_question_response')
-    db.create(text="jest okej", conversation='basic_question_response')
-    db.create(text="bez problemów", conversation='basic_question_response')
+    db.add_conversation(text="u mnie wszystko okej", tag='basic_question_response')
+    db.add_conversation(text="u mnie w porządku", tag='basic_question_response')
+    db.add_conversation(text="wszystko super", tag='basic_question_response')
+    db.add_conversation(text="jest okej", tag='basic_question_response')
+    db.add_conversation(text="bez problemów", tag='basic_question_response')
 
-    db.create(text=",miło że pytasz", conversation='basic_question_response_end')
-    db.create(text=", dzięki", conversation='basic_question_response_end')
+    db.add_conversation(text=",miło że pytasz", tag='basic_question_response_end')
+    db.add_conversation(text=", dzięki", tag='basic_question_response_end')
     #
-    db.create(text="a Ty", conversation='basic_question_request')
-    db.create(text="jak się masz?", conversation='basic_question_request')
+    db.add_conversation(text="a Ty", tag='basic_question_request')
+    db.add_conversation(text="jak się masz?", tag='basic_question_request')
+
+

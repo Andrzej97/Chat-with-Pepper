@@ -16,5 +16,12 @@ def prepare_statement(*words):
     return response
 
 
+def split_to_single_words(words_set, words):
+    for word in words:
+        for y in word.split(' '):
+            words_set.add(y)
+    return words_set
+
+
 def default_response():
     return Statement(DEFAULT_RESPONSE)

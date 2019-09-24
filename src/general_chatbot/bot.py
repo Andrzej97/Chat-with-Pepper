@@ -10,12 +10,7 @@ def initialize_chatbot(context):
     return ChatBot(
         'greetings_bot',
         storage_adapter='chatterbot.storage.SQLStorageAdapter',
-        database_uri='sqlite:///resources/db.sqlite13',
         logic_adapters=[
-            # {
-            #     'import_path': 'context_checking_logic_adapter.ContextAdapter',
-            #     'conversation_context': context,
-            # },
             {
                 'import_path': 'src.general_chatbot.greetings_logic_adapter.GreetingAdapter',
                 'conversation_context': context,
@@ -63,14 +58,14 @@ def run_bot():
     ##### some tests
     # p: person
     # r: robot
-    # print("p: cześć")
-    # print('r: ' + get_bot_response("cześć", bot, bot_context))
-    # print("p: u mnie okej, a u Ciebie?")
-    # print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
-    # print("p: jestem Witek")
-    # print('r: ' + get_bot_response("mam na imię Witek", bot, bot_context))
-
-    print("p: Gdzie jest AGH")
-    print('r: ' + get_bot_response("Gdzie jest AGH", bot, bot_context))
+    print("p: cześć")
+    print('r: ' + get_bot_response("cześć", bot, bot_context))
+    print("p: u mnie okej, a u Ciebie?")
+    print('r: ' + get_bot_response("u mnie okej a u Ciebie", bot, bot_context))
+    print("p: jestem Witek")
+    print('r: ' + get_bot_response("mam na imię Witek", bot, bot_context))
+    #
+    # print("p: Gdzie jest AGH")
+    # print('r: ' + get_bot_response("Gdzie jest AGH", bot, bot_context))
 
 

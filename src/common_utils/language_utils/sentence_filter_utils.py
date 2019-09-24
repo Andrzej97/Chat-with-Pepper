@@ -91,4 +91,4 @@ class SentenceFilter:
 #     print("    " + sentence[0])
 
 
-print(SentenceFilter().extract_lemma('wydziały'))
+print(SentenceFilter().extract_lemma('wydzialy'))
