@@ -18,23 +18,17 @@ class PolishLanguageUtils:
                 return result
         return pronoun_dict.get('mam')
 
-
     def generate_variation(self, word):
-
         variations = self.morfeusz.generate(word)
         variations_truncated = set()
         for variation in variations:
             variations_truncated.add(variation[0])
         return variations_truncated
 
-
-    def interprate_word(self, word):
+    def interpret_word(self, word):
         analysis_result = self.morfeusz.analyse(word)
         analysis_result_list = []
         for analysis in analysis_result:
             if len(analysis[2][3]) > 0:
                 analysis_result_list.append(analysis[2][3][0])
         return analysis_result_list
-
-
-

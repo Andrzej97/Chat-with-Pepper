@@ -10,8 +10,7 @@ def initialize_database():
     """
         run this method just when you use this code first time to initialize database with words from file
     """
-    path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure path is ok, `os.getcwd()`
-    # command is useful
+    path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     db.create_new_collection('polish_stop_words')
     result = from_txt_file_to_list(path)
@@ -40,7 +39,7 @@ class SentenceFilter:
         self.stop_words = self.prepare_stopwords_list()  # get_stop_words_from_db()
 
     def is_name(self, name):
-        if constants.NAME in self.utils.interprate_word(name.capitalize()):
+        if constants.NAME in self.utils.interpret_word(name.capitalize()):
             return True
         return False
 
@@ -58,10 +57,9 @@ class SentenceFilter:
                 morphologic_tag = element[2][2]
                 lemat = element[2][1]
             except IndexError:
-                print('No word class avaliable after analysis in: ``extract_lemat_and_morphologic_tag``')
+                print('No word class available after analysis in: ``extract_lemma_and_morphologic_tag``')
             morphologic_tag_set = set(morphologic_tag.split(':'))
         return lemat, morphologic_tag_set
-
 
     def extract_lemma(self, word):
         analysis_result = self.utils.morfeusz.analyse(word)
@@ -69,7 +67,7 @@ class SentenceFilter:
             try:
                 lemat = element[2][1]
             except IndexError:
-                print('No word class avaliable after analysis in: ``extract_lemat_and_morphologic_tag``')
+                print('No word class available after analysis in: ``extract_lemma``')
         return lemat
 
     def filter_stop_words(self, word):
