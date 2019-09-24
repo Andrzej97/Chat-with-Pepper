@@ -53,7 +53,7 @@ class DatabaseProxy:
             print("No response text for given tags found")
             return None
         num_of_responses = len(responses)
-        index = random.randint(0, num_of_responses)
+        index = random.randint(0, num_of_responses - 1)
         return responses[index]
 
     def remove_conversation(self, **tags):

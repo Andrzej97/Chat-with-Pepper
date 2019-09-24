@@ -1,9 +1,8 @@
-import random
-
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
-from chatterbot.storage import SQLStorageAdapter
 
+import src.common_utils.language_utils.statement_utils as statement_utils
+from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.types_of_conversation import TypeOfOperation
 
 
@@ -11,27 +10,27 @@ class GreetingAdapter(LogicAdapter):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = SQLStorageAdapter(database_uri='sqlite:///resources/db.sqlite13')
+        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
         self.context = kwargs.get('conversation_context')
 
     def can_process(self, statement):
         statement.text = statement.text.lower()
-        words = self.db.filter(conversation='greeting')
+        words = self.db.get_responses_list_by_tags(tag="greeting")
         for w in words:
-            if w.text == statement.text:
+            if w == statement.text:
                 return True
         return False
 
     def process(self, statement, additional_respones_parameters):
 
-        greetings = list(self.db.filter(conversation='greeting'))
-        greetings_request = list(self.db.filter(conversation='greeting_response'))
-        if len(greetings_request) > 0 and len(greetings) > 0:
-            response_text = greetings[random.randint(0, len(greetings) - 1)].text + ' '
-            response_text += greetings_request[random.randint(0, len(greetings_request) - 1)].text
-            selected_statement = Statement(response_text)
-            selected_statement.confidence = 1
-            selected_statement.in_response_to = TypeOfOperation.GREETING.value
-
-            return selected_statement
-        return Statement("Nie znam odpowiedzi", 0)
+        greetings = self.db.get_random_response_by_tags(tag="greeting")
+        greetings_request = self.db.get_random_response_by_tags(tag="greeting_response")
+        if greetings_request is not None and greetings is not None:
+            result = Statement(
+                statement_utils.prepare_statement(
+                    greetings,
+                    greetings_request),
+                in_response_to=TypeOfOperation.GREETING.value)
+            result.confidence = 1
+            return result
+        return statement_utils.default_response()
