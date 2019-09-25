@@ -36,11 +36,13 @@ def main():
         db.create_new_collection('stemming1')
         print("Collection Already Exists Error")
     try:
-        docs_to_add = [{'text': 'Renault', 'waznosc': 0.7}, {'text': 'Mercedes', 'waznosc': 0.9},
+        docs_to_add = [{'text': 'Mercedes', 'waznosc': 0.9},
                                                         {'text': 'Ferrari', 'waznosc': 1.0}]
+        db.add_doc_with_tags_list('stemming1', ['Renault', 'Red Bull'], "Zespoły F1")
         db.add_many_new_docs_to_collection('stemming1', docs_to_add)
-        print('Before updating in stemming: ', db.get_docs_from_collection('stemming1', {'text': {'$exists': True}}))
-        db.update_many_docs_in_collection('stemming1', {'waznosc': {'$gt': 0.8} }, {'text': 'McLaren', 'waznosc': 0.4})
+        print('Before updating in stemming: ', db.get_docs_from_collection('stemming1', {'text': {'$in': ['Renault']}}))
+        print('Docs filtered with tags list: ', db.get_docs_from_collection_by_tags_list('stemming1', ['Red Bull']))
+        db.update_many_docs_in_collection('stemming1', {'waznosc': {'$lt': 0.8} }, {'text': 'McLaren', 'waznosc': 0.4})
         print('After updating in stemming: ', db.get_docs_from_collection('stemming1', {'text': 'McLaren'}))
         print('All docs in stemming: ', list(db.collections_db['stemming1'].find()))
         db.remove_collection('stemming1')
