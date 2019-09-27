@@ -1,11 +1,15 @@
+import pymongo
+
 from src.general_chatbot import bot
 from src.common_utils import initialize_database
 from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
 
+
 def main():
-    initialize_database.init_database()
+    # initialize_database.init_database()
     bot.run_bot()
+
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     out1 = db.add_conversation(text="Kubica", tag1="agh", tag2="sportowiec", tag3="formuła1")
     out2 = db.add_conversation(text="Orlen", tag1="agh", tag2="sportowiec", tag3="sponsor")

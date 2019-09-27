@@ -17,6 +17,8 @@ To run project type:
 
 If you want to execute other file directly, first you should add project's root folder (Chat_with_Pepper) to PYTHONPATH i.d. export PYTHONPATH=$PYTHONPATH:root_project_name and remember about dependencies which allow to run program correctly (for example database location). 
 
+To add Morfeusz library follow steps from here: http://morfeusz.sgjp.pl/download/
+
 To use MongoDB one should install dependencies concerning this software:
 	1. sudo apt-get update
 	2. sudo apt-get install -y mongodb
