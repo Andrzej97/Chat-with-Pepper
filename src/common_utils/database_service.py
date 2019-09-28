@@ -90,6 +90,18 @@ class DatabaseProxy:
         for result in result_list:
             print("Document nr ", result.id, ", text = ", result.text)
 
+    def add_doc_with_tags_list(self, collection_name, tags_list, response_text):
+        if isinstance(tags_list, list):
+            res = self.add_new_doc_to_collection(collection_name, tags=tags_list, text=response_text)
+            return res
+        raise TypeError('Argument tags_list is not list')
+
+    def get_docs_from_collection_by_tags_list(self, collection_name, tags_list):
+        if isinstance(tags_list, list):
+            search_doc = {'tags': { '$in': tags_list }}
+            docs_found = self.get_docs_from_collection(collection_name, search_doc)
+            return docs_found
+        raise TypeError('Argument tags_list is not list')
 
     # part of code for collections other than statements
     def create_new_collection(self, collection_name):
@@ -118,7 +130,7 @@ class DatabaseProxy:
             return True
         raise CollectionNotExistsInDatabaseError
 
-    def get_docs_from_collection(self,collection_name, doc_dict):
+    def get_docs_from_collection(self, collection_name, doc_dict):
         if collection_name in self.collections_db.collection_names():
             collection = self.collections_db[collection_name]
             docs_found = list(collection.find(doc_dict))
