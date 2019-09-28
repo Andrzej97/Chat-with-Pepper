@@ -4,11 +4,18 @@ from src.general_chatbot import bot
 from src.common_utils import initialize_database
 from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
+from src.main_chat.chatbot_manager import ChatbotManager
 
 
 def main():
-    # initialize_database.init_database()
-    bot.run_bot()
+    #initialize_database.init_database()
+    # bot.run_bot()
+    chatbot_manager = ChatbotManager(general_chatbot='Bolek', university_chatbot='Lolek')
+    chatbot_manager.create_chatbots()
+    while True:
+        user_input = input('>>>')
+        res = chatbot_manager.ask_chatbot(user_input)
+        print('Answer = ', res)
     # db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     # out1 = db.add_conversation(text="Kubica", tag1="agh", tag2="sportowiec", tag3="formuła1")
     # out2 = db.add_conversation(text="Orlen", tag1="agh", tag2="sportowiec", tag3="sponsor")
