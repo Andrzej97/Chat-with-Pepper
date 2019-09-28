@@ -41,20 +41,22 @@ def main():
 
     correct_csv_format('database.csv', 'database_correct.csv')
 
+    collection = 'MAIN_COLLECTION'
+    try:
+        db.create_new_collection(collection)
+    except exceptions.CollectionAlreadyExistsInDatabaseError:
+        db.remove_collection(collection)
+        db.create_new_collection(collection)
+        print("Collection Already Exists Error")
+
     with open('database_correct.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
-            row_as_dict = {'text':row[0]}
-            tag_index = 0
-            for elem in row:
-                if tag_index == 0:
-                    tag_index += 1
-                    continue
-                # print(elem)
-                row_as_dict['tag' + str(tag_index)] = elem
-                tag_index += 1
-            # print(row_as_dict)
-            out_db = db.add_conversation(**row_as_dict)
+            tags = row[1:len(row)]
+            text = row[0]
+            db.add_doc_with_tags_list(collection, tags, text)
 
+    # checking if it worked
+    print(db.get_docs_from_collection_by_tags_list(collection, ['historia']))
 
 main()
