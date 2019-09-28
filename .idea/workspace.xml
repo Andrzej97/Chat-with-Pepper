@@ -11,10 +11,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/scrapper.py">
+        <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+            <state relative-caret-position="34">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/common_utils/database_preparing/scrapper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -23,42 +32,21 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/database.csv">
+        <entry file="file://$PROJECT_DIR$/src/common_utils/database_preparing/csv_to_database_filler.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/common_utils/database_preparing/urls_4000.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3145">
-              <caret line="185" column="4" selection-start-line="185" selection-start-column="4" selection-end-line="185" selection-end-column="4" />
+            <state relative-caret-position="289">
+              <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-27995" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls_2000.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-68489" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/database_2000.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8649" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls_4000.csv">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/code/web_scrapper/database_4000.csv">
+        <entry file="file://$PROJECT_DIR$/src/common_utils/initialize_database.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
@@ -84,6 +72,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/code/web_scrapper/scrapper.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/src/web_scrapper/scrapper.py" />
+        <option value="$PROJECT_DIR$/src/common_utils/database_preparing/csv_to_database_filler.py" />
       </list>
     </option>
   </component>
@@ -99,18 +90,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="Chat-with-Pepper" type="b2602c69:ProjectViewProjectNode" />
               <item name="Chat-with-Pepper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Chat-with-Pepper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Chat-with-Pepper" type="462c0819:PsiDirectoryNode" />
-              <item name="code" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Chat-with-Pepper" type="b2602c69:ProjectViewProjectNode" />
@@ -122,15 +107,43 @@
               <item name="Chat-with-Pepper" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Chat-with-Pepper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat-with-Pepper" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat-with-Pepper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat-with-Pepper" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="common_utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat-with-Pepper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat-with-Pepper" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="common_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="database_preparing" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/common_utils" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Study\sem6\Inzynierka\Repo\Chat-with-Pepper\src\common_utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Study\sem6\Inzynierka\Repo\Chat-with-Pepper\src\web_scrapper" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -144,7 +157,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.scrapper">
+  <component name="RunManager" selected="Python.scrapper (1)">
     <configuration name="bot" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Chat-with-Pepper" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -187,6 +200,48 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Chat-with-Pepper" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scrapper (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Chat-with-Pepper" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/common_utils/database_preparing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/common_utils/database_preparing/scrapper.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="scrapper" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Chat-with-Pepper" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -210,6 +265,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.scrapper (1)" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.scrapper" />
         <item itemvalue="Python.bot" />
         <item itemvalue="Python.initialize_database" />
@@ -231,6 +288,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -266,59 +324,93 @@
     <entry file="file://$PROJECT_DIR$/resources/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/code/common_utils/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/first_minimal_demo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1715">
-          <folding>
-            <element signature="e#25#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/code/common_utils/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/code/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/code/first_minimal_demo.py" />
     <entry file="file://$PROJECT_DIR$/code/web_scrapper/products.csv" />
-    <entry file="file://$PROJECT_DIR$/code/web_scrapper/database.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3145">
-          <caret line="185" column="4" selection-start-line="185" selection-start-column="4" selection-end-line="185" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-27995" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/code/web_scrapper/database.csv" />
+    <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls.csv" />
     <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls_2000.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-68489" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/web_scrapper/scrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="30" column="19" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/code/web_scrapper/database_2000.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8649" />
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/code/web_scrapper/urls_4000.csv">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/code/web_scrapper/database_4000.csv">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/bot_context.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/custom_exceptions.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/types_of_conversation.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/database_service.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="43" column="58" selection-start-line="43" selection-start-column="58" selection-end-line="43" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/initialize_database.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/database_preparing/urls_4000.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/web_scrapper/scrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="30" column="19" selection-end-line="116" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/documents/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/database_preparing/csv_to_database_filler.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common_utils/database_preparing/scrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
