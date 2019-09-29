@@ -39,7 +39,7 @@ def correct_csv_format(file_in, file_out):
 def main():
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 
-    correct_csv_format('database.csv', 'database_correct.csv')
+    correct_csv_format('database_100.csv', 'database_correct_100.csv')
 
     collection = 'MAIN_COLLECTION'
     try:
