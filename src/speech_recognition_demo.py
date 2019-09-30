@@ -1,6 +1,6 @@
 import speech_recognition as speech
 
-import bot
+import src.general_chatbot.intro_conversation_bot as bot
 
 
 def calibrate_recognizer(noise_duration, recognizer, source):

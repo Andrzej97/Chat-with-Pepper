@@ -1,19 +1,34 @@
 import pymongo
 
-from src.general_chatbot import bot
+import src.general_chatbot.intro_conversation_bot as bot
 from src.common_utils import initialize_database
 from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
 
 
 def main():
+
+    # my_bot = bot.IntroBot()
+
+    # p: person
+    # r: robot
+    # print("p: cześć")
+    # print('r: ' + my_bot.get_bot_response("cześć"))
+    # print("p: u mnie okej, a u Ciebie?")
+    # print('r: ' + my_bot.get_bot_response("u mnie okej a u Ciebie"))
+    # print("p: jestem Witek")
+    # print('r: ' + my_bot.get_bot_response("mam na imię Witek"))
+    #
+    # print("p: Gdzie jest AGH")
+    # print('r: ' + my_bot.get_bot_response("Gdzie jest AGH"))
+
+    # my_bot.get_response("")
     # initialize_database.init_database()
-    bot.run_bot()
-    # db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     # out1 = db.add_conversation(text="Kubica", tag1="agh", tag2="sportowiec", tag3="formuła1")
     # out2 = db.add_conversation(text="Orlen", tag1="agh", tag2="sportowiec", tag3="sponsor")
     # print("Newly added conversations: ", out1, " and ", out2)
-    # res = db.get_responses_list_by_tags(tag1="agh", tag2="sportowiec")
+    # print(db.get_responses_list_by_tags(tag1="agh"))
     # print("Before update = tag1 = agh, tag2 = sportowiec, text = ", res[0], ", ", res[1])
     # updated_statements = []
     # try:
@@ -48,9 +63,13 @@ def main():
     #     print('All docs in stemming: ', list(db.collections_db['stemming1'].find()))
     #     db.remove_collection('stemming1')
     #     print()
-    #
-    #     db.add_new_doc_to_collection('stop_words', text='Kot', waznosc=0.3)
-    #     print("After adding = ", db.get_docs_from_collection('stop_words', {'text': 'Kot', 'waznosc': 0.3}))
+    tags_list = ['agh', 'wydziały', 'fajne']
+    tags_list2 = ['wydziały', 'agh']
+
+
+    db.add_new_doc_to_collection('statements', tags=['agh'], text='Fajna uczelnia!')
+    db.add_new_doc_to_collection('statements', tags=['agh', 'wydziały'], text='Fajna uczelnia i fajne wydziały!')
+    print("Finding by tag: = ", db.get_docs_from_collection('statements', {"tags": {"$in": ['wydziały', 'agh']}}))
     #     db.update_doc_in_collection('stop_words', {'text': 'Kot', 'waznosc': 0.3}, {'text': 'Kubica', 'waznosc': 1.1})
     #     print('After update: ', db.get_docs_from_collection('stop_words', {'text': 'Kubica'}))
     #     db.remove_doc_from_collection('stop_words', text='Kubica')
