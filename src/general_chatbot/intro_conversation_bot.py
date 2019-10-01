@@ -6,13 +6,13 @@ from src.common_utils.types_of_conversation import TypeOfOperation
 
 # TODO: add database cleaning method
 class IntroBot:
-    def __init__(self):
-        self.context = BotContext()
+    def __init__(self, bot_context):
+        self.context = bot_context
         self.bot = self.initialize_chatbot()
 
-    def initialize_chatbot(self):
+    def initialize_chatbot(self, name):
         return ChatBot(
-            'greetings_bot',
+            name,
             storage_adapter='chatterbot.storage.SQLStorageAdapter',
             logic_adapters=[
                 {
@@ -26,7 +26,8 @@ class IntroBot:
 
                 },
                 {
-                    'import_path': 'src.general_chatbot.logic_adapters.basic_question_logic_adapter.BasicQuestionAdapter',
+                    'import_path': 'src.general_chatbot.logic_adapters.basic_question_logic_adapter'
+                                   '.BasicQuestionAdapter',
                     'conversation_context': self.context,
                 },
                 {
