@@ -2,12 +2,11 @@ import random
 
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
-from chatterbot.storage import SQLStorageAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.database_service import DatabaseProxy
-from src.common_utils.types_of_conversation import TypeOfOperation
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
+from src.common_utils.types_of_conversation import TypeOfOperation
 
 
 class NameRequestAdapter(LogicAdapter):

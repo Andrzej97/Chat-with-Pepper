@@ -30,7 +30,7 @@ def find_best_tags_coverage(documents, tags):
     raise TypeError("No `text` attribute found")
 
 
-class GeneralConversationAdapter(LogicAdapter):
+class UniversityAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
@@ -40,7 +40,7 @@ class GeneralConversationAdapter(LogicAdapter):
         return True
 
     def process(self, statement, additional_responses_parameters):
-        noun_tags = self.sentence_filter.filter_sentence(statement.text, ['noun'])
+        noun_tags = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
         docs_by_tags = self.db.get_docs_from_collection_by_tags_list('agh_tags', noun_tags)
         confidence_by_tags = -1
         confidence_by_lemmas = -1

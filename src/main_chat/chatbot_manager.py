@@ -14,8 +14,8 @@ class ChatbotManager:
         self._sentence_filter = SentenceFilter()
 
     def create_chatbots(self):
-        self._general_chatbot = IntroBot(self._bot_context).initialize_chatbot(self._general_chatbot_name)
-        self._university_chatbot = UniversityBot.initialize_chatbot(self._university_chatbot_name)
+        self._general_chatbot = IntroBot().initialize_chatbot(self._general_chatbot_name, self._bot_context)
+        self._university_chatbot = UniversityBot().initialize_chatbot(self._university_chatbot_name)
 
     def _is_general_chatbot_unemployed(self):
         return self._bot_context.is_after_greeting and \
@@ -35,9 +35,9 @@ class ChatbotManager:
 
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
         if self._is_general_chatbot_unemployed():
-            processed_sentence = self._sentence_filter.filter_sentence(user_input)
-            print(processed_sentence)
-            chatbot_response = self._ask_university_chatbot(processed_sentence)
+            # processed_sentence = self._sentence_filter.filter_sentence(user_input, [])
+            # print(processed_sentence)
+            chatbot_response = self._ask_university_chatbot(user_input)
         else:
             print(user_input)
             chatbot_response = self._ask_general_chatbot(user_input)

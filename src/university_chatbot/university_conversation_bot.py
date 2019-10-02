@@ -2,8 +2,8 @@ from chatterbot import ChatBot
 
 
 class UniversityBot:
-    def __init__(self):
-        self.bot = self.initialize_chatbot()
+    # def __init__(self):
+        # self.bot = self.initialize_chatbot()
 
     def get_bot_response(self, input):
         response = self.bot.get_response(input)
@@ -14,8 +14,8 @@ class UniversityBot:
             name,
             logic_adapters=[
                 {
-                    'import_path': 'src.general_chatbot.logic_adapters.general_conversation_logic_adapter'
-                                   '.GreetingAdapter',
+                    'import_path': 'src.university_chatbot.university_conversation_logic_adapter'
+                                   '.UniversityAdapter',
                 },
             ],
         )

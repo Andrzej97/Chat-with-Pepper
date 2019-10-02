@@ -90,14 +90,14 @@ class SentenceFilter:
         return lemmas
 
 
-input = "wydziały-i-podstawowe-jednostki-organizacyjne"
-# print('input: ' + input)
-sentence_filtered = SentenceFilter().filter_sentence(input, ['noun'])
-print('output: ')
-for sentence in sentence_filtered:
-    print("    " + sentence)
-#
-#
-# print(SentenceFilter().extract_lemma('wydziały'))
-print(SentenceFilter().extract_lemmas_and_filter_stopwords(input))
+# input = "wydziały-i-podstawowe-jednostki-organizacyjne"
+# # print('input: ' + input)
+# sentence_filtered = SentenceFilter().filter_sentence(input, ['noun'])
+# print('output: ')
+# for sentence in sentence_filtered:
+#     print("    " + sentence)
+# #
+# #
+# # print(SentenceFilter().extract_lemma('wydziały'))
+# print(SentenceFilter().extract_lemmas_and_filter_stopwords(input))
 
