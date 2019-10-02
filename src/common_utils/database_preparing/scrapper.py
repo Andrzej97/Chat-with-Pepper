@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import itertools
 import re
+from csvReaderWriter import CsvReaderWriter
 
 def main():
     all_urls_dict_and_database = find_all_urls("https://www.agh.edu.pl")
@@ -19,13 +20,14 @@ def find_all_urls(starting_url):
     all_urls = {starting_url: False}  # {url, was searched for new links}
     database = []
     polish_names_map = {}
+    csvReaderWriter = CsvReaderWriter('db_191002_100.csv')
     i = 0
     while i < 100:
         url_to_search_through = get_next_url_to_search_through(all_urls)
         if url_to_search_through is None:
             break
         driver.get(url_to_search_through)
-        get_data(database, driver.page_source, starting_url, url_to_search_through, polish_names_map)
+        get_data(database, driver.page_source, starting_url, url_to_search_through, polish_names_map, csvReaderWriter)
         other_relative_urls = find_other_relative_urls_and_get_data(driver.page_source, polish_names_map)
         delete_ending_slash(other_relative_urls)
         # print(other_relative_urls)
@@ -42,7 +44,7 @@ def get_next_url_to_search_through(urls):
             return url
     return None
 
-def get_data(database, content, base_url, url, names_map):
+def get_data(database, content, base_url, url, names_map, csvReaderWriter):
     print(url)
     tags = get_tags(base_url, url, names_map)
     soup = BeautifulSoup(content, features="html.parser")
@@ -65,6 +67,7 @@ def get_data(database, content, base_url, url, names_map):
                 whole_page_text += text
     if len(whole_page_text) > 20:
         database.append(str(tags) + '#' + whole_page_text)
+        csvReaderWriter.write_tags_and_text(tags, whole_page_text)
 
 def get_tags(base_url, url, names_map):
     url = url[len(base_url):]
