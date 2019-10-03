@@ -33,7 +33,7 @@ def find_best_tags_coverage(documents, tags):
 class UniversityAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+        self.db = kwargs.get('database_proxy')
         self.sentence_filter = SentenceFilter()
 
     def can_process(self, statement):

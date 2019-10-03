@@ -10,7 +10,7 @@ class BasicQuestionAdapter(LogicAdapter):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+        self.db = kwargs.get('database_proxy')
         self.context = kwargs.get('conversation_context')
 
     def can_process(self, statement):

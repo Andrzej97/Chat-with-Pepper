@@ -12,7 +12,7 @@ from src.common_utils.types_of_conversation import TypeOfOperation
 class NameRequestAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+        self.db = kwargs.get('database_proxy')
         self.context = kwargs.get('conversation_context')
         self.confidence = 0
         self.robot_name_request = False
