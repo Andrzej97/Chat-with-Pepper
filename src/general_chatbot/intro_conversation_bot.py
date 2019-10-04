@@ -47,11 +47,14 @@ class IntroBot:
         response = self._bot.get_response(input)
         return response
 
-    def check_is_intro_chatbot_unemployed(self):
+    def check_is_bot_unemployed(self):
         return self._context.is_after_greeting and \
                self._context.is_after_introduction and \
                self._context.is_name_request_processed and \
                self._context.is_after_name_response_reaction and \
                self._context.speaker_name
 
-
+    def check_is_bot_partially_employed(self):
+        return (self._context.is_after_greeting and
+               (self._context.is_name_request_processed or
+                self._context.is_after_introduction))
