@@ -2,7 +2,6 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
-from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.types_of_conversation import TypeOfOperation
 
 
@@ -10,7 +9,7 @@ class GreetingAdapter(LogicAdapter):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+        self.db = kwargs.get('database_proxy')
         self.context = kwargs.get('conversation_context')
 
     def can_process(self, statement):

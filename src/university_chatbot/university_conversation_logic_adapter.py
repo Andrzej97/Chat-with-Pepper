@@ -33,7 +33,7 @@ def find_best_tags_coverage(documents, tags):
 class UniversityAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+        self.db = kwargs.get('database_proxy')
         self.sentence_filter = SentenceFilter()
 
     def can_process(self, statement):
@@ -53,14 +53,18 @@ class UniversityAdapter(LogicAdapter):
                 result_document_lemmas, confidence_by_lemmas = find_best_tags_coverage(docs_by_lemmas, extracted_lemmas)
         if confidence_by_lemmas + confidence_by_tags > -2:
             if confidence_by_tags > confidence_by_lemmas:
-                return Statement(
+                res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_tags))
+                res.confidence = 1
+                return res
             else:
-                return Statement(
+                res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_lemmas))
+                res.confidence = 1
+                return res
         else:
             return statement_utils.default_response()
-        return Statement(text=docs_by_tags)
+        #return Statement(text=docs_by_tags) #unreachable code
 
 # GeneralConversationAdapter(ChatBot("bot")).process(Statement("Jakie są wydziały na AGH"), "")
 # print(GeneralConversationAdapter(ChatBot("bot")).process(Statement("Jakie są budynki na AGH"), "").text)

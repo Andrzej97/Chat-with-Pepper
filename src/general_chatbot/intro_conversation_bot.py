@@ -1,34 +1,36 @@
 from chatterbot import ChatBot
 
-from src.common_utils.bot_context import BotContext
-from src.common_utils.types_of_conversation import TypeOfOperation
 
-
-# TODO: add database cleaning method
 class IntroBot:
-    # def __init__(self, bot_context):
-        # self.context = bot_context
-        # self.bot = self.initialize_chatbot()
+    def __init__(self, name, bot_context, db_proxy):
+        self.name = name
+        self._context = bot_context
+        self._bot = self.initialize_chatbot(db_proxy)
 
-    def initialize_chatbot(self, name, context):
+    def get_bot(self):
+        return self._bot
+
+    def initialize_chatbot(self, db_proxy):
         return ChatBot(
-            name,
-            storage_adapter='chatterbot.storage.SQLStorageAdapter',
+            self.name,
             logic_adapters=[
                 {
                     'import_path': 'src.general_chatbot.logic_adapters.greetings_logic_adapter.GreetingAdapter',
-                    'conversation_context': context,
+                    'conversation_context': self._context,
+                    'database_proxy': db_proxy
 
                 },
                 {
                     'import_path': 'src.general_chatbot.logic_adapters.name_request_logic_adapter.NameRequestAdapter',
-                    'conversation_context': context,
+                    'conversation_context': self._context,
+                    'database_proxy': db_proxy
 
                 },
                 {
                     'import_path': 'src.general_chatbot.logic_adapters.basic_question_logic_adapter'
                                    '.BasicQuestionAdapter',
-                    'conversation_context': context,
+                    'conversation_context': self._context,
+                    'database_proxy': db_proxy
                 },
                 {
                     'import_path': 'chatterbot.logic.BestMatch',
@@ -39,26 +41,20 @@ class IntroBot:
         )
 
     def context_update(self, type_of_conversation):
-        if type_of_conversation == TypeOfOperation.NAME.value:
-            self.context.is_name_request_processed = True
-        if type_of_conversation == TypeOfOperation.GREETING.value:
-            self.context.is_after_greeting = True
-        if type_of_conversation == TypeOfOperation.NAME.value:
-            self.context.is_after_introduction = True
-        if type_of_conversation == TypeOfOperation.CONTEXT_NAME.value:
-            self.context.is_after_name_response_reaction = True
+        self._context.context_update(type_of_conversation)
 
     def get_bot_response(self, input):
-        response = self.bot.get_response(input)
-        self.context_update(response.in_response_to)
-        return response.text
+        response = self._bot.get_response(input)
+        return response
 
-    # def prepare_bot(self):
-    #     bot_context = BotContext()
-    #     bot = self.initialize_chatbot(bot_context)
-    #     return bot
+    def check_is_bot_unemployed(self):
+        return self._context.is_after_greeting and \
+               self._context.is_after_introduction and \
+               self._context.is_name_request_processed and \
+               self._context.is_after_name_response_reaction and \
+               self._context.speaker_name
 
-    # def get_response(self, sentence):
-    #     return self.get_bot_response(sentence)
-
-
+    def check_is_bot_partially_employed(self):
+        return (self._context.is_after_greeting and
+               (self._context.is_name_request_processed or
+                self._context.is_after_introduction))
