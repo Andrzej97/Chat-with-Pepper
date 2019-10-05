@@ -1,6 +1,7 @@
 from chatterbot import ChatBot
 from src.common_utils.constants import REQUESTS_IN_ROW_THRESH
 
+
 class UniversityBot:
     def __init__(self, name, db_proxy):
         self.name = name
@@ -14,8 +15,8 @@ class UniversityBot:
         return self._responses_in_row >= REQUESTS_IN_ROW_THRESH
 
     def inc_responses_in_row(self):
-        print('Responses_in_row = ', self._responses_in_row)
         self._responses_in_row += 1
+        print('Responses_in_row = ', self._responses_in_row)
 
     def reset_responses_in_row(self):
         print('Responses_in_row reset = ', self._responses_in_row)
