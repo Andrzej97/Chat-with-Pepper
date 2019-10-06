@@ -1,15 +1,9 @@
 from chatterbot import ChatBot
 
-from src.common_utils.bot_context import BotContext
 from src.common_utils.types_of_conversation import TypeOfOperation
 
 
-# TODO: add database cleaning method
 class IntroBot:
-    # def __init__(self, bot_context):
-        # self.context = bot_context
-        # self.bot = self.initialize_chatbot()
-
     def initialize_chatbot(self, name, context):
         return ChatBot(
             name,
@@ -52,13 +46,3 @@ class IntroBot:
         response = self.bot.get_response(input)
         self.context_update(response.in_response_to)
         return response.text
-
-    # def prepare_bot(self):
-    #     bot_context = BotContext()
-    #     bot = self.initialize_chatbot(bot_context)
-    #     return bot
-
-    # def get_response(self, sentence):
-    #     return self.get_bot_response(sentence)
-
-

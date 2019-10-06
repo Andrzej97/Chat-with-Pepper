@@ -80,11 +80,11 @@ class DatabaseProxy:
             updated_statements.append(st.text)
         return updated_statements
 
-    def getCount(self):
+    def get_count(self):
         """Method returns number of documents in database"""
         return self.stat_collection.count()
 
-    def printDocumentsByTags(self, **tags):
+    def print_documents_by_tags(self, **tags):
         """Method prints documents from database with specified tags"""
         result_list = list(self.stat_collection.filter(**tags))
         if len(result_list) == 0:
