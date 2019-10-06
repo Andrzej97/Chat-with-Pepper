@@ -1,6 +1,7 @@
 from chatterbot import ChatBot
 from src.common_utils.constants import REQUESTS_IN_ROW_THRESH
 
+
 class UniversityBot:
     def __init__(self, name, db_proxy):
         self.name = name
