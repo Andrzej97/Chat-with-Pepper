@@ -1,4 +1,4 @@
-from src.common_utils.database_service import DatabaseProxy
+#from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
 import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
@@ -63,10 +63,10 @@ def correct_csv_format(file_in, file_out, file_out_phrases):
     f_out.close()
     f_out_phrases.close()
 
-def main():
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+def initialize_main_collection_from_scrapper(db):
+    #db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 
-    correct_csv_format('database_100.csv', 'database_correct_filtered_100.csv', 'database_filtered_phrases_100.csv')
+    correct_csv_format('./csv_files/database_100.csv', './csv_files/database_correct_filtered_100.csv', './csv_files/database_filtered_phrases_100.csv')
 
     collection = 'MAIN_COLLECTION'
     try:
@@ -76,7 +76,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('database_correct_filtered_100.csv', encoding="utf-8") as csvfile:
+    with open('./csv_files/database_correct_filtered_100.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             tags = row[1:len(row)]
@@ -95,7 +95,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('database_filtered_phrases_100.csv', encoding="utf-8") as csvfile:
+    with open('./csv_files/database_filtered_phrases_100.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
@@ -105,4 +105,3 @@ def main():
 
 
 
-main()
