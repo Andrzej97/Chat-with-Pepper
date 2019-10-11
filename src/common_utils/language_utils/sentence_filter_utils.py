@@ -1,6 +1,7 @@
 import src.common_utils.constants as constants
 from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
+from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
 
 word_class_name = {'noun': set(['subst', 'depr'])
                    }
@@ -10,9 +11,12 @@ def initialize_database():
     """
         run this method just when you use this code first time to initialize database with words from file
     """
-    path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
+    path = "./polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
-    db.create_new_collection('polish_stop_words')
+    try:
+        db.create_new_collection('polish_stop_words')
+    except CollectionAlreadyExistsInDatabaseError:
+        print('Error, error')
     result = from_txt_file_to_list(path)
     list = []
     for r in result:
@@ -80,8 +84,8 @@ class SentenceFilter:
                    map(lambda z: self.extract_lemma_and_morphologic_tag(z), words)))
         return sentence_filtered
 
-
-# input = "Kto został nowym rektorem uczelni"
+#
+# input = "Kto został nowym rektorem uczelnią"
 # print('input: ' + input)
 # sentence_filtered = SentenceFilter().filter_sentence(input)
 # print('output: ')
@@ -89,4 +93,5 @@ class SentenceFilter:
 #     print("    " + sentence[0])
 
 
-print(SentenceFilter().extract_lemma('wydzialy'))
+# initialize_database()
+# print(SentenceFilter().extract_lemma('wydziały'))

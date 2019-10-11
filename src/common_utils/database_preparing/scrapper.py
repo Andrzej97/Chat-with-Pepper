@@ -6,23 +6,24 @@ import re
 from csvReaderWriter import CsvReaderWriter
 
 def main():
+    # print(get_tags("https://www.agh.edu.pl", "https://www.agh.edu.pl/info/article/101-inauguracja-roku-akademickiego-glowne-obchody-jubileuszu-100-lecia-agh", {}))
     all_urls_dict_and_database = find_all_urls("https://www.agh.edu.pl")
     all_urls_dict = all_urls_dict_and_database[0]
     database = all_urls_dict_and_database[1]
     all_urls = dict_to_list_of_keys(all_urls_dict)
     df = pd.DataFrame({'url address':all_urls})
-    df.to_csv('urls_100.csv', index=False, encoding='utf-8')
+    df.to_csv('urls_2000.csv', index=False, encoding='utf-8')
     df2 = pd.DataFrame({'TAGS#TEXT':database})
-    df2.to_csv('database_100.csv', index=False, encoding='utf-8')
+    df2.to_csv('database_2000.csv', index=False, encoding='utf-8')
 
 def find_all_urls(starting_url):
     driver = webdriver.Chrome(executable_path=r'C:\Users\User\chromedriver.exe')
     all_urls = {starting_url: False}  # {url, was searched for new links}
     database = []
     polish_names_map = {}
-    csvReaderWriter = CsvReaderWriter('db_191002_100.csv')
+    csvReaderWriter = CsvReaderWriter('db_191009_2000.csv')
     i = 0
-    while i < 100:
+    while i < 2000:
         url_to_search_through = get_next_url_to_search_through(all_urls)
         if url_to_search_through is None:
             break
@@ -64,13 +65,14 @@ def get_data(database, content, base_url, url, names_map, csvReaderWriter):
             # print('Inside if:')
             # print(text)
             if len(text) > 0:   # could be 0, for example:<p class="bodytext"><a class="external-link-new-window" href=...>
-                whole_page_text += text
+                whole_page_text += (' ' + text)
     if len(whole_page_text) > 20:
         database.append(str(tags) + '#' + whole_page_text)
         csvReaderWriter.write_tags_and_text(tags, whole_page_text)
 
 def get_tags(base_url, url, names_map):
     url = url[len(base_url):]
+    print('SHORTEN URL:', url)
     tags = url.split('/')
     for i in range(len(tags)):
         tags[i] = tags[i].split('-')
@@ -79,6 +81,7 @@ def get_tags(base_url, url, names_map):
         tags_list[i] = tags_list[i].lower()
         if tags_list[i] in names_map:
             tags_list[i] = names_map[tags_list[i]]
+    tags_list.remove('')
     return tags_list
 
 
