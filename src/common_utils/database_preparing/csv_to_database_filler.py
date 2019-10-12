@@ -1,4 +1,5 @@
 # zastanowic sie czy funkcja filter tags dziala tak jak powinna - raczej jest dobrze zaimplementowana, ale czy samo sentence_filter dziala tak jak tego oczekujemy
+# pododdawac przy szukaniu tagów w zdaniach nawiasy () - sprawdzać początki, zastosować pętlę, aby liczyło się słowo postaci (word),
 
 from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
@@ -157,48 +158,67 @@ def filter_tags(in_file, out_file):
             print('TEXT: ', text)
 
 def make_phrases_csv(in_file, out_file):
-    pass
+    csvWriter = CsvWriter(out_file)
+    with open(in_file, encoding="utf-8") as f_in:
+        readCSV = csv.reader(f_in, delimiter='#')
+        sentence_filter = SentenceFilter()
+        for row in readCSV:
+            text = row[-1:][0]
+            phrases = text.split('.')
+            print('TEXT:\t', text)
+            for phrase in phrases:
+                print('PHRASE:\t', phrase)
+                words = phrase.split()
+                print('WORDS:\t', words)
+                tags_for_words = []
+                for word in words:
+                    to_filter = word
+                    if to_filter[-1:] in {':', ';', ','}:
+                        to_filter = to_filter[:-1]
+                    filtered = sentence_filter.filter_sentence(to_filter)
+                    if len(filtered) != 0:
+                        tags_for_words.append(filtered[0][0])
+                if len(tags_for_words) != 0:
+                    csvWriter.write_tags_and_text(tags_for_words, phrase)
+                print('WORDS TAGS:\t', tags_for_words)
 
 def main():
-    # db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    # to prepare necessary files from one file: DB_FINAL_num.csv
+    # filter_tags('DB_FINAL_50.csv', 'DB_FINAL_50_TAGS_FILTERED.csv')
+    # make_phrases_csv('DB_FINAL_50_TAGS_FILTERED.csv', 'DB_FINAL_50_PHRASES.csv')
 
-    filter_tags('DB_FINAL_50.csv', 'DB_FINAL_50_TAGS_FILTERED.csv')
+    # to fill mongo database
+    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 
-    # collection = 'MAIN_COLLECTION'
-    # try:
-    #     db.create_new_collection(collection)
-    # except exceptions.CollectionAlreadyExistsInDatabaseError:
-    #     db.remove_collection(collection)
-    #     db.create_new_collection(collection)
-    #     print("Collection Already Exists Error")
-    #
-    # with open('database_correct_filtered_100.csv', encoding="utf-8") as csvfile:
-    #     readCSV = csv.reader(csvfile, delimiter='#')
-    #     for row in readCSV:
-    #         tags = row[1:len(row)]
-    #         text = row[0]
-    #         db.add_doc_with_tags_list(collection, tags, text)
-    #
-    # # checking if it worked
-    # print(db.get_docs_from_collection_by_tags_list(collection, ['historia']))
-    #
-    #
-    # collection = 'PHRASES'
-    # try:
-    #     db.create_new_collection(collection)
-    # except exceptions.CollectionAlreadyExistsInDatabaseError:
-    #     db.remove_collection(collection)
-    #     db.create_new_collection(collection)
-    #     print("Collection Already Exists Error")
-    #
-    # with open('database_filtered_phrases_100.csv', encoding="utf-8") as csvfile:
-    #     readCSV = csv.reader(csvfile, delimiter='#')
-    #     for row in readCSV:
-    #         print(row)
-    #         tags = row[1:len(row)]
-    #         text = row[0]
-    #         db.add_doc_with_tags_list(collection, tags, text)
-    #
+    collection = 'MAIN_COLLECTION'
+    try:
+        db.create_new_collection(collection)
+    except exceptions.CollectionAlreadyExistsInDatabaseError:
+        db.remove_collection(collection)
+        db.create_new_collection(collection)
+        print("Collection Already Exists Error")
 
+    with open('DB_FINAL_50_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
+        readCSV = csv.reader(csvfile, delimiter='#')
+        for row in readCSV:
+            tags = row[:-1]
+            text = row[-1:]
+            db.add_doc_with_tags_list(collection, tags, text)
+
+    collection = 'PHRASES'
+    try:
+        db.create_new_collection(collection)
+    except exceptions.CollectionAlreadyExistsInDatabaseError:
+        db.remove_collection(collection)
+        db.create_new_collection(collection)
+        print("Collection Already Exists Error")
+
+    with open('DB_FINAL_50_PHRASES.csv', encoding="utf-8") as csvfile:
+        readCSV = csv.reader(csvfile, delimiter='#')
+        for row in readCSV:
+            print(row)
+            tags = row[:-1]
+            text = row[-1:]
+            db.add_doc_with_tags_list(collection, tags, text)
 
 main()
