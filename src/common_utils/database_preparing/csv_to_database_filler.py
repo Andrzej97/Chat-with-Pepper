@@ -1,8 +1,10 @@
+# zastanowic sie czy funkcja filter tags dziala tak jak powinna - raczej jest dobrze zaimplementowana, ale czy samo sentence_filter dziala tak jak tego oczekujemy
+
 from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
 import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-from csvReaderWriter import CsvReaderWriter
+from csvWriter import CsvWriter
 
 def try_to_expand(word):
     word = word.lower()
@@ -60,7 +62,7 @@ def expand_text_shortcuts(text):
     return final_text
 
 def expand_shortcuts(file_in, file_out):
-    f_out_reader_writer = CsvReaderWriter(file_out)
+    f_out_reader_writer = CsvWriter(file_out)
     with open(file_in, encoding="utf-8") as csv_file:
         read_csv = csv.reader(csv_file, delimiter='#')
         for row in read_csv:
@@ -133,12 +135,35 @@ def correct_csv_format(file_in, file_out, file_out_phrases):
     f_out.close()
     f_out_phrases.close()
 
+def filter_tags(in_file, out_file):
+    csvWriter = CsvWriter(out_file)
+    with open(in_file, encoding="utf-8") as f_in:
+        readCSV = csv.reader(f_in, delimiter='#')
+        sentence_filter = SentenceFilter()
+        for row in readCSV:
+            tags = row[:-1]
+            text = row[-1:][0]
+            tags_filtered = []
+            for tag in tags:
+                filtered = sentence_filter.filter_sentence(tag)
+                if len(filtered) != 0:
+                    tags_filtered.append(filtered[0][0])
+            if len(tags_filtered) != 0:
+                csvWriter.write_tags_and_text(tags_filtered, text)
+            else:
+                csvWriter.write_tags_and_text(tags, text)
+            print('TAGS: ', tags)
+            print('TAGS FILTERED: ', tags_filtered)
+            print('TEXT: ', text)
+
+def make_phrases_csv(in_file, out_file):
+    pass
+
 def main():
     # db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 
-    # expand_shortcuts('db_191009_2000.csv', 'db_191009_2000_noShortcuts.csv')
-    correct_csv_format('db_191009_2000_noShortcuts.csv', 'db_191009_2000_noShortcuts_tagsFiltered.csv', 'db_191009_2000_noShortcuts_phrases.csv')
-    #
+    filter_tags('DB_FINAL_50.csv', 'DB_FINAL_50_TAGS_FILTERED.csv')
+
     # collection = 'MAIN_COLLECTION'
     # try:
     #     db.create_new_collection(collection)
