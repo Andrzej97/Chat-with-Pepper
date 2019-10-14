@@ -9,16 +9,30 @@ from csvWriter import CsvWriter
 
 def try_to_expand(word):
     word = word.lower()
+    if word == '+48':
+        return '48'
+    if word == '1.':
+        return '1'
     if word == '100.':
         return '100'
     if word == 'al.':
         return 'aleje'
     if word == 'art.':
         return 'artykuł'
+    if word == 'bip':
+        return 'biuletyn informacji publicznej'
+    if word == 'dkg':
+        return 'dekagramów'
     if word == 'doc.':
         return 'docent'
     if word == 'dr':
         return 'doktor'
+    if word == 'dra':
+        return 'doktora'
+    if word == 'drem':
+        return 'doktorem'
+    if word == 'drowi':
+        return 'doktorowi'
     if word == 'ds.':
         return 'do spraw'
     if word == 'ew.':
@@ -31,24 +45,52 @@ def try_to_expand(word):
         return 'inżynier'
     if word == 'itp.':
         return 'i tym podobne'
+    if word == 'ks.':
+        return 'ksiądz'
     if word == 'łac.':
         return 'łaciny'
     if word == 'm.in.':
         return 'między innymi'
     if word == 'mgr':
         return 'magister'
+    if word == 'mgra':
+        return 'magistra'
+    if word == 'mm':
+        return 'milimetrów'
+    if word == 'nadzw.':
+        return 'nadzwyczajny'
+    if word == 'n.s.d.a.p.':
+        return 'narodowosocjalistycznej niemieckiej partii robotników'
+    if word == 'np.':
+        return 'na przykład'
+    if word == 'nr':
+        return 'numer'
+    if word == 'nrf':
+        return 'niemieckiej republiki federalnej'
+    if word == 'nszz':
+        return 'niezależny samorządowy związek zawodowy'
     if word == 'ok.':
         return 'około'
+    if word == 'pr':
+        return 'public relations'
     if word == 'prof.':
         return 'profesor'
     if word == 'r.':
         return 'roku'
     if word == 'r.,':
         return 'roku,'
+    if word == 'tel.':
+        return 'telefon'
     if word == 'tj.':
         return 'to jest'
+    if word == 'tzw.':
+        return 'tak zwany'
     if word == 'ust.':
         return 'ustawy'
+    if word == 'wew.':
+        return 'wewnętrzny'
+    if word == 'wyd.':
+        return 'wydanie'
     return word
 
 def expand_text_shortcuts(text):
@@ -183,9 +225,11 @@ def make_phrases_csv(in_file, out_file):
                 print('WORDS TAGS:\t', tags_for_words)
 
 def main():
-    # to prepare necessary files from one file: DB_FINAL_num.csv
-    # filter_tags('DB_FINAL_50.csv', 'DB_FINAL_50_TAGS_FILTERED.csv')
-    # make_phrases_csv('DB_FINAL_50_TAGS_FILTERED.csv', 'DB_FINAL_50_PHRASES.csv')
+    # expand_shortcuts('db_191009_2000.csv', 'db_191009_2000_shortcuts_expanded.csv')
+
+    # # to prepare necessary files from one file: DB_FINAL_num.csv
+    # filter_tags('DB_FINAL_130.csv', 'DB_FINAL_130_TAGS_FILTERED.csv')
+    # make_phrases_csv('DB_FINAL_130_TAGS_FILTERED.csv', 'DB_FINAL_130_PHRASES.csv')
 
     # to fill mongo database
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
@@ -198,7 +242,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('DB_FINAL_50_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_130_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             tags = row[:-1]
@@ -213,7 +257,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('DB_FINAL_50_PHRASES.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_130_PHRASES.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
