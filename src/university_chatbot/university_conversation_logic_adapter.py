@@ -44,7 +44,7 @@ class UniversityAdapter(LogicAdapter):
         confidence_by_tags = -1
         confidence_by_lemmas = -1
         if len(docs_by_tags) > 0:  # matching tags exist
-            find_coverage_res = find_best_tags_coverage(docs_by_lemmas, extracted_lemmas)
+            find_coverage_res = find_best_tags_coverage(docs_by_tags, noun_tagsk)
             if find_coverage_res is not None:
                 result_document_tags, confidence_by_tags = find_coverage_res
         if confidence_by_tags < 2:  # confidence of response based on tags is not enough (0 = 0%, 1 = 100%)
