@@ -10,11 +10,9 @@
     -> send text recognized from Pepper to bot
 """
 import socket
-import sys
 from time import sleep
-import qi
 
-import speech_recognition as speech
+from pip._vendor.distlib.compat import raw_input
 
 
 class DataExchangeModule(object):
@@ -39,8 +37,9 @@ class DataExchangeModule(object):
         try:
             self.data_socket.sendall(bytes(data))
             response = self.data_socket.recv(1024).decode('utf-8')
+            print(response)
             if response != '':
-                tell(response)
+                self.tell(response)
         except socket.error:
             return None
 
@@ -48,16 +47,20 @@ class DataExchangeModule(object):
         """
             cause Pepper say `text`
         """
-        self.tts.setLanguage("Polish")
         self.tts.say(text)
 
     def perform_communication_with_chatbot(self):
         while True:
             print('in loop...')
-            result_of_speech_recognition = self.speech_recognizer()
-            print("recognized:  " + result_of_speech_recognition + ";")
-            send_result = None
-            while send_result is None:
-                send_result = send_data(self.chatbot_socket, result_of_speech_recognition)
-            if send_result != '':
-                print(send_result)
+            # result_of_speech_recognition = self.speech_recognizer()
+            # print("recognized:  " + result_of_speech_recognition + ";")
+            user_input = raw_input('>>>')
+            # send_result = None
+            # while send_result is None:
+            # self.send_data_and_tell_response(self.chatbot_socket, result_of_speech_recognition)
+            self.send_data_and_tell_response(user_input)
+            # if send_result != '':
+            #     print(send_result)
+
+
+# DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()

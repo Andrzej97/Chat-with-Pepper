@@ -38,6 +38,7 @@ class SoundProcessingModule(object):
         self._buff = queue.Queue()
         self.file = io.open("rec", 'wb')
         self.tts = ALProxy("ALTextToSpeech", constants.ROBOT_ADDRESS, constants.ROBOT_PORT)
+        self.tts.setLanguage("Polish")
         self.data_exchange_module = DataExchangeModule(constants.ROBOT_ADDRESS, constants.ROBOT_SOCKET_PORT, self.tts)
 
     def __enter__(self):
