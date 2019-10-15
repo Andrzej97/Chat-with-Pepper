@@ -1,6 +1,5 @@
 from chatterbot import ChatBot
 
-
 class IntroBot:
     def __init__(self, name, bot_context, db_proxy):
         self.name = name

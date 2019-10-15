@@ -66,6 +66,3 @@ class UniversityAdapter(LogicAdapter):
             return statement_utils.default_response()
         #return Statement(text=docs_by_tags) #unreachable code
 
-# GeneralConversationAdapter(ChatBot("bot")).process(Statement("Jakie są wydziały na AGH"), "")
-# print(GeneralConversationAdapter(ChatBot("bot")).process(Statement("Jakie są budynki na AGH"), "").text)
-# print(GeneralConversationAdapter(ChatBot("bot")).process(Statement("Jakie są kierunki i budynki"), "").text)
