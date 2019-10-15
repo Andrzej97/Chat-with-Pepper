@@ -27,9 +27,7 @@ def from_txt_file_to_list(path):
 
 
 def filter_word_form(word_form, morphologic_tag):
-    if len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0:
-        return True
-    return False
+    return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
 
 
 class SentenceFilter:
@@ -73,20 +71,33 @@ class SentenceFilter:
     def filter_stop_words(self, word):
         return word[0] not in self.stop_words
 
-    def filter_sentence(self, sentence):
-        words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split()))
-        sentence_filtered = list(
-            filter(lambda x_y: filter_word_form('noun', x_y[1]),  # python3 does not support tuple unpacking, that's why
-                   map(lambda z: self.extract_lemma_and_morphologic_tag(z), words)))
-        return sentence_filtered
+    def filter_sentence(self, sentence, forms_to_filter):
+        words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
+        sentence_after_extraction = list(map(lambda z: self.extract_lemma_and_morphologic_tag(z), words))
+        for form in forms_to_filter:
+            sentence_filtered = list(
+                filter(lambda x_y: filter_word_form(form, x_y[1]),
+                       # python3 does not support tuple unpacking, that's why
+                       sentence_after_extraction))
+        return list(map(lambda x: x[0].lower(), sentence_filtered))
+        raise TypeError("Argument `forms_to_filter` is not list")
+
+    def extract_lemmas_and_filter_stopwords(self, sentence):
+        words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
+        lemmas = []
+        for word in words:
+            lemmas.append(self.extract_lemma(word).lower())
+        return lemmas
 
 
-# input = "Kto został nowym rektorem uczelni"
-# print('input: ' + input)
-# sentence_filtered = SentenceFilter().filter_sentence(input)
+# input = "wydziały-i-podstawowe-jednostki-organizacyjne"
+# # print('input: ' + input)
+# sentence_filtered = SentenceFilter().filter_sentence(input, ['noun'])
 # print('output: ')
 # for sentence in sentence_filtered:
-#     print("    " + sentence[0])
+#     print("    " + sentence)
+# #
+# #
+# # print(SentenceFilter().extract_lemma('wydziały'))
+# print(SentenceFilter().extract_lemmas_and_filter_stopwords(input))
 
-
-print(SentenceFilter().extract_lemma('wydzialy'))

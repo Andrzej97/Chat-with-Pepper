@@ -5,6 +5,11 @@ from src.common_utils.custom_exceptions import CollectionNotExistsInDatabaseErro
 from pymongo import MongoClient
 import random
 
+
+def is_invalid_arg(arg):
+    return arg is None
+
+
 class DatabaseProxy:
     def __init__(self, conection_uri, database_name):
         self.database_uri = conection_uri + database_name
@@ -12,12 +17,9 @@ class DatabaseProxy:
         mongo_client = MongoClient(conection_uri)
         self.collections_db = mongo_client[database_name]
 
-    def is_invalid_arg(self, arg):
-        return arg is None
-
-    def add_conversation(self, **tags): # tags == kwargs
-        '''Method adds new conversation to database with specified tags
-           Returns text of added conversation's statement'''
+    def add_conversation(self, **tags):  # tags == kwargs
+        """Method adds new conversation to database with specified tags
+           Returns text of added conversation's statement"""
         try:
             tags.get('text')
         except KeyError:
@@ -27,7 +29,7 @@ class DatabaseProxy:
         return created_statement.text
 
     def get_responses_list_by_tags(self, **tags):
-        '''Method returns list of statements text list which match given tags'''
+        """Method returns list of statements text list which match given tags"""
         statement_results = list(self.stat_collection.filter(**tags))
         if len(statement_results) == 0:
             raise ResponseTextByTagsNotFoundError
@@ -37,7 +39,7 @@ class DatabaseProxy:
         return text_results
 
     def get_first_response_by_tags(self, **tags):
-        '''Method returns first statement's text which match given tags'''
+        """Method returns first statement's text which match given tags"""
         try:
             responses = self.get_responses_list_by_tags(**tags)
         except ResponseTextByTagsNotFoundError:
@@ -46,7 +48,7 @@ class DatabaseProxy:
         return responses[0]
 
     def get_random_response_by_tags(self, **tags):
-        '''Method returns random statement's text which match given tags'''
+        """Method returns random statement's text which match given tags"""
         try:
             responses = self.get_responses_list_by_tags(**tags)
         except ResponseTextByTagsNotFoundError:
@@ -60,14 +62,14 @@ class DatabaseProxy:
         '''Method removes conversation specified with tags from database
            It returns text of statement which is removed'''
         conversation_to_remove = self.get_first_response_by_tags(**tags)
-        if self.is_invalid_arg(conversation_to_remove):
+        if is_invalid_arg(conversation_to_remove):
             return None
         self.stat_collection.remove(conversation_to_remove)
         return conversation_to_remove
 
     def update_conversation_text(self, new_text, **tags):
-        '''Method updates text of statement in database with specified tags
-           Returns updated statement's text'''
+        """Method updates text of statement in database with specified tags
+           Returns updated statement's text"""
         matching_statements = list(self.stat_collection.filter(**tags))
         if len(matching_statements) == 0:
             raise ResponseTextByTagsNotFoundError
@@ -78,12 +80,12 @@ class DatabaseProxy:
             updated_statements.append(st.text)
         return updated_statements
 
-    def getCount(self):
-        '''Method returns number of documents in database'''
+    def get_count(self):
+        """Method returns number of documents in database"""
         return self.stat_collection.count()
 
-    def printDocumentsByTags(self, **tags):
-        '''Method prints documents from database with specified tags'''
+    def print_documents_by_tags(self, **tags):
+        """Method prints documents from database with specified tags"""
         result_list = list(self.stat_collection.filter(**tags))
         if len(result_list) == 0:
             raise ResponseTextByTagsNotFoundError
@@ -98,7 +100,7 @@ class DatabaseProxy:
 
     def get_docs_from_collection_by_tags_list(self, collection_name, tags_list):
         if isinstance(tags_list, list):
-            search_doc = {'tags': { '$in': tags_list }}
+            search_doc = {'tags': {'$in': tags_list}}
             docs_found = self.get_docs_from_collection(collection_name, search_doc)
             return docs_found
         raise TypeError('Argument tags_list is not list')
@@ -148,7 +150,7 @@ class DatabaseProxy:
         if collection_name in self.collections_db.collection_names():
             collection = self.collections_db[collection_name]
             values_to_update = {"$set": new_values_dict}
-            collection.update_one(search_values_dict, values_to_update) # no upsert
+            collection.update_one(search_values_dict, values_to_update)  # no upsert
             return True
         raise CollectionNotExistsInDatabaseError
 

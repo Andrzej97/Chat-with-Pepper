@@ -1,3 +1,4 @@
+from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
@@ -28,7 +29,6 @@ class BasicQuestionAdapter(LogicAdapter):
         return False
 
     def process(self, statement, additional_respones_parameters):
-        from chatterbot.conversation import Statement
         basic_question_responses = self.db.get_random_response_by_tags(tag="basic_question_response")
         basic_question_responses_end = self.db.get_random_response_by_tags(tag="basic_question_response_end")
 
