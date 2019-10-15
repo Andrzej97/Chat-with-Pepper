@@ -1,45 +1,46 @@
 from src.common_utils.bot_context import BotContext
-from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from src.general_chatbot.intro_conversation_bot import IntroBot
 from src.university_chatbot.university_conversation_bot import UniversityBot
+from src.common_utils.database_service import DatabaseProxy
 
 
 class ChatbotManager:
     def __init__(self, **kwargs):
-        self._general_chatbot_name = kwargs.get('general_chatbot', 'Żwirek')  # our chatbots code names
+        self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Żwirek')  # our chatbots code names
         self._university_chatbot_name = kwargs.get('university_chatbot', 'Muchomorek')
-        self._general_chatbot = None
-        self._university_chatbot = None
-        self._bot_context = BotContext()
-        self._sentence_filter = SentenceFilter()
+        db = DatabaseProxy(kwargs.get('connection_uri'), kwargs.get('database_name'))
+        bot_context = BotContext()
+        self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, db)
+        self._university_chatbot = UniversityBot(self._university_chatbot_name, db)
+        self._is_intro_bot_unemployed = False
 
-    def create_chatbots(self):
-        self._general_chatbot = IntroBot().initialize_chatbot(self._general_chatbot_name, self._bot_context)
-        self._university_chatbot = UniversityBot().initialize_chatbot(self._university_chatbot_name)
-
-    def _is_general_chatbot_unemployed(self):
-        return self._bot_context.is_after_greeting and \
-               self._bot_context.is_after_introduction and \
-               self._bot_context.is_name_request_processed and \
-               self._bot_context.is_after_name_response_reaction and \
-               self._bot_context.speaker_name
-
-    def _ask_general_chatbot(self, processed_sentence):
-        response = self._general_chatbot.get_response(processed_sentence)
-        self._bot_context.context_update(response.in_response_to)
-        return response.text
+    def _ask_intro_chatbot(self, processed_sentence):
+        response = self._intro_chatbot.get_bot_response(processed_sentence)
+        self._intro_chatbot.context_update(response.in_response_to)
+        return response.text, response.confidence
 
     def _ask_university_chatbot(self, processed_sentence):
-        response = self._university_chatbot.get_response(processed_sentence)
-        return response.text
+        response = self._university_chatbot.get_bot_response(processed_sentence)
+        return response.text, response.confidence
+
+    def _check_is_intro_chatbot_unemployed(self):
+        if not self._is_intro_bot_unemployed:
+            self._is_intro_bot_unemployed = self._intro_chatbot.check_is_bot_unemployed() \
+                                            or self._university_chatbot.check_was_requested_in_row_above_thresh()
+        return self._is_intro_bot_unemployed
+
+    def check_is_intro_chatbot_part_employed(self):
+        return self._intro_chatbot.check_is_bot_partially_employed()
 
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
-        if self._is_general_chatbot_unemployed():
-            # processed_sentence = self._sentence_filter.filter_sentence(user_input, [])
-            # print(processed_sentence)
-            chatbot_response = self._ask_university_chatbot(user_input)
+        if self._check_is_intro_chatbot_unemployed():
+            chatbot_response, c1 = self._ask_university_chatbot(user_input)
+            print('University chatbot = ', user_input, ' c1 = ', c1)
         else:
-            print(user_input)
-            chatbot_response = self._ask_general_chatbot(user_input)
-
+            (i_text, i_conf) = self._ask_intro_chatbot(user_input)
+            (u_text, u_conf) = self._ask_university_chatbot(user_input)
+            print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
+            conf_res = u_conf > i_conf
+            self._university_chatbot.inc_responses_in_row() if conf_res else self._university_chatbot.reset_responses_in_row()
+            chatbot_response = u_text if conf_res else i_text
         return chatbot_response

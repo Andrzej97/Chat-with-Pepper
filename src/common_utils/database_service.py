@@ -11,10 +11,10 @@ def is_invalid_arg(arg):
 
 
 class DatabaseProxy:
-    def __init__(self, conection_uri, database_name):
-        self.database_uri = conection_uri + database_name
+    def __init__(self, connection_uri, database_name):
+        self.database_uri = connection_uri + database_name
         self.stat_collection = MongoDatabaseAdapter(database_uri=self.database_uri)
-        mongo_client = MongoClient(conection_uri)
+        mongo_client = MongoClient(connection_uri)
         self.collections_db = mongo_client[database_name]
 
     def add_conversation(self, **tags):  # tags == kwargs

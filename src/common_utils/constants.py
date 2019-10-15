@@ -1,1 +1,2 @@
 NAME = 'imię'
+REQUESTS_IN_ROW_THRESH = 5

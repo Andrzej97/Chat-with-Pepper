@@ -29,11 +29,13 @@ def startSpeechRecognition():
     with speech.Microphone() as source:
         calibrate_recognizer(2, r, source)
 
-        chatbot_manager = ChatbotManager(general_chatbot='Bolek', university_chatbot='Lolek')
-        chatbot_manager.create_chatbots()
+        chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
+                                    connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')
 
         while True:
             cmd = speech_recognizer()
+            if len(cmd) == 0 or cmd == 'repeat' or cmd is None:
+                continue
             print("resp: " + chatbot_manager.ask_chatbot(cmd))
 
 startSpeechRecognition()
