@@ -112,6 +112,12 @@ class DatabaseProxy:
             return True
         raise CollectionAlreadyExistsInDatabaseError
 
+    def create_new_capped_collection(self, collection_name, max_size):
+        if collection_name not in self.collections_db.collection_names():
+            self.collections_db.create_collection(name=collection_name, capped=True,
+                                                  size=max_size * 4096,
+                                                  max=max_size)
+
     def remove_collection(self, collection_name):
         if collection_name in self.collections_db.collection_names():
             self.collections_db.drop_collection(name_or_collection=collection_name)
@@ -161,3 +167,5 @@ class DatabaseProxy:
             collection.update_many(search_values_dict, values_to_update)
             return True
         raise CollectionNotExistsInDatabaseError
+
+

@@ -1,6 +1,5 @@
 import io
 import re
-import qia
 import argparse
 import sys
 import time
@@ -11,7 +10,7 @@ from google.cloud.speech import types
 from six.moves import queue
 
 import numpy as np
-from src.connectivity.socket_conn_robot import DataExchangeModule
+from src.connectivity.socket.socket_conn_robot import DataExchangeModule
 import src.common_utils.constants as constants
 
 RATE = 16000

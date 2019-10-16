@@ -4,3 +4,8 @@ ROBOT_ADDRESS = '192.168.1.102'
 ROBOT_PORT = 9559
 ROBOT_SOCKET_PORT = 9999
 LOCALHOST = 'localhost'
+DATABASE_NAME = 'PepperChatDB'
+DATABASE_ADDRESS = 'mongodb://localhost:27017/'
+
+# -------- MONGO COLLECTIONS NAMES -----------#
+RESPONSES_COLLECTION = 'responses'

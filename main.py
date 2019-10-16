@@ -1,5 +1,6 @@
 import pymongo
 
+from src.common_utils import constants
 from src.general_chatbot import intro_conversation_bot
 from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
@@ -8,15 +9,17 @@ from src.main_chat.chatbot_manager import ChatbotManager
 
 def main():
 
-    chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
-                                     connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')
-    while True:
-        user_input = input('>>>')
-        res = chatbot_manager.ask_chatbot(user_input)
-        print('Answer = ', res)
+    # chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
+    #                                  connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')
+    # while True:
+    #     user_input = input('>>>')
+    #     res = chatbot_manager.ask_chatbot(user_input)
+    #     print('Answer = ', res)
 
-    # db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
-    # db.create_new_collection('agh_tags')
+    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    result_collection = list(db.collections_db[constants.RESPONSES_COLLECTION].find())
+    for res in result_collection:
+        print(res['response'])
     # db.remove_collection('agh_tags_from_response')
     # db.create_new_collection('agh_tags_from_response')
     # db.add_doc_with_tags_list('agh_tags', ['agh', 'wydział'], "Na AGH jest 20 wydziałów")
