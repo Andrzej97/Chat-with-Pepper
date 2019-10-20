@@ -37,6 +37,8 @@ def try_to_expand(word):
         return 'do spraw'
     if word == 'ew.':
         return 'ewentualnie'
+    if word == 'ha':
+        return 'hektarów'
     if word == 'hab.':
         return 'habilitowany'
     if word == 'im.':
@@ -71,6 +73,10 @@ def try_to_expand(word):
         return 'niezależny samorządowy związek zawodowy'
     if word == 'ok.':
         return 'około'
+    if word == 'pn.':
+        return 'pod nazwą'
+    if word == 'pow.':
+        return 'powiat'
     if word == 'pr':
         return 'public relations'
     if word == 'prof.':
@@ -89,8 +95,12 @@ def try_to_expand(word):
         return 'ustawy'
     if word == 'wew.':
         return 'wewnętrzny'
+    if word == 'wg':
+        return 'według'
     if word == 'wyd.':
         return 'wydanie'
+    if word == 'zw.':
+        return 'zwyczajny'
     return word
 
 def expand_text_shortcuts(text):
@@ -228,8 +238,8 @@ def main():
     # expand_shortcuts('db_191009_2000.csv', 'db_191009_2000_shortcuts_expanded.csv')
 
     # # to prepare necessary files from one file: DB_FINAL_num.csv
-    # filter_tags('DB_FINAL_130.csv', 'DB_FINAL_130_TAGS_FILTERED.csv')
-    # make_phrases_csv('DB_FINAL_130_TAGS_FILTERED.csv', 'DB_FINAL_130_PHRASES.csv')
+    # filter_tags('DB_FINAL_150.csv', 'DB_FINAL_150_TAGS_FILTERED.csv')
+    # make_phrases_csv('DB_FINAL_150_TAGS_FILTERED.csv', 'DB_FINAL_150_PHRASES.csv')
 
     # to fill mongo database
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
@@ -242,7 +252,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('DB_FINAL_130_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_150_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             tags = row[:-1]
@@ -257,7 +267,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('DB_FINAL_130_PHRASES.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_150_PHRASES.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
