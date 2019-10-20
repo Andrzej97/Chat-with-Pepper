@@ -12,6 +12,7 @@ language = "PL"
 def get_category_name(string):
     return string.split(":", 1)[0]
 
+
 def get_category(user_input):
     user_input_in_quotes = '"' + user_input + '"'
     with open("categories", 'r', encoding='utf-8') as categories:
@@ -29,6 +30,7 @@ def get_possible_category_responses(line):
     possible_responses = possible_responses.split(",")
     return possible_responses
 
+
 def get_response_category(category):
     exact_category = category + ':'
     # print(exact_category)
@@ -40,6 +42,7 @@ def get_response_category(category):
                 # print(possible_category_responses[choosen_number])
                 return possible_category_responses[choosen_number]
 
+
 def get_possible_responses(line):
     language_markup = language + '-'
     possible_responses = line.split(language_markup)[1].split(';')[0]
@@ -48,6 +51,7 @@ def get_possible_responses(line):
         resp = possible_responses[i]
         possible_responses[i] = resp[1:-1]
     return possible_responses
+
 
 def get_sample_response(category):
     exact_category = category + ':'
@@ -59,6 +63,7 @@ def get_sample_response(category):
                 return possible_responses[choosen_number]
     return None
 
+
 def get_response(user_input):
     user_input = user_input.lower()
     category = get_category(user_input)
@@ -67,11 +72,13 @@ def get_response(user_input):
     response_category = get_response_category(category)
     return get_sample_response(response_category)
 
+
 def get_default_response():
     if language == 'PL':
         return "Nie wiem jak Ci odpowiedzieć"
     elif language == 'EN':
         return "I do not know what to say"
+
 
 def calibrate_recognizer(noise_duration, recognizer, source):
     print(f"Please wait for {noise_duration} sec. Calibrating your mic.",
@@ -91,6 +98,7 @@ def speech_recognizer(speech_language='pl-PL'):
         return "repeat"
     except speech.RequestError as e:
         return None
+
 
 
 def startSpeechRecognition():
@@ -128,5 +136,6 @@ def main():
             playsound.playsound(filename, True)
             os.remove(filename)
             i += 1
+
 
 main()
