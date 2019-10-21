@@ -24,8 +24,9 @@ def split_to_single_words(words_set, words):
 
 
 def prepare_shortened_statement(many_sentence_response):
+    print(many_sentence_response)
     if many_sentence_response is not None:
-        splitted_to_sentences = many_sentence_response.split('.')
+        splitted_to_sentences = many_sentence_response[0].split('.')
         return prepare_statement(splitted_to_sentences[:2])
     return default_response()
 

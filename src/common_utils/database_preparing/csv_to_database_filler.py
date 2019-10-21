@@ -6,6 +6,7 @@ import src.common_utils.custom_exceptions as exceptions
 import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from csvWriter import CsvWriter
+import morfeusz2
 
 def try_to_expand(word):
     word = word.lower()
@@ -234,12 +235,89 @@ def make_phrases_csv(in_file, out_file):
                     csvWriter.write_tags_and_text(tags_for_words, phrase)
                 print('WORDS TAGS:\t', tags_for_words)
 
-def main():
-    # expand_shortcuts('db_191009_2000.csv', 'db_191009_2000_shortcuts_expanded.csv')
+def delete_additional_info_after_colon(word):
+    index = word.find(':')
+    if index == -1:
+        return word
+    return word[:index]
 
-    # # to prepare necessary files from one file: DB_FINAL_num.csv
-    # filter_tags('DB_FINAL_150.csv', 'DB_FINAL_150_TAGS_FILTERED.csv')
-    # make_phrases_csv('DB_FINAL_150_TAGS_FILTERED.csv', 'DB_FINAL_150_PHRASES.csv')
+def set_to_str_with_colons(set):
+    string = ''
+    for elem in set:
+        string += elem + ':'
+    string = string[:-1]
+    return string
+
+def new_filter_tags(in_file, out_file):
+    morf = morfeusz2.Morfeusz()
+    csvWriter = CsvWriter(out_file)
+    with open(in_file, encoding="utf-8") as f_in:
+        readCSV = csv.reader(f_in, delimiter='#')
+        for row in readCSV:
+            tags = row[:-1]
+            text = row[-1:][0]
+            tags_filtered = set([])
+            for tag in tags:
+                analysis = morf.analyse(tag)
+                possible_forms = set([])
+                for interpretation in analysis:
+                    form = delete_additional_info_after_colon(interpretation[2][1])
+                    possible_forms.add(form)
+                possible_forms_str = set_to_str_with_colons(possible_forms)
+                tags_filtered.add(possible_forms_str)
+                # print('TAG: ', tag )
+                # print('FORMS: ', possible_forms)
+                # print('FORMS_STR: ', possible_forms_str)
+            csvWriter.write_tags_and_text(tags_filtered, text)
+            # print('TAGS: ', tags)
+            # print('TAGS FILTERED: ', tags_filtered)
+            # print('TEXT: ', text)
+
+def new_make_phrases_csv(in_file, out_file):
+    morf = morfeusz2.Morfeusz()
+    csvWriter = CsvWriter(out_file)
+    with open(in_file, encoding="utf-8") as f_in:
+        readCSV = csv.reader(f_in, delimiter='#')
+        # sentence_filter = SentenceFilter()
+        for row in readCSV:
+            text = row[-1:][0]
+            phrases = text.split('.')
+            # print('TEXT:\t', text)
+            for phrase in phrases:
+                if '' == phrase.strip():
+                    continue
+                tags = set([])
+                # print('PHRASE: ', phrase)
+                analysis = morf.analyse(phrase)
+                old_word_index = 0
+                single_tag = set([])
+                for interpretation in analysis:
+                    new_word_index = interpretation[0]
+                    if 'interp' == interpretation[2][2]:
+                        continue
+                    if new_word_index != old_word_index:
+                    #     zapisz, aktualizuj index, coś jeszcze?
+                        tags.add(set_to_str_with_colons(single_tag))
+                        old_word_index = new_word_index
+                        single_tag = set([])
+                    word_form = delete_additional_info_after_colon(interpretation[2][1])
+                    single_tag.add(word_form)
+                    print('INTERPRETATION: ', interpretation)
+                tags.add(set_to_str_with_colons(single_tag))
+                csvWriter.write_tags_and_text(tags, phrase)
+                # print('TAGS: ', tags)
+
+def main():
+    # # expand_shortcuts('db_191009_2000.csv', 'db_191009_2000_shortcuts_expanded.csv')
+    #
+    # # # to prepare necessary files from one file: DB_FINAL_num.csv
+    # # filter_tags('DB_FINAL_150.csv', 'DB_FINAL_150_TAGS_FILTERED.csv')
+    # # make_phrases_csv('DB_FINAL_150_TAGS_FILTERED.csv', 'DB_FINAL_150_PHRASES.csv')
+
+    ## new_make_phrases_csv('test.csv', 'test_PHRASES_NEW.csv')
+
+    # new_filter_tags('DB_FINAL_150.csv', 'DB_FINAL_150_TAGS_FILTERED_NEW.csv')
+    # new_make_phrases_csv('DB_FINAL_150.csv', 'DB_FINAL_150_PHRASES_NEW.csv')
 
     # to fill mongo database
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
@@ -252,7 +330,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('DB_FINAL_150_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_150_TAGS_FILTERED_NEW.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             tags = row[:-1]
@@ -267,7 +345,7 @@ def main():
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
 
-    with open('DB_FINAL_150_PHRASES.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_150_PHRASES_NEW.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
