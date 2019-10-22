@@ -15,8 +15,8 @@ class UniversityBot:
         return self._responses_in_row >= REQUESTS_IN_ROW_THRESH
 
     def inc_responses_in_row(self):
-        print('Responses_in_row = ', self._responses_in_row)
         self._responses_in_row += 1
+        print('Responses_in_row = ', self._responses_in_row)
 
     def reset_responses_in_row(self):
         print('Responses_in_row reset = ', self._responses_in_row)

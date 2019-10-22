@@ -63,3 +63,4 @@ class UniversityAdapter(LogicAdapter):
                 return res
         else:
             return statement_utils.default_response()
+
