@@ -10,7 +10,8 @@ def initialize_database():
     """
         run this method just when you use this code first time to initialize database with words from file
     """
-    path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
+    path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()`
+    # command is useful
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     db.create_new_collection('polish_stop_words')
     result = from_txt_file_to_list(path)
@@ -88,16 +89,3 @@ class SentenceFilter:
         for word in words:
             lemmas.append(self.extract_lemma(word).lower())
         return lemmas
-
-
-# input = "wydziały-i-podstawowe-jednostki-organizacyjne"
-# # print('input: ' + input)
-# sentence_filtered = SentenceFilter().filter_sentence(input, ['noun'])
-# print('output: ')
-# for sentence in sentence_filtered:
-#     print("    " + sentence)
-# #
-# #
-# # print(SentenceFilter().extract_lemma('wydziały'))
-# print(SentenceFilter().extract_lemmas_and_filter_stopwords(input))
-
