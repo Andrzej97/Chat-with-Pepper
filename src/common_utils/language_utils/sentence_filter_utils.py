@@ -90,4 +90,4 @@ class SentenceFilter:
         lemmas = []
         for word in words:
             lemmas.append(self.extract_lemma(word).lower())
-        return list(filter(not None, lemmas))
+        return list(filter(lambda x: x is not None, lemmas))
