@@ -1,4 +1,6 @@
 from chatterbot.storage import MongoDatabaseAdapter
+
+import configuration
 from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
 from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
 from src.common_utils.custom_exceptions import CollectionNotExistsInDatabaseError
@@ -118,6 +120,19 @@ class DatabaseProxy:
                                                   size=max_size * 4096,
                                                   max=max_size)
 
+    def get_elements_of_capped_collection(self, collection_name, n=-1, m=-1):
+        """ returns elements from n-th to m-th index of collection, for n,m = -1 returns all elements """
+        try:
+            responses = []
+            for x in list(self.collections_db[collection_name].find())[::-1]:
+                responses.append(x['response'])
+            if n == -1 and m == -1:
+                return responses
+            else:
+                return responses[n:m]
+        except (IndexError, KeyError):
+            return None
+
     def remove_collection(self, collection_name):
         if collection_name in self.collections_db.collection_names():
             self.collections_db.drop_collection(name_or_collection=collection_name)
@@ -167,5 +182,3 @@ class DatabaseProxy:
             collection.update_many(search_values_dict, values_to_update)
             return True
         raise CollectionNotExistsInDatabaseError
-
-

@@ -1,8 +1,9 @@
 from src.common_utils.bot_context import BotContext
 from src.general_chatbot.intro_conversation_bot import IntroBot
 from src.university_chatbot.university_conversation_bot import UniversityBot
-from src.common_utils.database_service import DatabaseProxy
+from src.common_utils.database.database_service import DatabaseProxy
 import configuration as configuration
+import src.common_utils.language_utils.statement_utils as statement_utils
 
 
 class ChatbotManager:
@@ -50,4 +51,4 @@ class ChatbotManager:
             chatbot_response, c2 = self._ask_intro_chatbot(user_input)
             print('Intro Chatbot = ', user_input, ' c2 = ', c2)
         self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION, response=chatbot_response)
-        return chatbot_response
+        return statement_utils.prepare_shortened_statement(chatbot_response, 0, 1)

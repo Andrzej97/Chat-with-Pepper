@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Resource, Api
 from flask_jsonpify import jsonify
 
-from src.common_utils.database_service import DatabaseProxy
+from src.common_utils.database.database_service import DatabaseProxy
 import configuration as configuration
 
 app = Flask(__name__)
@@ -24,8 +24,7 @@ class Responses(Resource):
         self.db = DatabaseProxy(configuration.DATABASE_ADDRESS, configuration.DATABASE_NAME)
 
     def get(self):
-        result_collection = prepare_responses_list(list(self.db.collections_db[configuration.RESPONSES_COLLECTION]
-                                                        .find())[::-1])
+        result_collection = self.db.get_elements_of_capped_collection(configuration.RESPONSES_COLLECTION)
         return result_collection
 
 

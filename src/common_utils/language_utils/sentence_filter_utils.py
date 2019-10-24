@@ -1,5 +1,5 @@
 import configuration as configuration
-from src.common_utils.database_service import DatabaseProxy
+from src.common_utils.database.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 
 word_class_name = {'noun': set(['subst', 'depr'])

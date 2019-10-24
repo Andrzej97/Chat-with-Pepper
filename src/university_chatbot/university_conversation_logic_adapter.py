@@ -57,13 +57,11 @@ class UniversityAdapter(LogicAdapter):
                     result_document_lemmas, confidence_by_lemmas = find_coverage_res
         if confidence_by_lemmas + confidence_by_tags > -2:
             if confidence_by_tags > confidence_by_lemmas:
-                res = Statement(
-                    statement_utils.prepare_shortened_statement(result_document_tags))
+                res = Statement(result_document_tags)
                 res.confidence = 1
                 return res
             else:
-                res = Statement(
-                    statement_utils.prepare_shortened_statement(result_document_lemmas))
+                res = Statement(result_document_lemmas)
                 res.confidence = 1
                 return res
         else:
