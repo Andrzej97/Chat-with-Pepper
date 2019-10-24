@@ -1,4 +1,4 @@
-import src.common_utils.constants as constants
+import configuration as configuration
 from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 
@@ -38,7 +38,7 @@ class SentenceFilter:
         self.stop_words = self.prepare_stopwords_list()  # get_stop_words_from_db()
 
     def is_name(self, name):
-        if constants.NAME in self.utils.interpret_word(name.capitalize()):
+        if configuration.NAME in self.utils.interpret_word(name.capitalize()):
             return True
         return False
 
@@ -62,11 +62,13 @@ class SentenceFilter:
 
     def extract_lemma(self, word):
         analysis_result = self.utils.morfeusz.analyse(word)
+        if len(analysis_result) == 0:
+            return None
         for element in analysis_result:
             try:
                 lemat = element[2][1]
             except IndexError:
-                print('No word class available after analysis in: ``extract_lemma``')
+                return None
         return lemat
 
     def filter_stop_words(self, word):
@@ -88,4 +90,4 @@ class SentenceFilter:
         lemmas = []
         for word in words:
             lemmas.append(self.extract_lemma(word).lower())
-        return lemmas
+        return list(filter(not None, lemmas))

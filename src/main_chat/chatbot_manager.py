@@ -2,16 +2,17 @@ from src.common_utils.bot_context import BotContext
 from src.general_chatbot.intro_conversation_bot import IntroBot
 from src.university_chatbot.university_conversation_bot import UniversityBot
 from src.common_utils.database_service import DatabaseProxy
+import configuration as configuration
 
 
 class ChatbotManager:
     def __init__(self, **kwargs):
         self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Żwirek')  # our chatbots code names
         self._university_chatbot_name = kwargs.get('university_chatbot', 'Muchomorek')
-        db = DatabaseProxy(kwargs.get('connection_uri'), kwargs.get('database_name'))
+        self.db = DatabaseProxy(kwargs.get('connection_uri'), kwargs.get('database_name'))
         bot_context = BotContext()
-        self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, db)
-        self._university_chatbot = UniversityBot(self._university_chatbot_name, db)
+        self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, self.db)
+        self._university_chatbot = UniversityBot(self._university_chatbot_name, self.db)
         self._is_intro_bot_unemployed = False
 
     def _ask_intro_chatbot(self, processed_sentence):
@@ -42,11 +43,11 @@ class ChatbotManager:
             print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
             conf_res = u_conf > i_conf
             self._university_chatbot.inc_responses_in_row() if conf_res \
-                    else self._university_chatbot.reset_responses_in_row()
+                else self._university_chatbot.reset_responses_in_row()
             chatbot_response = u_text if conf_res else i_text
         else:
             self._university_chatbot.reset_responses_in_row()
             chatbot_response, c2 = self._ask_intro_chatbot(user_input)
             print('Intro Chatbot = ', user_input, ' c2 = ', c2)
-
+        self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION, response=chatbot_response)
         return chatbot_response

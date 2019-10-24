@@ -13,7 +13,8 @@ def find_best_tags_coverage(documents, tags):
         tags_from_document = document['tags']
         coverage = len(set(tags_from_document).intersection(set(tags)))
         coverage_ratio = coverage / tags_len
-        length_ratio = 1 - abs(len(tags_from_document) - tags_len) / tags_len  # this variable is to enable choosing
+        length_ratio = 1 - (abs(len(tags_from_document) - tags_len) /
+                            len(tags_from_document))  # this variable is to enable choosing
         # document which tags are closest to searching phrase, e.g. for ['agh','wydział'] as searching phrase, and
         # (['agh','wydział'], ['agh','wydział','najlepszy']) as tags from documents, the better one is the first of them
         overall_ratio = coverage_ratio * length_ratio
@@ -39,7 +40,7 @@ class UniversityAdapter(LogicAdapter):
         return True
 
     def process(self, statement, additional_responses_parameters):
-        noun_tags = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
+        noun_tags = self.sentence_filter.filter_sentence(statement.text, ['noun'])
         docs_by_tags = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
         confidence_by_tags = -1
         confidence_by_lemmas = -1

@@ -11,7 +11,7 @@ from six.moves import queue
 
 import numpy as np
 from src.connectivity.socket.socket_conn_robot import DataExchangeModule
-import src.common_utils.constants as constants
+import configuration as configuration
 
 RATE = 16000
 
@@ -36,9 +36,9 @@ class SoundProcessingModule(object):
         self.module_name = "SoundProcessingModule"
         self._buff = queue.Queue()
         self.file = io.open("rec", 'wb')
-        self.tts = ALProxy("ALTextToSpeech", constants.ROBOT_ADDRESS, constants.ROBOT_PORT)
+        self.tts = ALProxy("ALTextToSpeech", configuration.ROBOT_ADDRESS, configuration.ROBOT_PORT)
         self.tts.setLanguage("Polish")
-        self.data_exchange_module = DataExchangeModule(constants.ROBOT_ADDRESS, constants.ROBOT_SOCKET_PORT, self.tts)
+        self.data_exchange_module = DataExchangeModule(configuration.ROBOT_ADDRESS, configuration.ROBOT_SOCKET_PORT, self.tts)
 
     def __enter__(self):
         self.audio_service.setClientPreferences(self.module_name, RATE, 3, 0)

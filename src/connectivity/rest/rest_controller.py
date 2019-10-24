@@ -1,9 +1,9 @@
-from flask import Flask, request
+from flask import Flask
 from flask_restful import Resource, Api
 from flask_jsonpify import jsonify
 
 from src.common_utils.database_service import DatabaseProxy
-import src.common_utils.constants as constants
+import configuration as configuration
 
 app = Flask(__name__)
 api = Api(app)
@@ -21,10 +21,11 @@ def prepare_responses_list(responses_dict):
 class Responses(Resource):
 
     def __init__(self):
-        self.db = DatabaseProxy(constants.DATABASE_ADDRESS, constants.DATABASE_NAME)
+        self.db = DatabaseProxy(configuration.DATABASE_ADDRESS, configuration.DATABASE_NAME)
 
     def get(self):
-        result_collection = prepare_responses_list(list(self.db.collections_db[constants.RESPONSES_COLLECTION].find()))
+        result_collection = prepare_responses_list(list(self.db.collections_db[configuration.RESPONSES_COLLECTION]
+                                                        .find())[::-1])
         return result_collection
 
 
@@ -33,8 +34,8 @@ class Ping(Resource):
         return jsonify("I'm Pepper and I'm ready for questions! :) ")
 
 
-api.add_resource(Responses, '/responses')  # Route_1
-api.add_resource(Ping, '/ping')  # Route_2
+api.add_resource(Responses, '/responses')
+api.add_resource(Ping, '/ping')
 
 if __name__ == '__main__':
-    app.run(port='5002')
+    app.run(port=configuration.REST_API_PORT)
