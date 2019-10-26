@@ -3,7 +3,7 @@ from src.main_chat.response_continuation import initialize_db_with_continue_stat
 
 
 def main():
-    # to be run one at first use of this functionality to initialize database
+    # to be run once at first use of this functionality to initialize database
     initialize_db_with_continue_statements()
 
     chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
