@@ -29,16 +29,16 @@ def split_to_single_words(words_set, words):
     return words_set
 
 
-def prepare_shortened_statement(many_sentence_response, first_index, last_index):
+def prepare_shortened_statement(many_sentence_response, first_index=0, length=1):
     if many_sentence_response is not None:
         if type(many_sentence_response) is list:
             to_split = many_sentence_response[0]
         else:
             to_split = many_sentence_response
         splitted_to_sentences = to_split.split('.')
-        if last_index == first_index:
+        if first_index + length > len(splitted_to_sentences):
             return None
-        return prepare_statement(splitted_to_sentences[first_index:last_index + 1])
+        return prepare_statement(splitted_to_sentences[first_index:first_index + length])
     return default_response()
 
 

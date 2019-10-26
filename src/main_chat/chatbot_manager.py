@@ -1,9 +1,10 @@
-from src.common_utils.bot_context import BotContext
-from src.general_chatbot.intro_conversation_bot import IntroBot
-from src.university_chatbot.university_conversation_bot import UniversityBot
-from src.common_utils.database.database_service import DatabaseProxy
 import configuration as configuration
 import src.common_utils.language_utils.statement_utils as statement_utils
+from src.common_utils.bot_context import BotContext
+from src.common_utils.database.database_service import DatabaseProxy
+from src.general_chatbot.intro_conversation_bot import IntroBot
+from src.main_chat.response_continuation import ResponseContinuationHandler
+from src.university_chatbot.university_conversation_bot import UniversityBot
 
 
 class ChatbotManager:
@@ -15,6 +16,7 @@ class ChatbotManager:
         self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, self.db)
         self._university_chatbot = UniversityBot(self._university_chatbot_name, self.db)
         self._is_intro_bot_unemployed = False
+        self.response_continuation_handler = ResponseContinuationHandler()
 
     def _ask_intro_chatbot(self, processed_sentence):
         response = self._intro_chatbot.get_bot_response(processed_sentence)
@@ -35,6 +37,10 @@ class ChatbotManager:
         return self._intro_chatbot.check_is_bot_partially_employed()
 
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
+
+        response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
+        if response_from_handler is not None:
+            return response_from_handler
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)

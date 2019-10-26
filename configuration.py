@@ -1,4 +1,7 @@
 NAME = 'imię'
+
+# ----------  BOT CONFIGURATION  ------------ #
+NUMBER_OF_SENTENCES_IN_RESPONSE = 2
 REQUESTS_IN_ROW_THRESH = 5
 
 # ---------- PORTS AND ADDRESSES -------------#
