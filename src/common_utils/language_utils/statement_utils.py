@@ -1,6 +1,7 @@
-from chatterbot.conversation import Statement
-from functools import reduce
 import operator
+from functools import reduce
+
+from chatterbot.conversation import Statement
 
 DEFAULT_RESPONSE = "Przykro mi, nie znam odpowiedzi"
 
@@ -13,12 +14,12 @@ def prepare_statement(*words):
     for word in words:
         response += word
         response += " "
-    return filter_uexpected_signs(response)
+    return filter_unexpected_signs(response)
 
 
-def filter_uexpected_signs(sentence):
-    unexpexted_signs = '[\',-'
-    return ''.join(c for c in sentence if c not in unexpexted_signs)
+def filter_unexpected_signs(sentence):
+    unexpected_signs = '[\',-'
+    return ''.join(c for c in sentence if c not in unexpected_signs)
 
 
 def split_to_single_words(words_set, words):
