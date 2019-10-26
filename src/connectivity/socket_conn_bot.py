@@ -7,21 +7,23 @@ It tries to reach response form `ChatbotManager` and than, sends it back to clie
 
 import socket
 from src.main_chat.chatbot_manager import ChatbotManager
-
+import src.common_utils.constants as constans
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+PORT = 9999  # Port to listen on (non-privileged ports are > 1023)
 
 chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
                                  connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
+    s.bind((HOST, constans.ROBOT_SOCKET_PORT))
     s.listen()
     conn, addr = s.accept()
     with conn:
         while True:
             data = conn.recv(1024).decode("utf-8")
             if data:
+                print('received: ' + data)
                 result = chatbot_manager.ask_chatbot(data)
+                print(result)
                 res = bytes(result, "utf-8")
                 conn.sendall(res)
