@@ -14,36 +14,41 @@ def find_max_coverage(documents, tags):
         max_coverage = max(max_coverage, coverage)
     return max_coverage
 
-def consider_as_accepted(tags_from_document):
-    if len(tags_from_document) == 1:
-        return 1.0
-    res = random.uniform(0, 1)
-    print("Uniform = ", res)
-    return res
+def is_accepted(coverage, doc_tags_length):
+    conf_thresh = coverage / doc_tags_length
+    if conf_thresh > 0.85:
+        return conf_thresh, True
+    else:
+        return (conf_thresh, True) if random.uniform(0, 1) > 0.20 else (0.0, False)
 
 
 def find_best_tags_coverage(documents, tags):
     id_of_best_cov_doc = -1
     #tags_len = len(tags)
     max_coverage = find_max_coverage(documents, tags)
-    min_length_from_covered_docs = 1000
-    was_accepted = False
+    max_conf_from_covered_docs = 0
+    was_one_selected = False
     for document in documents:
         tags_from_document = document['tags']
         coverage = len(set(tags_from_document).intersection(set(tags)))
         if max_coverage == coverage:
-            if len(tags_from_document) <= min_length_from_covered_docs and ((not was_accepted) or consider_as_accepted(tags_from_document) > 0.20):
-                was_accepted = True
+            conf_thresh, was_accepted = is_accepted(coverage, len(set(tags_from_document)))
+            if not was_one_selected:
+                max_conf_from_covered_docs = conf_thresh
                 id_of_best_cov_doc = document['_id']
-                min_length_from_covered_docs = len(tags_from_document)
-                print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", tags:", tags)
+                was_one_selected = True
+
+            if was_accepted and conf_thresh >= max_conf_from_covered_docs:
+                id_of_best_cov_doc = document['_id']
+                max_conf_from_covered_docs = conf_thresh
+                print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", max_conf:",max_conf_from_covered_docs, ", tags:", tags)
 
     result_list = list(filter(lambda obj: obj['_id'] == id_of_best_cov_doc, documents))
     if len(result_list) > 0:
-        return result_list[0]['text'], max_coverage
+        return result_list[0]['text'], max_conf_from_covered_docs
     else:
         return None
-    raise TypeError("No `text` attribute found")
+    #raise TypeError("No `text` attribute found")
 
 
 class UniversityAdapter(LogicAdapter):
