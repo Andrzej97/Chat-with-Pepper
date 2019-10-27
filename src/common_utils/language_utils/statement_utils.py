@@ -26,7 +26,11 @@ def split_to_single_words(words_set, words):
 def prepare_shortened_statement(many_sentence_response):
     print(many_sentence_response)
     if many_sentence_response is not None:
-        splitted_to_sentences = many_sentence_response[0].split('.')
+        if type(many_sentence_response) is list:
+            to_split = many_sentence_response[0]
+        else:
+            to_split = many_sentence_response
+        splitted_to_sentences = to_split.split('.')
         return prepare_statement(splitted_to_sentences[:2])
     return default_response()
 
@@ -34,7 +38,3 @@ def prepare_shortened_statement(many_sentence_response):
 def default_response():
     return Statement(DEFAULT_RESPONSE)
 
-# res = prepare_shortened_statement("One can also make use of list slicing technique to perform the particular task of getting first and last element.\
-# We can use step of whole list to skip to the last element after the first element.\
-# Naive method of finding is converted to a single line using this method.")
-# print(res)

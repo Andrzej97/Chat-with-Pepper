@@ -2,7 +2,6 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
-from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 import morfeusz2
 
@@ -105,5 +104,4 @@ class UniversityAdapter(LogicAdapter):
                 return res
         else:
             return statement_utils.default_response()
-        #return Statement(text=docs_by_tags) #unreachable code
 
