@@ -14,7 +14,7 @@ def find_best_tags_coverage(documents, tags):
         tags_from_document = document['tags']
         coverage = len(set(tags_from_document).intersection(set(tags)))
         coverage_ratio = coverage / tags_len
-        length_ratio = 1 - 0.2 * (abs(len(tags_from_document) - tags_len) / len(tags_from_document))  # this variable is to enable choosing
+        length_ratio = 1 - (abs(len(tags_from_document) - tags_len) / len(tags_from_document))  # this variable is to enable choosing
         # document which tags are closest to searching phrase, e.g. for ['agh','wydział'] as searching phrase, and
         # (['agh','wydział'], ['agh','wydział','najlepszy']) as tags from documents, the better one is the first of them
         overall_ratio = coverage_ratio * length_ratio

@@ -37,7 +37,7 @@ class ChatbotManager:
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)
         else:
-            (i_text, i_conf) = (0, 0) #self._ask_intro_chatbot(user_input)
+            (i_text, i_conf) = self._ask_intro_chatbot(user_input)
             (u_text, u_conf) = self._ask_university_chatbot(user_input)
             print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
             conf_res = u_conf > i_conf

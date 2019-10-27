@@ -52,7 +52,7 @@ def make_filter_tags_csv(in_file, out_file):
             text = row[-1:][0]
             tags_filtered = []
             for tag in tags:
-                filtered = sentence_filter.andrzej_extract_lemmas_and_filter_stopwords(tag)
+                filtered = sentence_filter.my_extract_lemmas_and_filter_stopwords(tag)
                 for elem in filtered:
                     tags_filtered.append(elem)
             if len(tags_filtered) != 0:
@@ -69,6 +69,6 @@ def make_phrases_csv(in_file, out_file):
             text = row[-1:][0]
             phrases = text.split('.')
             for phrase in phrases:
-                tags_for_words = sentence_filter.andrzej_extract_lemmas_and_filter_stopwords(phrase)
+                tags_for_words = sentence_filter.my_extract_lemmas_and_filter_stopwords(phrase)
                 if len(tags_for_words) != 0:
                     csvWriter.write_tags_and_text(tags_for_words, phrase)

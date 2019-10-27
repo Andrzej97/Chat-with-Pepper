@@ -81,7 +81,7 @@ class SentenceFilter:
             lemmas.append(self.extract_lemma(word).lower())
         return lemmas
 
-    def andrzej_extract_lemmas_and_filter_stopwords(self, phrase):
+    def my_extract_lemmas_and_filter_stopwords(self, phrase):
         analysis = self.utils.morfeusz.analyse(phrase)
         tags = set([])
         old_word_index = 0
@@ -118,6 +118,6 @@ input = "wykształcenie, wykształcić które zdobyć można w naszej akademii, 
 # #
 # #
 # # print(SentenceFilter().extract_lemma('wydziały'))
-# print(SentenceFilter().andrzej_extract_lemmas_and_filter_stopwords(input))
+# print(SentenceFilter().my_extract_lemmas_and_filter_stopwords(input))
 
 
