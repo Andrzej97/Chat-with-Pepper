@@ -33,6 +33,18 @@ def from_txt_file_to_list(path):
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
 
+def delete_additional_info_after_colon(word):
+    index = word.find(':')
+    if index == -1:
+        return word
+    return word[:index]
+
+def set_to_str_with_colons(set):
+    string = ''
+    for elem in set:
+        string += elem + ':'
+    string = string[:-1]
+    return string
 
 class SentenceFilter:
     def __init__(self):
@@ -54,6 +66,8 @@ class SentenceFilter:
 
     def extract_lemma_and_morphologic_tag(self, word):
         analysis_result = self.utils.morfeusz.analyse(word)
+        morphologic_tag_set = set()
+        lemat = ''
         for element in analysis_result:
             try:
                 morphologic_tag = element[2][2]
@@ -93,8 +107,35 @@ class SentenceFilter:
             lemmas.append(self.extract_lemma(word).lower())
         return lemmas
 
+    def andrzej_extract_lemmas_and_filter_stopwords(self, phrase):
+        analysis = self.utils.morfeusz.analyse(phrase)
+        tags = set([])
+        old_word_index = 0
+        single_tag = set([])
+        # print('ANALYSIS RESULT:\n', analysis)
+        for interpretation in analysis:
+            # print(interpretation)
+            new_word_index = interpretation[0]
+            if 'interp' == interpretation[2][2]:
+                continue
+            if new_word_index != old_word_index:
+            #     zapisz, aktualizuj index, coś jeszcze?
+                if len(single_tag) > 0:
+                    tags.add(set_to_str_with_colons(single_tag))
+                old_word_index = new_word_index
+                single_tag = set([])
+            word_form = delete_additional_info_after_colon(interpretation[2][1])
+            if not self.is_stopword(word_form):
+                single_tag.add(word_form.lower())
+            # print('INTERPRETATION: ', interpretation)
+        if len(single_tag) > 0:
+            tags.add(set_to_str_with_colons(single_tag))
+        return tags
 
-# input = "wydziały-i-podstawowe-jednostki-organizacyjne"
+    def is_stopword(self, word):
+        return word in self.stop_words
+
+input = "wykształcenie, wykształcić które zdobyć można w naszej akademii, jest bardzo cenione przez pracodawców"
 # # print('input: ' + input)
 # sentence_filtered = SentenceFilter().filter_sentence(input, ['noun'])
 # print('output: ')
@@ -103,5 +144,6 @@ class SentenceFilter:
 # #
 # #
 # # print(SentenceFilter().extract_lemma('wydziały'))
-# print(SentenceFilter().extract_lemmas_and_filter_stopwords(input))
+# print(SentenceFilter().andrzej_extract_lemmas_and_filter_stopwords(input))
+
 
