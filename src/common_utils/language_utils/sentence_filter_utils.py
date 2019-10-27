@@ -4,6 +4,27 @@ from src.common_utils.language_utils.polish_language_utils import PolishLanguage
 
 word_class_name = {'noun': set(['subst', 'depr'])
                    }
+
+def initialize_database():
+    """
+        run this method just when you use this code first time to initialize database with words from file
+    """
+    path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()`
+    # command is useful
+    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    db.create_new_collection('polish_stop_words')
+    result = from_txt_file_to_list(path)
+    list = []
+    for r in result:
+        list.append({'text': r})
+    db.add_many_new_docs_to_collection('polish_stop_words', list)
+
+
+def from_txt_file_to_list(path):
+    file = open(path, "r")
+    lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
+    return lines
+
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
 
@@ -125,5 +146,4 @@ input = "wykształcenie, wykształcić które zdobyć można w naszej akademii, 
 # #
 # # print(SentenceFilter().extract_lemma('wydziały'))
 # print(SentenceFilter().my_extract_lemmas_and_filter_stopwords(input))
-
 
