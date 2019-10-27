@@ -6,7 +6,6 @@ from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabase
 word_class_name = {'noun': set(['subst', 'depr'])
                    }
 
-
 def initialize_database():
     """
         run this method just when you use this code first time to initialize database with words from file
@@ -23,12 +22,10 @@ def initialize_database():
         list.append({'text': r})
     db.add_many_new_docs_to_collection('polish_stop_words', list)
 
-
 def from_txt_file_to_list(path):
     file = open(path, "r")
     lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
     return lines
-
 
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0

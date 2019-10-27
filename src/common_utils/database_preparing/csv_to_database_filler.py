@@ -50,8 +50,7 @@ def main():
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-
-    with open('DB_FINAL_150_TAGS_FILTERED_2.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_150_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             tags = row[:-1]
@@ -65,8 +64,7 @@ def main():
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-
-    with open('DB_FINAL_150_PHRASES_2.csv', encoding="utf-8") as csvfile:
+    with open('DB_FINAL_150_PHRASES.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
