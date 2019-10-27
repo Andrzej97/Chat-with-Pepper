@@ -12,12 +12,16 @@ def find_best_tags_coverage(documents, tags):
     tags_len = len(tags)
     for document in documents:
         tags_from_document = document['tags']
+        print('\n\ttags: ', tags)
+        print('\ttags_from_document: ', tags_from_document)
         coverage = len(set(tags_from_document).intersection(set(tags)))
         coverage_ratio = coverage / tags_len
-        length_ratio = 1 - (abs(len(tags_from_document) - tags_len) / len(tags_from_document))  # this variable is to enable choosing
+        # length_ratio = 1 - 0.2 * (abs(len(tags_from_document) - tags_len) / len(tags_from_document))  # this variable is to enable choosing
+        length_ratio = 1 - 0.4 * (1 - coverage / len(tags_from_document))  # this variable is to enable choosing
         # document which tags are closest to searching phrase, e.g. for ['agh','wydział'] as searching phrase, and
         # (['agh','wydział'], ['agh','wydział','najlepszy']) as tags from documents, the better one is the first of them
         overall_ratio = coverage_ratio * length_ratio
+        print('\toverall_ratio: ', overall_ratio)
         if overall_ratio > max_ratio:
             max_ratio = overall_ratio
             id_of_max_ratio_doc = document['_id']
@@ -53,47 +57,33 @@ class UniversityAdapter(LogicAdapter):
         return string
 
     def process(self, statement, additional_responses_parameters):
-        # noun_tags = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
-        morf = morfeusz2.Morfeusz()
-        analysis = morf.analyse(statement.text)
-        old_word_index = 0
-        tags = set([])
-        single_tag = set([])
-        for interpretation in analysis:
-            new_word_index = interpretation[0]
-            if 'interp' == interpretation[2][2]:
-                continue
-            if new_word_index != old_word_index:
-                #     zapisz, aktualizuj index, coś jeszcze?
-                tags.add(self.set_to_str_with_colons(single_tag))
-                old_word_index = new_word_index
-                single_tag = set([])
-            word_form = self.delete_additional_info_after_colon(interpretation[2][1])
-            single_tag.add(word_form)
-        noun_tags = list(tags)
-
+        # print('\n\n\n\n\n\n', statement)
+        # print('\n\n\n\n\n\ntype(statement.text): ', type(statement.text))
+        noun_tags = self.sentence_filter.my_extract_lemmas_and_filter_stopwords(statement.text)
+        noun_tags = list(noun_tags)
 
         # print('universityAdapter:process:statement: ', statement)
-        # print('universityAdapter:process:noun_tags: ', noun_tags)
+        print('universityAdapter:process:noun_tags: ', noun_tags)
         docs_by_tags = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
         # print('universityAdapter:process:docs_by_tags: ', docs_by_tags)
         confidence_by_tags = -1
-        confidence_by_lemmas = -1
+        confidence_by_phrases = -1
         if len(docs_by_tags) > 0:  # matching tags exist
             result_document_tags, confidence_by_tags = find_best_tags_coverage(docs_by_tags, noun_tags)
-            # print('universityAdapter:process:result_document_tags: ', result_document_tags)
-            # print('universityAdapter:process:confidence_by_tags: ', confidence_by_tags)
+            print('universityAdapter:process:result_document_tags: ', result_document_tags)
+            print('universityAdapter:process:confidence_by_tags: ', confidence_by_tags)
         if confidence_by_tags < 2:  # confidence of response based on tags is not enough (0 = 0%, 1 = 100%)
-            extracted_lemmas = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
-            # print('universityAdapter:process:extracted_lemmas: ', extracted_lemmas)
+            # extracted_lemmas = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
+            extracted_lemmas = noun_tags
+            print('universityAdapter:process:extracted_lemmas: ', extracted_lemmas)
             docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', extracted_lemmas)
             # print('universityAdapter:process:docs_by_lemmas: ', docs_by_lemmas)
             if len(docs_by_lemmas) > 0:
-                result_document_lemmas, confidence_by_lemmas = find_best_tags_coverage(docs_by_lemmas, extracted_lemmas)
-                # print('universityAdapter:process:result_document_lemmas: ', result_document_lemmas)
-                # print('universityAdapter:process:confidence_by_lemmas: ', confidence_by_lemmas)
-        if confidence_by_lemmas + confidence_by_tags > -2:
-            if confidence_by_tags > confidence_by_lemmas:
+                result_document_lemmas, confidence_by_phrases = find_best_tags_coverage(docs_by_lemmas, extracted_lemmas)
+                print('universityAdapter:process:result_document_lemmas: ', result_document_lemmas)
+                print('universityAdapter:process:confidence_by_phrases: ', confidence_by_phrases)
+        if confidence_by_phrases + confidence_by_tags > -2:
+            if confidence_by_tags > confidence_by_phrases:
                 res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_tags))
                 res.confidence = 1

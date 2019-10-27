@@ -13,9 +13,10 @@ def delete_additional_info_after_colon(word):
         return word
     return word[:index]
 
-def set_to_str_with_colons(set):
+def list_to_str_with_colons(list):
+    # print('list_to_str_with_colons list param: ', list)
     string = ''
-    for elem in set:
+    for elem in list:
         string += elem + ':'
     string = string[:-1]
     return string
@@ -95,7 +96,10 @@ class SentenceFilter:
             if new_word_index != old_word_index:
             #     zapisz, aktualizuj index, coś jeszcze?
                 if len(single_tag) > 0:
-                    tags.add(set_to_str_with_colons(single_tag))
+                    single_tags_list = list(single_tag)
+                    single_tags_list.sort()
+                    # print('single tag before adding: ', single_tag)
+                    tags.add(list_to_str_with_colons(single_tags_list))
                 old_word_index = new_word_index
                 single_tag = set([])
             word_form = delete_additional_info_after_colon(interpretation[2][1])
@@ -103,11 +107,13 @@ class SentenceFilter:
                 single_tag.add(word_form.lower())
             # print('INTERPRETATION: ', interpretation)
         if len(single_tag) > 0:
-            tags.add(set_to_str_with_colons(single_tag))
+            single_tags_list = list(single_tag)
+            single_tags_list.sort()
+            tags.add(list_to_str_with_colons(single_tags_list))
         return tags
 
     def is_stopword(self, word):
-        return word in self.stop_words
+        return word.lower() in self.stop_words
 
 input = "wykształcenie, wykształcić które zdobyć można w naszej akademii, jest bardzo cenione przez pracodawców"
 # # print('input: ' + input)

@@ -17,7 +17,7 @@ def initialize_language_utils_database(db):
 
 
 def from_txt_file_to_list(path):
-    file = open(path, "r")
+    file = open(path, mode='r', encoding='utf-8')
     lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
     return lines
 
