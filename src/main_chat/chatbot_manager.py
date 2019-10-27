@@ -40,6 +40,7 @@ class ChatbotManager:
             (i_text, i_conf) = self._ask_intro_chatbot(user_input)
             (u_text, u_conf) = self._ask_university_chatbot(user_input)
             print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
+            print("i_Text = {}, i_conf = {}".format(i_text, i_conf))
             conf_res = u_conf > i_conf
             self._university_chatbot.inc_responses_in_row() if conf_res else self._university_chatbot.reset_responses_in_row()
             chatbot_response = u_text if conf_res else i_text

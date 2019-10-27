@@ -30,6 +30,6 @@ class GreetingAdapter(LogicAdapter):
                     greetings,
                     greetings_request),
                 in_response_to=TypeOfOperation.GREETING.value)
-            result.confidence = 1
+            result.confidence = 1.0
             return result
         return statement_utils.default_response()
