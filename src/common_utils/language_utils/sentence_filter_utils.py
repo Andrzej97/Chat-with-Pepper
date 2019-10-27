@@ -1,32 +1,9 @@
 import src.common_utils.constants as constants
 from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
-from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
 
 word_class_name = {'noun': set(['subst', 'depr'])
                    }
-
-def initialize_database():
-    """
-        run this method just when you use this code first time to initialize database with words from file
-    """
-    path = "./polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
-    try:
-        db.create_new_collection('polish_stop_words')
-    except CollectionAlreadyExistsInDatabaseError:
-        print('Error, error')
-    result = from_txt_file_to_list(path)
-    list = []
-    for r in result:
-        list.append({'text': r})
-    db.add_many_new_docs_to_collection('polish_stop_words', list)
-
-def from_txt_file_to_list(path):
-    file = open(path, "r")
-    lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
-    return lines
-
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
 

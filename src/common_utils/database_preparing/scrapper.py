@@ -9,8 +9,8 @@ from csvWriter import CsvWriter
 ITERS_NUM = 2000                                                # number of iterations, used also in some file names
 DATE = '191026'                                                 # for the purpose of file naming
 STARTING_URL = "https://www.agh.edu.pl"
-URLS_CSV_FILENAME = 'urls_' + str(ITERS_NUM) + '.csv'           # suggested format: 'urls_<number_of_iterations>.csv'
-DB_CSV_FILENAME = 'db_' + DATE + '_' + str(ITERS_NUM) + '.csv'  # suggested format: 'db_<yymmdd>_<number_of_iterations>.csv'
+URLS_CSV_FILENAME = 'csv_files/urls_' + str(ITERS_NUM) + '.csv'           # suggested format: 'urls_<number_of_iterations>.csv'
+DB_CSV_FILENAME = 'csv_files/db_' + DATE + '_' + str(ITERS_NUM) + '.csv'  # suggested format: 'db_<yymmdd>_<number_of_iterations>.csv'
 urls_to_search = {STARTING_URL: False}                          # {<url>, <URL has already been searched for new links>}
 polish_words_map = {}
 

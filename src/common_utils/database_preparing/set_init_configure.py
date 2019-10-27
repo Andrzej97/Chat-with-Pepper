@@ -1,5 +1,5 @@
-import src.common_utils.database_preparing.initialize_database as general_data
 from src.common_utils.database_service import DatabaseProxy
+import src.common_utils.database_preparing.initialize_database as general_data
 import src.common_utils.database_preparing.csv_to_database_filler as scrapper_data
 
 
