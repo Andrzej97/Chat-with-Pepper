@@ -1,8 +1,8 @@
-import src.common_utils.constants as constants
-from src.common_utils.database_service import DatabaseProxy
+import configuration as configuration
+from src.common_utils.database.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 
-word_class_name = {'noun': set(['subst', 'depr'])
+word_class_name = {'noun': {'subst', 'depr'}
                    }
 
 def initialize_database():
@@ -49,7 +49,7 @@ class SentenceFilter:
         self.stop_words = self.prepare_stopwords_list()  # get_stop_words_from_db()
 
     def is_name(self, name):
-        if constants.NAME in self.utils.interpret_word(name.capitalize()):
+        if configuration.NAME in self.utils.interpret_word(name.capitalize()):
             return True
         return False
 
@@ -60,48 +60,54 @@ class SentenceFilter:
             result_list.append(r["text"])
         return result_list
 
-    def extract_lemma_and_morphologic_tag(self, word):
+    def extract_lemma_and_morphological_tag(self, word):
+        morphological_tag = None
+        morphological_tag_set = None
+        lemma = None
         analysis_result = self.utils.morfeusz.analyse(word)
         morphologic_tag_set = set()
         lemat = ''
         for element in analysis_result:
             try:
-                morphologic_tag = element[2][2]
-                lemat = element[2][1]
+                morphological_tag = element[2][2]
+                lemma = element[2][1]
             except IndexError:
                 print('No word class available after analysis in: ``extract_lemma_and_morphologic_tag``')
-            morphologic_tag_set = set(morphologic_tag.split(':'))
-        return lemat, morphologic_tag_set
+            morphological_tag_set = set(morphological_tag.split(':'))
+        return lemma, morphological_tag_set
 
     def extract_lemma(self, word):
+        lemma = None
         analysis_result = self.utils.morfeusz.analyse(word)
+        if len(analysis_result) == 0:
+            return lemma
         for element in analysis_result:
             try:
-                lemat = element[2][1]
+                lemma = element[2][1]
             except IndexError:
-                print('No word class available after analysis in: ``extract_lemma``')
-        return lemat
+                return None
+        return lemma
 
     def filter_stop_words(self, word):
         return word[0] not in self.stop_words
 
     def filter_sentence(self, sentence, forms_to_filter):
+        sentence_filtered = None
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
-        sentence_after_extraction = list(map(lambda z: self.extract_lemma_and_morphologic_tag(z), words))
+        sentence_after_extraction = list(map(lambda z: self.extract_lemma_and_morphological_tag(z), words))
         for form in forms_to_filter:
             sentence_filtered = list(
                 filter(lambda x_y: filter_word_form(form, x_y[1]),
                        # python3 does not support tuple unpacking, that's why
                        sentence_after_extraction))
         return list(map(lambda x: x[0].lower(), sentence_filtered))
-        raise TypeError("Argument `forms_to_filter` is not list")
 
     def extract_lemmas_and_filter_stopwords(self, sentence):
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
         lemmas = []
         for word in words:
             lemmas.append(self.extract_lemma(word).lower())
-        return lemmas
+        return list(filter(lambda x: x is not None, lemmas))
 
     def my_extract_lemmas_and_filter_stopwords(self, phrase):
         analysis = self.utils.morfeusz.analyse(phrase)

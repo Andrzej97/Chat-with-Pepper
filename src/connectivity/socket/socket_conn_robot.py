@@ -8,6 +8,8 @@
  Goals of methods which are in this file:
     -> tell out response
     -> send text recognized from Pepper to bot
+
+  This file requires to be run with Python 2
 """
 import socket
 from time import sleep

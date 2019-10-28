@@ -1,12 +1,10 @@
-import pymongo
-
-from src.general_chatbot import intro_conversation_bot
-from src.common_utils.database_service import DatabaseProxy
-import src.common_utils.custom_exceptions as exceptions
 from src.main_chat.chatbot_manager import ChatbotManager
+from src.main_chat.response_continuation import initialize_db_with_continue_statements
 
 
 def main():
+    # to be run once at first use of this functionality to initialize database
+    initialize_db_with_continue_statements()
 
     chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
                                      connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')

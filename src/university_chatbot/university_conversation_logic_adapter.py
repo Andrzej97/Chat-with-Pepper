@@ -63,6 +63,7 @@ class UniversityAdapter(LogicAdapter):
 
         # print('universityAdapter:process:statement: ', statement)
         print('universityAdapter:process:noun_tags: ', noun_tags)
+
         docs_by_tags = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
         # print('universityAdapter:process:docs_by_tags: ', docs_by_tags)
         confidence_by_tags = -1
@@ -88,8 +89,7 @@ class UniversityAdapter(LogicAdapter):
                 res.confidence = 1
                 return res
             else:
-                res = Statement(
-                    statement_utils.prepare_shortened_statement(result_document_lemmas))
+                res = Statement(result_document_lemmas)
                 res.confidence = 1
                 return res
         else:
