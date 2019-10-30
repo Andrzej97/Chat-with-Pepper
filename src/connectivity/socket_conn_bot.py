@@ -16,14 +16,16 @@ chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lole
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, constans.ROBOT_SOCKET_PORT))
-    s.listen()
+    s.listen(16)
     conn, addr = s.accept()
     with conn:
         while True:
             data = conn.recv(1024).decode("utf-8")
             if data:
                 print('received: ' + data)
-                result = chatbot_manager.ask_chatbot(data)
+                # result = chatbot_manager.ask_chatbot(data)
+                result = 'Nauczono mnie by nie odpowiadać obcym, najpierw się poznajmy, mam na imię Pepper, a Ty?'
+                # result = 'w szczebrzeszynie chrząszcz brzmi w trzcinie'
                 print(result)
                 res = bytes(result, "utf-8")
                 conn.sendall(res)

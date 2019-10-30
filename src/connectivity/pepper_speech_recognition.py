@@ -1,6 +1,6 @@
 import io
 import re
-import qia
+import qi
 import argparse
 import sys
 import time
@@ -9,6 +9,7 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 from six.moves import queue
+from naoqi import ALProxy
 
 import numpy as np
 from src.connectivity.socket_conn_robot import DataExchangeModule
@@ -39,7 +40,7 @@ class SoundProcessingModule(object):
         self.file = io.open("rec", 'wb')
         self.tts = ALProxy("ALTextToSpeech", constants.ROBOT_ADDRESS, constants.ROBOT_PORT)
         self.tts.setLanguage("Polish")
-        self.data_exchange_module = DataExchangeModule(constants.ROBOT_ADDRESS, constants.ROBOT_SOCKET_PORT, self.tts)
+        self.data_exchange_module = DataExchangeModule('127.0.0.1', 9999, self.tts)
 
     def __enter__(self):
         self.audio_service.setClientPreferences(self.module_name, RATE, 3, 0)
@@ -172,8 +173,8 @@ def main(app):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="127.0.0.1",
-                        help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
+    parser.add_argument("--ip", type=str, default="192.168.1.102",
+                        help="Robot IP address. On robot or Local Naoqi: use '192.168.1.102'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
 
