@@ -2,10 +2,9 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
-from src.common_utils.database_service import DatabaseProxy
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
+from src.common_utils.constants import GOOD_ANSWER_CONFIDENCE, RANDOM_CONF_THRESHOLD
 import random
-
 
 
 class UniversityAdapter(LogicAdapter):
@@ -26,22 +25,21 @@ class UniversityAdapter(LogicAdapter):
         text_coverage = 0.0
         if document is not None:
             text_from_doc = list(document['text'].split('.'))[0]
-            print("TEXT_FROM_DOC:", text_from_doc)
-            print("DOCUMENT_TAGS:", document['tags'])
+            #print("TEXT_FROM_DOC:", text_from_doc)
+            #print("DOCUMENT_TAGS:", document['tags'])
             filtered_tags_from_text = self.sentence_filter.my_extract_lemmas_and_filter_stopwords(text_from_doc)
             text_coverage = len(set(filtered_tags_from_text).intersection(set(tags)))
-            print("FILTERED_TAGS_FROM_DOC:", filtered_tags_from_text, 'TEXT_COVERAGE:', text_coverage)
+            #print("FILTERED_TAGS_FROM_DOC:", filtered_tags_from_text, 'TEXT_COVERAGE:', text_coverage)
         #print("TEXT_COV:", text_coverage)
-        conf_thresh = ((coverage / doc_tags_length) * (1 - 1/(2*len(tags)))) + 0.1 * text_coverage
-        if conf_thresh >= 0.75:
+        conf_thresh = ((coverage / doc_tags_length) * (1 - 1/(3*len(tags)))) + 0.1 * text_coverage
+        if conf_thresh >= GOOD_ANSWER_CONFIDENCE:
             return conf_thresh, True
         else:
-            return (conf_thresh, True) if random.uniform(0, 1) > 0.20 else (0.0, False)
+            return (conf_thresh, True) if random.uniform(0, 1) > RANDOM_CONF_THRESHOLD else (0.0, False)
 
 
     def find_best_tags_coverage(self, documents, tags, should_also_search_text):
         id_of_best_cov_doc = -1
-        #tags_len = len(tags)
         max_coverage = self.find_max_coverage(documents, tags)
         max_conf_from_covered_docs = 0
         was_one_selected = False
@@ -66,7 +64,6 @@ class UniversityAdapter(LogicAdapter):
             return result_list[0]['text'], max_conf_from_covered_docs
         else:
             return None
-        #raise TypeError("No `text` attribute found")
 
 
     def can_process(self, statement):
