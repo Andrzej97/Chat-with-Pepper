@@ -1,17 +1,17 @@
+import argparse
 import io
 import re
-import argparse
 import sys
 import time
 
+import numpy as np
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 from six.moves import queue
 
-import numpy as np
+import configuration
 from src.connectivity.socket.socket_conn_robot import DataExchangeModule
-import configuration as configuration
 
 RATE = 16000
 

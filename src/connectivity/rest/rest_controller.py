@@ -1,9 +1,9 @@
 from flask import Flask
-from flask_restful import Resource, Api
 from flask_jsonpify import jsonify
+from flask_restful import Resource, Api
 
+import configuration
 from src.common_utils.database.database_service import DatabaseProxy
-import configuration as configuration
 
 app = Flask(__name__)
 api = Api(app)

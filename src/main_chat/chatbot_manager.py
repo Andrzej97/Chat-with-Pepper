@@ -1,4 +1,4 @@
-import configuration as configuration
+import configuration
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.bot_context import BotContext
 from src.common_utils.database.database_service import DatabaseProxy

@@ -1,4 +1,4 @@
-import configuration as configuration
+import configuration
 from src.common_utils.database.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 
