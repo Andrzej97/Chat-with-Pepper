@@ -136,6 +136,45 @@ class SentenceFilter:
     def is_stopword(self, word):
         return word.lower() in self.stop_words
 
+
+    def split_to_norm_and_complex_lemmas(self, lemmas_list):
+        normal_lemmas = []
+        complex_lemmas = []
+        for lemma in lemmas_list:
+            if len(lemma.split(':')) > 1:
+                complex_lemmas.append(lemma)
+            else:
+                normal_lemmas.append(lemma)
+        return normal_lemmas, complex_lemmas
+
+    def generate_filtered_words_lemmas_combinations(self, complex_lemmas_list):
+        comb_idx = 0
+        combinations_dict = {}
+
+        def create_lemmas_combinations(complex_lemmas_list, start_idx):
+            nonlocal comb_idx
+            if len(complex_lemmas_list) == 0:  # end of recursion
+                combinations_dict[comb_idx] = []
+                comb_idx = comb_idx + 1
+                print("Comb_idx = ", comb_idx, ", dict = ", combinations_dict)
+                return
+
+            possibilities = complex_lemmas_list[0].split(':')
+            for possibility in possibilities:
+                lemmas_list_copy = list(complex_lemmas_list)
+                lemma_param = lemmas_list_copy[1:] if len(lemmas_list_copy) > 1 else []
+                create_lemmas_combinations(lemma_param, comb_idx)
+
+                if comb_idx <= 2:
+                    combinations_dict[comb_idx - 1].append(possibility)
+                else:
+                    for k in combinations_dict:
+                        if k >= start_idx:
+                            combinations_dict[k].append(possibility)
+
+        create_lemmas_combinations(complex_lemmas_list, 0)
+        return combinations_dict
+
 # input = "wydziały-i-podstawowe-jednostki-organizacyjne"
 # # print('input: ' + input)
 # sentence_filtered = SentenceFilter().filter_sentence(input, ['noun'])

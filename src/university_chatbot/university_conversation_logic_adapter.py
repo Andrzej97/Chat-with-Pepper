@@ -31,7 +31,7 @@ class UniversityAdapter(LogicAdapter):
             text_coverage = len(set(filtered_tags_from_text).intersection(set(tags)))
             #print("FILTERED_TAGS_FROM_DOC:", filtered_tags_from_text, 'TEXT_COVERAGE:', text_coverage)
         #print("TEXT_COV:", text_coverage)
-        conf_thresh = ((coverage / doc_tags_length) * (1 - 1/(3*len(tags)))) + 0.1 * text_coverage
+        conf_thresh = (coverage / doc_tags_length) * (1 - 1/(3*len(tags))) + 0.1 * text_coverage
         if conf_thresh >= GOOD_ANSWER_CONFIDENCE:
             return conf_thresh, True
         else:
@@ -74,18 +74,25 @@ class UniversityAdapter(LogicAdapter):
         noun_tags = self.sentence_filter.my_extract_lemmas_and_filter_stopwords(statement.text)
         noun_tags = list(noun_tags)
         print("TAGS FROM SENTENCE FILTER = ", noun_tags)
+        normal_lemmas, complex_lemmas = self.sentence_filter.split_to_norm_and_complex_lemmas(noun_tags)
+        print("COMPLEX LEMMAS = ", complex_lemmas)
+        if len(complex_lemmas) != 0:
+            lemmas_chosen_from_complex_list = list(map(lambda lemma: lemma.split(':')[0], complex_lemmas))
+            for l in lemmas_chosen_from_complex_list:
+                normal_lemmas.append(l)
+            noun_tags = normal_lemmas
         docs_by_tags = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
         confidence_by_tags = -1
         confidence_by_lemmas = -1
         if len(docs_by_tags) > 0:  # matching tags exist
             result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_by_tags, noun_tags, True)
         if confidence_by_tags < 2:  # confidence of response based on tags is not enough (0 = 0%, 1 = 100%)
-            extracted_lemmas = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
-            print("Extracted_lemmas:", extracted_lemmas)
-            docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', extracted_lemmas)
+            print("Extracted_lemmas:", noun_tags)
+            docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', noun_tags)
             if len(docs_by_lemmas) > 0:
                 print("SEARCHING IN PHRASES STARTED")
-                result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_by_lemmas, extracted_lemmas, False)
+                result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_by_lemmas,
+                                                                                            noun_tags, False)
         if confidence_by_lemmas + confidence_by_tags > -2:
             if confidence_by_tags >= confidence_by_lemmas:
                 res = Statement(
