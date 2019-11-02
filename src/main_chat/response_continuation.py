@@ -18,14 +18,14 @@ def initialize_db_with_continue_statements():
 
 
 class ResponseContinuationHandler:
-    def __init__(self):
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    def __init__(self, db_proxy):
+        self.db = db_proxy
         self.response_length = configuration.NUMBER_OF_SENTENCES_IN_RESPONSE
         self.current_response_offset = 0 + self.response_length
 
-    def is_continuation_request_asked(self, statement):
+    def is_continuation_request_asked(self, input_statement):
         continuation_requests = set(self.db.get_responses_list_by_tags(tag="continue"))
-        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x), statement.split(' ')))
+        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x), input_statement.split(' ')))
         return len(sliced_statement.intersection(continuation_requests)) > 1
 
     def return_next_part_of_response(self, question):
