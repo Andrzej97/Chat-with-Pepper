@@ -7,7 +7,7 @@ It tries to reach response form `ChatbotManager` and than, sends it back to clie
 
 import socket
 from src.main_chat.chatbot_manager import ChatbotManager
-import src.common_utils.constants as constans
+import configuration as constans
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
 PORT = 9999  # Port to listen on (non-privileged ports are > 1023)
 

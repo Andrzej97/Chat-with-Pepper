@@ -81,7 +81,6 @@ class UniversityAdapter(LogicAdapter):
         return True
 
     def process(self, statement, additional_responses_parameters):
-        #noun_tags = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
         noun_tags = self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(statement.text)
         noun_tags = list(noun_tags)
         print("TAGS FROM SENTENCE FILTER = ", noun_tags)
@@ -93,7 +92,6 @@ class UniversityAdapter(LogicAdapter):
         if len(complex_lemmas) != 0:
             tags_combinations_dict.update(self.create_tags_combinations_dict(normal_lemmas, complex_lemmas))
             for tags in tags_combinations_dict.values():
-                #print("TAGS in tags_combinations_dict:", tags)
                 tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', tags)
                 lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', tags)
                 if tag_docs: docs_by_tags.extend(tag_docs)
@@ -105,7 +103,6 @@ class UniversityAdapter(LogicAdapter):
             if tag_docs: docs_by_tags.extend(tag_docs)
             if lemma_docs: docs_by_lemmas.extend(lemma_docs)
 
-        #print("DOCS_by_tags:", docs_by_tags, ", DOCS_by_lemmas:", docs_by_lemmas)
         confidence_by_tags = -1
         confidence_by_lemmas = -1
         if len(docs_by_tags) > 0:  # matching tags exist

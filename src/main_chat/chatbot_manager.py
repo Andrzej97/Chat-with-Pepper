@@ -1,18 +1,22 @@
+import configuration
+import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.bot_context import BotContext
+from src.common_utils.database.database_service import DatabaseProxy
 from src.general_chatbot.intro_conversation_bot import IntroBot
+from src.main_chat.response_continuation import ResponseContinuationHandler
 from src.university_chatbot.university_conversation_bot import UniversityBot
-from src.common_utils.database_service import DatabaseProxy
 
 
 class ChatbotManager:
     def __init__(self, **kwargs):
         self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Żwirek')  # our chatbots code names
         self._university_chatbot_name = kwargs.get('university_chatbot', 'Muchomorek')
-        db = DatabaseProxy(kwargs.get('connection_uri'), kwargs.get('database_name'))
+        self.db = DatabaseProxy(kwargs.get('connection_uri'), kwargs.get('database_name'))
         bot_context = BotContext()
-        self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, db)
-        self._university_chatbot = UniversityBot(self._university_chatbot_name, db)
+        self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, self.db)
+        self._university_chatbot = UniversityBot(self._university_chatbot_name, self.db)
         self._is_intro_bot_unemployed = False
+        self.response_continuation_handler = ResponseContinuationHandler(self.db)
 
     def _ask_intro_chatbot(self, processed_sentence):
         response = self._intro_chatbot.get_bot_response(processed_sentence)
@@ -33,6 +37,10 @@ class ChatbotManager:
         return self._intro_chatbot.check_is_bot_partially_employed()
 
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
+
+        response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
+        if response_from_handler is not None:
+            return response_from_handler
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)
@@ -42,6 +50,8 @@ class ChatbotManager:
             print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
             print("i_Text = {}, i_conf = {}".format(i_text, i_conf))
             conf_res = u_conf > i_conf
-            self._university_chatbot.inc_responses_in_row() if conf_res else self._university_chatbot.reset_responses_in_row()
+            self._university_chatbot.inc_responses_in_row() if conf_res \
+                else self._university_chatbot.reset_responses_in_row()
             chatbot_response = u_text if conf_res else i_text
-        return chatbot_response
+        self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION, response=chatbot_response)
+        return statement_utils.prepare_shortened_statement(chatbot_response, 0, 1)

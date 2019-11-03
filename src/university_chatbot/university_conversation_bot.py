@@ -1,5 +1,5 @@
 from chatterbot import ChatBot
-from src.common_utils.constants import REQUESTS_IN_ROW_THRESH
+from configuration import REQUESTS_IN_ROW_THRESH
 
 
 class UniversityBot:
