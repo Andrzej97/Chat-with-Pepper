@@ -103,7 +103,7 @@ class SentenceFilter:
             lemmas.append(self.extract_lemma(word).lower())
         return lemmas
 
-    def my_extract_lemmas_and_filter_stopwords(self, phrase):
+    def extract_complex_lemmas_and_filter_stopwords(self, phrase):
         analysis = self.utils.morfeusz.analyse(phrase)
         tags = set([])
         old_word_index = 0
@@ -141,8 +141,11 @@ class SentenceFilter:
         normal_lemmas = []
         complex_lemmas = []
         for lemma in lemmas_list:
-            if len(lemma.split(':')) > 1:
+            splitted_lemmas = lemma.split(':')
+            if len(splitted_lemmas) > 1 and splitted_lemmas[1] not in ['s', 's1', 's2', 's3', 'v1', 'v2', 'v3']:
                 complex_lemmas.append(lemma)
+            elif len(splitted_lemmas) > 1:
+                normal_lemmas.append(splitted_lemmas[0])
             else:
                 normal_lemmas.append(lemma)
         return normal_lemmas, complex_lemmas
@@ -156,21 +159,21 @@ class SentenceFilter:
             if len(complex_lemmas_list) == 0:  # end of recursion
                 combinations_dict[comb_idx] = []
                 comb_idx = comb_idx + 1
-                print("Comb_idx = ", comb_idx, ", dict = ", combinations_dict)
+                #print("Comb_idx = ", comb_idx, ", dict = ", combinations_dict)
                 return
 
             possibilities = complex_lemmas_list[0].split(':')
+            #print("Possibilities", possibilities)
             for possibility in possibilities:
                 lemmas_list_copy = list(complex_lemmas_list)
+                #print("POSSIBILITY:", possibility)
                 lemma_param = lemmas_list_copy[1:] if len(lemmas_list_copy) > 1 else []
+                start_idx = comb_idx
                 create_lemmas_combinations(lemma_param, comb_idx)
 
-                if comb_idx <= 2:
-                    combinations_dict[comb_idx - 1].append(possibility)
-                else:
-                    for k in combinations_dict:
-                        if k >= start_idx:
-                            combinations_dict[k].append(possibility)
+                for k in range(start_idx, comb_idx):
+                    combinations_dict[k].append(possibility)
+            #print("DICT:", combinations_dict)
 
         create_lemmas_combinations(complex_lemmas_list, 0)
         return combinations_dict
