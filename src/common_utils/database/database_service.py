@@ -1,11 +1,11 @@
-from chatterbot.storage import MongoDatabaseAdapter
+import random
 
-import configuration
-from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
+from chatterbot.storage import MongoDatabaseAdapter
+from pymongo import MongoClient
+
 from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
 from src.common_utils.custom_exceptions import CollectionNotExistsInDatabaseError
-from pymongo import MongoClient
-import random
+from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
 
 
 def is_invalid_arg(arg):

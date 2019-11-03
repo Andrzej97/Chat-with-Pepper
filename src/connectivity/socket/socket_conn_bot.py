@@ -8,8 +8,8 @@ It tries to reach response form `ChatbotManager` and than, sends it back to clie
 import socket
 import sys
 
-import configuration
 import src.main_chat.chatbot_manager
+from configuration import Configuration as configuration
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
 PORT = 9999  # Port to listen on (non-privileged ports are > 1023)
@@ -17,7 +17,7 @@ PORT = 9999  # Port to listen on (non-privileged ports are > 1023)
 
 def get_response_from_console(input_statement):
     print("User question: ", input_statement)
-    user_input = input('Response >>>')
+    user_input = input("Your response >>>")
     return user_input
 
 
@@ -36,7 +36,7 @@ class ResponseProvider:
 
     def receive_and_process(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((HOST, configuration.ROBOT_SOCKET_PORT))
+            s.bind((HOST, configuration.ROBOT_SOCKET_PORT.value))
             s.listen()
             conn, addr = s.accept()
             with conn:

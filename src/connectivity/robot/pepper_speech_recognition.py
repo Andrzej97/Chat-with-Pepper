@@ -10,7 +10,7 @@ from google.cloud.speech import enums
 from google.cloud.speech import types
 from six.moves import queue
 
-import configuration
+from configuration import Configuration as configuration
 from src.connectivity.socket.socket_conn_robot import DataExchangeModule
 
 RATE = 16000
@@ -36,9 +36,10 @@ class SoundProcessingModule(object):
         self.module_name = "SoundProcessingModule"
         self._buff = queue.Queue()
         self.file = io.open("rec", 'wb')
-        self.tts = ALProxy("ALTextToSpeech", configuration.ROBOT_ADDRESS, configuration.ROBOT_PORT)
+        self.tts = ALProxy("ALTextToSpeech", configuration.ROBOT_ADDRESS.value, configuration.ROBOT_PORT.value)
         self.tts.setLanguage("Polish")
-        self.data_exchange_module = DataExchangeModule(configuration.ROBOT_ADDRESS, configuration.ROBOT_SOCKET_PORT, self.tts)
+        self.data_exchange_module = DataExchangeModule(configuration.ROBOT_ADDRESS.value,
+                                                       configuration.ROBOT_SOCKET_PORT.value, self.tts)
 
     def __enter__(self):
         self.audio_service.setClientPreferences(self.module_name, RATE, 3, 0)
