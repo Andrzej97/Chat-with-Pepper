@@ -1,4 +1,4 @@
-import configuration as configuration
+import configuration
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.bot_context import BotContext
 from src.common_utils.database.database_service import DatabaseProxy
@@ -16,7 +16,7 @@ class ChatbotManager:
         self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, self.db)
         self._university_chatbot = UniversityBot(self._university_chatbot_name, self.db)
         self._is_intro_bot_unemployed = False
-        self.response_continuation_handler = ResponseContinuationHandler()
+        self.response_continuation_handler = ResponseContinuationHandler(self.db)
 
     def _ask_intro_chatbot(self, processed_sentence):
         response = self._intro_chatbot.get_bot_response(processed_sentence)

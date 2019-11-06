@@ -18,8 +18,8 @@ def initialize_db_with_continue_statements():
 
 
 class ResponseContinuationHandler:
-    def __init__(self):
-        self.db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    def __init__(self, db_proxy):
+        self.db = db_proxy
         self.response_length = configuration.NUMBER_OF_SENTENCES_IN_RESPONSE
         self.current_response_offset = 0 + self.response_length
 
