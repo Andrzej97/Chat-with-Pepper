@@ -41,6 +41,8 @@ help(){
         [-db | --initialize_database]      initilizes database with required data
         [-r | --rest]                      starts REST service
         [-b | --bot]                       starts bot
+
+        ctrl + C                           exit
      "
 }
 
