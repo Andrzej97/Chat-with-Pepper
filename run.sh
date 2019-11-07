@@ -4,6 +4,10 @@ export PYTHONPATH="$PWD"
 trap "exit" SIGINT
 
 response_from_console_enabled=false
+should_start_rest_service=false
+should_start_bot=false
+should_initilize_db=false
+
 rest_controller_port=$(python src/common_utils/parameter_provider.py "REST_API_PORT" 2>&1)
 robot_socket_port=$(python src/common_utils/parameter_provider.py "ROBOT_SOCKET_PORT" 2>&1)
 
@@ -43,7 +47,7 @@ help(){
 exit(){
   echo "
   Closing Chat-with-Pepper..."
-  kill -9 $(lsof -t -i tcp:$robot_socket_port,$rest_controller_port)
+  kill -9 $(lsof -t -i tcp:"$robot_socket_port","$rest_controller_port")
 }
 
 
@@ -58,19 +62,34 @@ while [ "$1" != "" ]; do
             response_from_console_enabled=true
             ;;
         -db | --initialize_database )
-            initialize_database
+            should_initilize_db=true
             ;;
         -h | --help )
             help
             ;;
         -r | --rest )
-            start_rest_service
+            should_start_rest_service=true
             ;;
         -b | --bot )
-          start_bot
+          should_start_bot=true
           ;;
     esac
     shift
 done
+
+if [ $should_start_rest_service == true ]
+then
+  start_rest_service
+fi
+
+if [ $should_initilize_db == true ]
+then
+  initialize_database
+fi
+
+if [ $should_start_bot == true ]
+then
+  start_bot
+fi
 
 wait
