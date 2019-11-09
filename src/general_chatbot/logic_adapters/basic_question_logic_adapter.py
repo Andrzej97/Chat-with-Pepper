@@ -36,6 +36,6 @@ class BasicQuestionAdapter(LogicAdapter):
                 basic_question_responses,
                 basic_question_responses_end),
                 in_response_to=TypeOfOperation.BASIC_QUESTION.value)
-            result.confidence = 1
+            result.confidence = 1.0
             return result
         return statement_utils.default_response()
