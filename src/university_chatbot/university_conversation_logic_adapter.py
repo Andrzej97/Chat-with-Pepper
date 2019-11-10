@@ -24,7 +24,8 @@ class UniversityAdapter(LogicAdapter):
     def is_accepted(self, coverage, doc_tags_length, tags, document=None):
         text_coverage = 0.0
         if document is not None:
-            text_from_doc = list(document['text'].split('.'))[0]
+            # print('is_accepted: document[text]:', document['text'])
+            text_from_doc = list(document['text'][0].split('.'))[0]
             filtered_tags_from_text = self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(text_from_doc)
             text_coverage = len(set(filtered_tags_from_text).intersection(set(tags)))
             #print("FILTERED_TAGS_FROM_DOC:", filtered_tags_from_text, 'TEXT_COVERAGE:', text_coverage)
@@ -59,7 +60,7 @@ class UniversityAdapter(LogicAdapter):
                     if was_accepted and conf_thresh >= max_conf_from_covered_docs:
                         id_of_best_cov_doc = document['_id']
                         max_conf_from_covered_docs = conf_thresh
-                        print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", max_conf:", max_conf_from_covered_docs, ", tags:", tags)
+                        # print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", max_conf:", max_conf_from_covered_docs, ", tags:", tags)
 
         result_list = list(filter(lambda obj: obj['_id'] == id_of_best_cov_doc, documents))
         if len(result_list) > 0:
@@ -96,9 +97,10 @@ class UniversityAdapter(LogicAdapter):
     def process(self, statement, additional_responses_parameters):
         noun_tags = self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(statement.text)
         noun_tags = list(noun_tags)
-        print("TAGS FROM SENTENCE FILTER = ", noun_tags)
+        print("university_conversation_logic_adapter.py\tprocess1\tTAGS FROM SENTENCE FILTER QUESTION = \t", noun_tags)
         normal_lemmas, complex_lemmas = self.sentence_filter.split_to_norm_and_complex_lemmas(noun_tags)
-        print("COMPLEX LEMMAS = ", complex_lemmas)
+        print("university_conversation_logic_adapter.py\tprocess2a\tNORMAL LEMMAS = \t", normal_lemmas)
+        print("university_conversation_logic_adapter.py\tprocess2b\tCOMPLEX LEMMAS = \t", complex_lemmas)
         docs_by_tags = []
         docs_by_lemmas = []
         tags_combinations_dict = {}
@@ -113,19 +115,28 @@ class UniversityAdapter(LogicAdapter):
             tags_combinations_dict[0] = noun_tags
             tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
             lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', noun_tags)
-            if tag_docs: docs_by_tags.extend(tag_docs)
-            if lemma_docs: docs_by_lemmas.extend(lemma_docs)
+            if tag_docs:
+                docs_by_tags.extend(tag_docs)
+            if lemma_docs:
+                docs_by_lemmas.extend(lemma_docs)
 
         confidence_by_tags = -1
         confidence_by_phrases = -1
+        print('university_conversation_logic_adapter.py\tprocess3\tlen(docs_by_tags):\t', len(docs_by_tags))
         if len(docs_by_tags) > 0:  # matching tags exist
             result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_by_tags, tags_combinations_dict, True)
-        print("Extracted_lemmas:", noun_tags)
+            print('university_conversation_logic_adapter.py\tprocess4\tresult_codument_tags:\t', result_document_tags)
+            print('university_conversation_logic_adapter.py\tprocess5\tconfidence_by_tags:\t', confidence_by_tags)
         #docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', noun_tags)
+        print('university_conversation_logic_adapter.py\tprocess6\tlen(docs_by_lemmas):\t', len(docs_by_lemmas))
         if len(docs_by_lemmas) > 0:
-            print("SEARCHING IN PHRASES STARTED")
+            print("university_conversation_logic_adapter.py\tprocess7\tSEARCHING IN PHRASES STARTED")
             result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_by_lemmas, tags_combinations_dict, False)
+            print('university_conversation_logic_adapter.py\tprocess8\tresult_codument_lemmas:\t', result_document_lemmas)
+            print('university_conversation_logic_adapter.py\tprocess9\tconfidence_by_lemmas:\t', confidence_by_lemmas)
         if confidence_by_lemmas + confidence_by_tags > -2:
+            print('university_conversation_logic_adapter.py\tprocess10\tresult_document_tags:\t', result_document_tags)
+            print('university_conversation_logic_adapter.py\tprocess11\tresult_document_lemmas:\t', result_document_lemmas)
             if confidence_by_tags >= confidence_by_lemmas:
                 res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_tags))

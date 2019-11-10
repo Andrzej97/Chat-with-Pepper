@@ -14,7 +14,8 @@ def prepare_statement(*words):
     for word in words:
         response += word
         response += " "
-    return filter_unexpected_signs(response)
+    # return filter_unexpected_signs(response)
+    return response
 
 
 def filter_unexpected_signs(sentence):
