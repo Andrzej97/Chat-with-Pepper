@@ -1,4 +1,3 @@
-from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
 import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
@@ -9,8 +8,8 @@ def initialize_main_collection_from_scrapper(db):
     # to prepare necessary files from one file: DB_FINAL_<number>.csv
     if not os.path.exists('csv_files/DB_FINAL_150_TAGS_FILTERED.csv'):
         make_filter_tags_csv('csv_files/DB_FINAL_150.csv', 'csv_files/DB_FINAL_150_TAGS_FILTERED.csv')
-    if not os.path.exists('csv_files/DB_FINAL_150_PHRASES.csv'):
-        make_phrases_csv('csv_files/DB_FINAL_150.csv', 'csv_files/DB_FINAL_150_PHRASES.csv')
+    if not os.path.exists('csv_files/DB_FINAL_50_PHRASES.csv'):
+        make_phrases_csv('csv_files/db_pepper_50urls_forPhrases.csv', 'csv_files/DB_FINAL_50_PHRASES.csv')
 
     # to fill mongo database
     collection = 'MAIN_COLLECTION'
@@ -34,7 +33,7 @@ def initialize_main_collection_from_scrapper(db):
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-    with open('csv_files/DB_FINAL_150_PHRASES.csv', encoding="utf-8") as csvfile:
+    with open('csv_files/DB_FINAL_50_PHRASES.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
@@ -52,7 +51,7 @@ def make_filter_tags_csv(in_file, out_file):
             text = row[-1:][0]
             tags_filtered = []
             for tag in tags:
-                filtered = sentence_filter.my_extract_lemmas_and_filter_stopwords(tag)
+                filtered = sentence_filter.extract_complex_lemmas_and_filter_stopwords(tag)
                 for elem in filtered:
                     tags_filtered.append(elem)
             if len(tags_filtered) != 0:
@@ -69,6 +68,6 @@ def make_phrases_csv(in_file, out_file):
             text = row[-1:][0]
             phrases = text.split('.')
             for phrase in phrases:
-                tags_for_words = sentence_filter.my_extract_lemmas_and_filter_stopwords(phrase)
+                tags_for_words = sentence_filter.extract_complex_lemmas_and_filter_stopwords(phrase)
                 if len(tags_for_words) != 0:
                     csvWriter.write_tags_and_text(tags_for_words, phrase)
