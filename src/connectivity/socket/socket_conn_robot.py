@@ -37,11 +37,13 @@ class DataExchangeModule(object):
             send data via socket
         """
         try:
+            # data = unicode(data).encode('utf8')
+            # print("!!!! " + data)
             self.data_socket.sendall(bytes(data))
             response = self.data_socket.recv(1024).decode('utf-8')
             print(response)
             # if response != '':
-            # self.tell(response)
+            #     self.tell(response)
         except socket.error:
             return None
 
@@ -49,7 +51,8 @@ class DataExchangeModule(object):
         """
             cause Pepper say `text`
         """
-        self.tts.say(text)
+        print("tuuuuuu ", type("coś"))
+        self.tts.say(text.encode("utf-8"))
 
     def perform_communication_with_chatbot(self):
         while True:

@@ -5,9 +5,11 @@ import sys
 import time
 
 import numpy as np
+import qi
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
+from naoqi import ALProxy
 from six.moves import queue
 
 from configuration import Configuration as configuration
@@ -172,8 +174,8 @@ def main(app):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="127.0.0.1",
-                        help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
+    parser.add_argument("--ip", type=str, default="192.168.1.102",
+                        help="Robot IP address. On robot or Local Naoqi: use '192.168.1.102'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
 
