@@ -6,6 +6,30 @@ from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from src.common_utils.constants import GOOD_ANSWER_CONFIDENCE, RANDOM_CONF_THRESHOLD
 import random
 
+def my_intersection(set1, set2):
+    matched = 0
+    for single_or_complex_tag in set1:
+        single_tags = extract_single_tags(single_or_complex_tag)
+        for single_tag in single_tags:
+            if isMatched(single_tag, set2):
+                matched += 1
+                break
+    return matched
+
+def extract_single_tags(single_or_complex_tag):
+    return single_or_complex_tag.split(':')
+
+# zwykly isMatched: 307/346
+# isMatched z elifem: elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}: 308/346
+def isMatched(single_tag, set):
+    for single_or_complex_tag in set:
+        single_tags = extract_single_tags(single_or_complex_tag)
+        for tag in single_tags:
+            if single_tag == tag:
+                return True
+            elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}:
+                return True
+    return False
 
 class UniversityAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
@@ -21,46 +45,61 @@ class UniversityAdapter(LogicAdapter):
             max_coverage = max(max_coverage, coverage)
         return max_coverage
 
-    def is_accepted(self, coverage, doc_tags_length, tags, document=None):
-        text_coverage = 0.0
-        if document is not None:
-            # print('is_accepted: document[text]:', document['text'])
-            text_from_doc = list(document['text'][0].split('.'))[0]
-            filtered_tags_from_text = self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(text_from_doc)
-            text_coverage = len(set(filtered_tags_from_text).intersection(set(tags)))
-            #print("FILTERED_TAGS_FROM_DOC:", filtered_tags_from_text, 'TEXT_COVERAGE:', text_coverage)
-        #print("TEXT_COV:", text_coverage)
-        conf_thresh = (coverage / doc_tags_length) * (1 - 1/(3*len(tags))) + 0.1 * text_coverage
+    def is_accepted(self, coverage, doc_tags_length, tags):
+        # conf_thresh = (coverage / doc_tags_length) * (1 - 1/(3*len(tags)))
+        conf_thresh = (coverage / len(tags))
+        # print('conf_thresh = ', conf_thresh)
+        if conf_thresh > 0:
+            # conf_thresh -= (doc_tags_length + len(tags) - 1) / (doc_tags_length + len(tags))
+            conf_thresh -= (1 / len(tags)) * (doc_tags_length / (doc_tags_length + 1))
+        # print('conf_thresh = ', conf_thresh)
+        # print('coverage = ', coverage)
+        # print('doc_tags_length = ', doc_tags_length)
+        # print('tags = ', tags)
+        # print('len(tags) = ', len(tags))
         if conf_thresh >= GOOD_ANSWER_CONFIDENCE:
             return conf_thresh, True
         else:
             return (conf_thresh, True) if random.uniform(0, 1) > RANDOM_CONF_THRESHOLD else (0.0, False)
 
 
-    def find_best_tags_coverage(self, documents, tags_combinations_dict, should_also_search_text):
+    def find_best_tags_coverage(self, documents, normal_and_complex_tags):
         id_of_best_cov_doc = -1
-        max_coverage = -1
-        for tags in tags_combinations_dict.values():
-            print("TAG:", tags)
-            max_coverage = max(max_coverage, self.find_max_coverage(documents, tags))
+        # print('find_best_tags_coverage:\tnormal_and_complex_tags:\t', normal_and_complex_tags)
         max_conf_from_covered_docs = 0
         was_one_selected = False
-        for tags in tags_combinations_dict.values():
-            for document in documents:
-                tags_from_document = document['tags']
-                coverage = len(set(tags_from_document).intersection(set(tags)))
-                if max_coverage == coverage:
-                    conf_thresh, was_accepted = self.is_accepted(coverage, len(set(tags_from_document)), tags, document) if should_also_search_text \
-                                                else self.is_accepted(coverage, len(set(tags_from_document)), tags)
-                    if not was_one_selected:
-                        max_conf_from_covered_docs = conf_thresh
-                        id_of_best_cov_doc = document['_id']
-                        was_one_selected = True
+        max_coverage = -1
+        tags = normal_and_complex_tags
+        for document in documents:
+            tags_from_document = document['tags']
+            # print('tags:\t\t\t ', tags)
+            # print('document[text]:\t', document['text'])
+            # print('tags_from_document:\t', tags_from_document)
 
-                    if was_accepted and conf_thresh >= max_conf_from_covered_docs:
-                        id_of_best_cov_doc = document['_id']
-                        max_conf_from_covered_docs = conf_thresh
-                        # print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", max_conf:", max_conf_from_covered_docs, ", tags:", tags)
+
+            # coverage = len(set(tags_from_document).intersection(set(tags)))
+            coverage = my_intersection(set(tags), set(tags_from_document))
+
+            # print('coverage: ', coverage)
+            conf_thresh, was_accepted = self.is_accepted(coverage, len(set(tags_from_document)), tags)
+            # print('conf_thresh: ', conf_thresh)
+            if not was_one_selected:
+                max_conf_from_covered_docs = conf_thresh
+                id_of_best_cov_doc = document['_id']
+                was_one_selected = True
+                max_coverage = coverage
+
+            if coverage >= max_coverage:
+                max_coverage = coverage
+                # print('tags:\t\t\t ', tags)
+                # print('document[text]:\t', document['text'])
+                # print('tags_from_document:\t', tags_from_document)
+                # print('coverage: ', coverage)
+
+            if was_accepted and conf_thresh >= max_conf_from_covered_docs:
+                id_of_best_cov_doc = document['_id']
+                max_conf_from_covered_docs = conf_thresh
+                # print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", max_conf:", max_conf_from_covered_docs, ", tags:", tags)
 
         result_list = list(filter(lambda obj: obj['_id'] == id_of_best_cov_doc, documents))
         if len(result_list) > 0:
@@ -121,22 +160,22 @@ class UniversityAdapter(LogicAdapter):
                 docs_by_lemmas.extend(lemma_docs)
 
         confidence_by_tags = -1
-        confidence_by_phrases = -1
-        print('university_conversation_logic_adapter.py\tprocess3\tlen(docs_by_tags):\t', len(docs_by_tags))
+        confidence_by_lemmas = -1
+        # print('university_conversation_logic_adapter.py\tprocess3\tlen(docs_by_tags):\t', len(docs_by_tags))
         if len(docs_by_tags) > 0:  # matching tags exist
-            result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_by_tags, tags_combinations_dict, True)
+            result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_by_tags, noun_tags)
             print('university_conversation_logic_adapter.py\tprocess4\tresult_codument_tags:\t', result_document_tags)
             print('university_conversation_logic_adapter.py\tprocess5\tconfidence_by_tags:\t', confidence_by_tags)
         #docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', noun_tags)
-        print('university_conversation_logic_adapter.py\tprocess6\tlen(docs_by_lemmas):\t', len(docs_by_lemmas))
+        # print('university_conversation_logic_adapter.py\tprocess6\tlen(docs_by_lemmas):\t', len(docs_by_lemmas))
         if len(docs_by_lemmas) > 0:
-            print("university_conversation_logic_adapter.py\tprocess7\tSEARCHING IN PHRASES STARTED")
-            result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_by_lemmas, tags_combinations_dict, False)
-            print('university_conversation_logic_adapter.py\tprocess8\tresult_codument_lemmas:\t', result_document_lemmas)
+            # print("university_conversation_logic_adapter.py\tprocess7\tSEARCHING IN PHRASES STARTED")
+            result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_by_lemmas, noun_tags)
+            print('university_conversation_logic_adapter.py\tprocess8\tresult_document_lemmas:\t', result_document_lemmas)
             print('university_conversation_logic_adapter.py\tprocess9\tconfidence_by_lemmas:\t', confidence_by_lemmas)
         if confidence_by_lemmas + confidence_by_tags > -2:
-            print('university_conversation_logic_adapter.py\tprocess10\tresult_document_tags:\t', result_document_tags)
-            print('university_conversation_logic_adapter.py\tprocess11\tresult_document_lemmas:\t', result_document_lemmas)
+            # print('university_conversation_logic_adapter.py\tprocess10\tresult_document_tags:\t', result_document_tags)
+            # print('university_conversation_logic_adapter.py\tprocess11\tresult_document_lemmas:\t', result_document_lemmas)
             if confidence_by_tags >= confidence_by_lemmas:
                 res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_tags))
