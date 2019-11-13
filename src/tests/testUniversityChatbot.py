@@ -563,7 +563,7 @@ class TestUniversistyChatbot(unittest.TestCase):
 
     def test_14_2(self):
         self.check_phrase_response(
-            'kiedy otrzymano zezwolenie na otwarcie uczleni',
+            'kiedy otrzymano zezwolenie na otwarcie uczelni',
             'starania o powołanie w krakowie wyższej uczelni kształcącej inżynierów górnictwa zostały zwieńczone powodzeniem – 10 lipca 1912 roku władze krakowa otrzymały zezwolenie na otwarcie uczelni'
         )
 
@@ -727,7 +727,7 @@ class TestUniversistyChatbot(unittest.TestCase):
     def test_21_3(self):
         self.check_phrase_response(
             'kto może otrzymać tytuł honorowego konsula agh',
-            ''
+            'tytuł honorowego konsula agh nadawany jest osobom związanym z uczelnią, których działalność przyczyniła się do jej rozwoju i promocji zgodnie z artykułem, tytułu tego nie mogą uzyskać aktualni pracownicy agh'
         )
 
     # 22
@@ -941,7 +941,7 @@ class TestUniversistyChatbot(unittest.TestCase):
     def test_37_1(self):
         self.check_phrase_response(
             'jaki jest pełny skład rady seniorów',
-            'pełny skład rady seniorów jest następujący: profesor Jerzy Niewodniczański – przewodniczący rady seniorów; profesor Kazimierz Jeleń – wiceprzewodniczący rady seniorów; profesor Józef Dańko – sekretarz rady seniorów; pozostali członkowie rady seniorów to: profesor Bronisław Barchański, profesor Wojciech Batko, profesor Stanisław Białas, profesor Aleksander Długosz, profesor Zbigniew Fajklewicz, profesor Aleksander Garlicki, profesor Józef Giergiel, profesor Andrzej Gołaś, profesor Henryk Górecki, profesor Mirosław Handke, profesor Wojciech Kapturkiewicz, profesor Danuta Kisielewska, profesor Andrzej Korbel, profesor Zygmunt Kolenda, profesor Stanisław Kreczmer, profesor Barbara Kwiecińska, profesor Jan Lech Lewandowski, profesor Andrzej Łędzki, profesor Janusz Łuksza, profesor Lidia J. Maksymowicz, profesor Andrzej Manecki, profesor Stanisław Mitkowski, profesor Janusz Roszkowski, profesor Jerzy Sędzimir, profesor Zbigniew Sitek, profesor Andrzej Skorupa, profesor Józef Zasadziński'
+            'pełny skład rady seniorów jest następujący: profesor Jerzy Niewodniczański – przewodniczący rady seniorów; profesor Kazimierz Jeleń – wiceprzewodniczący rady seniorów; profesor Józef Dańko – sekretarz rady seniorów; pozostali członkowie rady seniorów to: profesor Bronisław Barchański, profesor Wojciech Batko, profesor Stanisław Białas, profesor Aleksander Długosz, profesor Zbigniew Fajklewicz, profesor Aleksander Garlicki, profesor Józef Giergiel, profesor Andrzej Gołaś, profesor Henryk Górecki, profesor Mirosław Handke, profesor Wojciech Kapturkiewicz, profesor Danuta Kisielewska, profesor Andrzej Korbel, profesor Zygmunt Kolenda, profesor Stanisław Kreczmer, profesor Barbara Kwiecińska, profesor Jan Lech Lewandowski, profesor Andrzej Łędzki, profesor Janusz Łuksza, profesor Lidia Maksymowicz, profesor Andrzej Manecki, profesor Stanisław Mitkowski, profesor Janusz Roszkowski, profesor Jerzy Sędzimir, profesor Zbigniew Sitek, profesor Andrzej Skorupa, profesor Józef Zasadziński'
         )
 
     def test_37_2(self):
@@ -1141,6 +1141,1339 @@ class TestUniversistyChatbot(unittest.TestCase):
         self.check_phrase_response(
             'co oferuje basen agh',
             'pod okiem doświadczonych i wykwalifikowanych instruktorów basen agh oferuje: naukę i doskonalenie pływania dla niemowląt, dzieci, młodzieży i dorosłych, gimnastykę w wodzie dla kobiet w ciąży, aquaaerobik oraz ćwiczenia rehabilitacyjne w wodzie'
+        )
+
+    # 51
+    def test_51_1(self):
+        self.check_phrase_response(
+            'gdzie usytuowane jest boisko',
+            'nowoczesne boisko usytuowane jest w samym centrum studenckiego osiedla i ma wymiary 67x40 metrów, ale istnieje także możliwość podzielenia go na dwa mniejsze place do gry'
+        )
+
+    def test_51_2(self):
+        self.check_phrase_response(
+            'jakie wymiary ma boisko na osiedlu studenckim',
+            'nowoczesne boisko usytuowane jest w samym centrum studenckiego osiedla i ma wymiary 67x40 metrów, ale istnieje także możliwość podzielenia go na dwa mniejsze place do gry'
+        )
+
+    def test_51_3(self):
+        self.check_phrase_response(
+            'w jaką nawierzchnię wyposażone jest boisko',
+            'boisko wyposażone jest w sztuczną nawierzchnię, która umożliwia grę praktycznie przez cały rok, jest również oświetlone i ogrodzone'
+        )
+
+    def test_51_4(self):
+        self.check_phrase_response(
+            'w jakich godzinach można korzystać z boiska na miasteczku studenckim',
+            'mieszkańcy miasteczka studenckiego agh mogą korzystać z boiska codziennie w godzinach 7:30 - 22:30 dokonując rezerwacji poprzez system elektroniczny'
+        )
+
+    # 52
+    def test_52_1(self):
+        self.check_phrase_response(
+            'gdzie odbywają się zajęcia z wychowania fizycznego',
+            'obligatoryjne zajęcia z wychowania fizycznego odbywają się w salach i obiektach otwartych prowadzonych przez studium wychowania fizycznego i sportu agh'
+        )
+
+    def test_52_2(self):
+        self.check_phrase_response(
+            'co obejmuje baza sportowa swfis agh',
+            'baza sportowa swfis agh obejmuje: nowoczesne hale ze sztuczną nawierzchnią, nagłośnieniem, cyfrowymi tablicami wyników, dwie nowoczesne siłownie o profilu rekreacyjnym oraz siłowym, salę do aerobiku i ćwiczeń przy muzyce z nagłośnieniem, boisko piłkarskie, sale do gry w tenisa stołowego, stanowiska treningowe szermierki dla osób niepełnosprawnych, 3 wysokiej klasy jachty oraz kajaki, łaźnię parową'
+        )
+
+    def test_52_3(self):
+        self.check_phrase_response(
+            'z jakimi organizacjami współpracuje swfis agh',
+            'swfis agh w szerokim zakresie współpracuje z klubem uczelnianym akademickiego związku sportowego agh, a także samorządem studentów, działem socjalnym, fundacją studentów i absolwentów „academica” oraz zrzeszeniem studentów niepełnosprawnych agh'
+        )
+
+    def test_52_4(self):
+        self.check_phrase_response(
+            'kto prowadzi szkolenia studentów w zakresie pomocy przedmedycznej',
+            'swfis agh realizuje alternatywne zajęcia rehabilitacyjne dla studentów z problemami zdrowotnymi oraz prowadzi szkolenia studentów w zakresie pomocy przedmedycznej'
+        )
+
+    # 53
+    def test_53_1(self):
+        self.check_phrase_response(
+            'w jakich jednostkach znajdujących się poza krakowem prowadzone jest kształcenie',
+            'akademia górniczo-hutnicza prowadzi również kształcenie w jednostkach, które znajdują się poza krakowem: w Centralnym Laboratorium Techniki Strzelniczej i Materiałów Wybuchowych w Regulicach oraz Laboratorium Edukacyjno-Badawczym Odnawialnych Źródeł Energii AGH w Miękini'
+        )
+
+    def test_53_2(self):
+        self.check_phrase_response(
+            'gdzie znajduje się Centralne Laboratorium Techniki Strzelniczej i Materiałów Wybuchowych',
+            'Centralne Laboratorium Techniki Strzelniczej i Materiałów Wybuchowych znajduje się w Regulicach'
+        )
+
+    def test_53_3(self):
+        self.check_phrase_response(
+            'gdzie znajduje się Laboratorium Edukacyjno-Badawcze Odnawialnych Źródeł Energii AGH',
+            'Laboratorium Edukacyjno-Badawcze Odnawialnych Źródeł Energii AGH znajduje się w Miękini'
+        )
+
+    # 54
+    def test_54_1(self):
+        self.check_phrase_response(
+            'z kim należy się skontaktować by opublikować wiadomość na stronie internetowej agh',
+            'aby opublikować wiadomość na stronie internetowej agh, należy skontaktować się z pracownikami: telefon 48 12 617 49 38'
+        )
+
+    def test_54_2(self):
+        self.check_phrase_response(
+            'jakie informacje należy nadesłaż w celu publikacji informacji na stronie internetowej agh',
+            'w celu publikacji informacji na stronie internetowej agh należy nadesłać podstawowe informacje takie jak między innymi czas, miejsce, organizator, cel, grupa odbiorców, link do strony internetowej'
+        )
+
+    # 55
+    def test_55_1(self):
+        self.check_phrase_response(
+            'jakie osoby można znaleźć w gronie wychowanków akademii',
+            'w gronie wychowanków akademii znaleźć można prezesów wielkich, międzynarodowych koncernów, osoby sprawujące funkcje publiczne (ministrowie, wojewodowie, prezydenci miast), ale także znanych i cenionych na całym świecie artystów'
+        )
+
+    def test_55_2(self):
+        self.check_phrase_response(
+            'co cenią sobie absolwenci',
+            'absolwenci cenią sobie przede wszystkim wykształcenie zdobyte w akademii górniczo-hutniczej oraz praktyczny aspekt przekazywanej tutaj wiedzy'
+        )
+
+    def test_55_3(self):
+        self.check_phrase_response(
+            'czy studenci odbywają praktyki zawodowe lub staże',
+            'studenci mają możliwość odbywania praktyk zawodowych oraz staży w wielu renomowanych firmach, co znacznie poprawia ich start w dorosłe, zawodowe życie'
+        )
+
+    def test_55_4(self):
+        self.check_phrase_response(
+            'czy studenci pracują w trakcie studiów',
+            'duża część studentów podejmuje pracę już w trakcie studiów'
+        )
+
+    def test_55_5(self):
+        self.check_phrase_response(
+            'co sprawia, że agh od wielu lat pozostaje wiodącą polską uczelnią techniczną',
+            'doskonała kadra naukowo-dydaktyczna, świetne wyposażenie, nowoczesne laboratoria i aparatura, szeroka współpraca z przemysłem i firmami nowoczesnych technologii oraz ciągła i nieustająca dbałość o jakość kształcenia sprawiają, że akademia górniczo-hutnicza imienia stanisława staszica w krakowie od stu lat pozostaje wiodącą polską uczelnią techniczną'
+        )
+
+    # 56
+    def test_56_1(self):
+        self.check_phrase_response(
+            'co stanowi podstawę oceny skutecznośći systemu zapewnienia jakości kształcenia',
+            'Podstawę oceny skuteczności Systemu Zapewnienia Jakości Kształcenia stanowią roczne raporty samooceny zatwierdzane na posiedzeniu Rad Wydziałów, a następnie przedkładane Prorektorowi do spraw Kształcenia i Pełnomocnikowi Rektora do spraw Jakości Kształcenia'
+        )
+
+    # 57
+    def test_57_1(self):
+        self.check_phrase_response(
+            'czym jest ksiąga jakości agh',
+            'zgodnie z zarządzeniem rektora agh księga jakości jest to publicznie dostępne opracowanie zawierające: zbiór wszystkich dokumentów prawnych dotyczących procesu kształcenia w uczelni, zbiór procedur obowiązujących w trakcie realizacji procesu kształcenia, w skład którego wchodzą wyodrębnione zarządzenia rektora oraz zalecenia uczelnianego zespołu do spraw jakości kształcenia, katalog dobrych praktyk, będący zbiorem przykładów rozwiązań godnych naśladowania, informacje na temat systemu zapewnienia jakości kształcenia w agh przeznaczone dla interesariuszy zewnętrznych, w szczególności dla kandydatów na studia, pracodawców i mediów'
+        )
+
+    # 58
+    def test_58_1(self):
+        self.check_phrase_response(
+            'czym charakteryzuje się uczelniany system zapewnienia jakości kształcenia w agh',
+            'uczelniany system zapewnienia jakości kształcenia w agh charakteryzuje się odpowiedniością struktur na poziomie uczelni i na poziomie wydziałów'
+        )
+
+    def test_58_2(self):
+        self.check_phrase_response(
+            'kto jest odpowiedzialny za jakość kształcenia na uczelni',
+            'osobą odpowiedzialną za jakość kształcenia w skali uczelni jest rektor, a na wydziale dziekan; część obowiązków związanych z jakością kształcenia przejmuje prorektor do spraw kształcenia, a na wydziałach dziekan odpowiedzialny za kształcenie'
+        )
+
+    def test_58_3(self):
+        self.check_phrase_response(
+            'kto organizuje funkcjonowanie systemu zapewnienia jakości kształcenia',
+            'osobą, która w skali uczelni organizuje funkcjonowanie systemu zapewnienia jakości kształcenia, jest pełnomocnik rektora do spraw jakości kształcenia; analogiczną rolę na wydziałach pełnią pełnomocnicy dziekanów do spraw jakości kształcenia'
+        )
+
+    def test_58_4(self):
+        self.check_phrase_response(
+            'czym zajmują się wydziałowe zespoły audytu dydaktycznego',
+            'wydziałowe zespoły audytu dydaktycznego dbają o właściwą realizację programów kształcenia na poszczególnych kierunkach studiów, mogą prowadzić ankiety i inne analizy przebiegu kształcenia na danym kierunku, mogą wnioskować do zespołu do spraw jakości kształcenia o zmiany i modyfikacje programu kształcenia'
+        )
+
+    def test_58_5(self):
+        self.check_phrase_response(
+            'czym zajmuje się uczleniany zespół audytu dydaktycznego',
+            'uczelniany zespół audytu dydaktycznego prowadzi kompleksową ocenę systemu jakości kształcenia na poszczególnych wydziałach; audyt polega na analizie dokumentów dotyczących kształcenia na wydziale oraz wizytacji wydziału'
+        )
+
+    def test_58_6(self):
+        self.check_phrase_response(
+            'co określa obowiązki rektora w zakresie jakości kształcenia',
+            'obowiązki rektora w zakresie jakości kształcenia określa Uchwała Senatu AGH numer 253/2012 z dnia 28 listopada 2012 roku'
+        )
+
+    # 59
+    def test_59_1(self):
+        self.check_phrase_response(
+            'czym są krajowe ramy kwalifikacji',
+            'Krajowe Ramy Kwalifikacji (National Qualifications Framework) to opis wzajemnych relacji między kwalifikacjami, integrujący różne krajowe podsystemy kwalifikacji, służący większej przejrzystości, dostępności i jakości kwalifikacji, stworzony dla potrzeb rynku pracy i społeczeństwa obywatelskiego'
+        )
+
+    # 60
+    def test_60_1(self):
+        self.check_phrase_response(
+            'jakim komisjom akredytacyjnym podlega jakość kształcenia w agh',
+            'jakość kształcenia w akademii górniczo-hutniczej imienia stanisława staszica w krakowie podlega ocenom komisji akredytacyjnych: Polska Komisja Akredytacyjna, Komisja Akredytacyjna Uczelni Technicznych (KAUT), European Network for Accreditation of Engineering Education (ENAEE) oraz ABET (Accreditation Board for Engineering and Technology)'
+        )
+
+    # 61
+    def test_61_1(self):
+        self.check_phrase_response(
+            'jakie formy pomocy i wsparcia proponowane są w ramach programu adapter',
+            'w ramach programu adapter proponowane są dwie niezależne od siebie formy pomocy i wsparcia: cykl warsztatów oraz indywidualne spotkania w Punkcie Konsultacyjnym, w trakcie których promowane są odpowiednie postawy studenckie i sposoby redukcji czynników ryzyka'
+        )
+
+    # 62
+    def test_62_1(self):
+        self.check_phrase_response(
+            'jakie jest cel studium doskonalenia dydaktycznego',
+            'Celem Studium doskonalenia dydaktycznego powołanego na wydziale humanistycznym jest podnoszenie jakości prowadzonych zajęć dydaktycznych przez asystentów, lektorów, instruktorów zatrudnionych w AGH, a także doktorantów pierwszego roku studiów poprzez zobowiązanie do odbycia 75-godzinnego kursu kształcenia pedagogicznego'
+        )
+
+    # 63
+    def test_63_1(self):
+        self.check_phrase_response(
+            'czym jest minimum kadrowe',
+            'Jednym z wielu, ale niezwykle ważnym wymogiem by prowadzić studia wyższe jest tak zwane minimum kadrowe, czyli minimalna liczba i kwalifikacje nauczycieli akademickich zatrudnionych w pełnym wymiarze czasu'
+        )
+
+    # 64
+    def test_64_1(self):
+        self.check_phrase_response(
+            'jaki wydział otrzymał status krajowego naukowego ośrodka wiodącego',
+            'w lipcu 2012 roku konsorcjum kierowane przez wydział fizyki i informatyki stosowanej agh jako pierwsze w kraju otrzymało status krajowego naukowego ośrodka wiodącego (know) w dziedzinie nauk fizycznych'
+        )
+
+    def test_64_2(self):
+        self.check_phrase_response(
+            'kiedy wydział fizyki i informatyki stosowanej otrzymał status krajowego naukowego ośrodka wiodącego',
+            'w lipcu 2012 roku konsorcjum kierowane przez wydział fizyki i informatyki stosowanej agh jako pierwsze w kraju otrzymało status krajowego naukowego ośrodka wiodącego (know) w dziedzinie nauk fizycznych'
+        )
+
+    def test_64_3(self):
+        self.check_phrase_response(
+            'czym jest know',
+            'know (krajowy naukowy ośrodek wiodący) to pierwszy w polsce program wspierania najlepszych jednostek naukowych'
+        )
+
+    def test_64_4(self):
+        self.check_phrase_response(
+            'czym jest krajowy naukowy ośroodek wiodący',
+            'know (krajowy naukowy ośrodek wiodący) to pierwszy w polsce program wspierania najlepszych jednostek naukowych'
+        )
+
+    def test_64_5(self):
+        self.check_phrase_response(
+            'co gwarantuje status know',
+            'status know gwarantuje specjalne dofinansowanie w latach 2012-2017 przeznaczone na wzmocnienie potencjału naukowego i badawczego, rozwój kadry naukowej, kreowanie atrakcyjnych warunków pracy badawczej, budowanie silnej i rozpoznawalnej marki, a także na wyższe wynagrodzenia naukowców czy zatrudnienie w polsce zagranicznych uczonych'
+        )
+
+    # 65
+    def test_65_1(self):
+        self.check_phrase_response(
+            'co jest miernikiem poziomu zaawansowania pracowni uczelnianej',
+            'miejsce publikacji wyników badań jest stosowanym w uczelni miernikiem poziomu zaawansowania pracowni'
+        )
+
+    def test_65_2(self):
+        self.check_phrase_response(
+            'gdzie publikowane są wyniki badań dokonanych w laboratoriach agh',
+            'wyniki badań dokonanych w laboratoriach agh publikowane są w najlepszych czasopismach o zasięgu światowym'
+        )
+
+    def test_65_3(self):
+        self.check_phrase_response(
+            'jakie typu laboratoriów funkcjonują w agh',
+            'oprócz laboratoriów badawczych w agh funkcjonują także laboratoria technologiczno-naukowe o charakterze usługowym'
+        )
+
+    def test_65_4(self):
+        self.check_phrase_response(
+            'iloma laboratoriami dysponuje uczelnia',
+            'uczelnia dysponuje ponad 700 laboratoriami'
+        )
+
+    def test_65_5(self):
+        self.check_phrase_response(
+            'co jest niezbędne w drodze do naukowego sukcesu',
+            'w drodze do naukowego sukcesu niezbędnym narzędziem jest nowoczesna aparatura, stanowiąca kluczowe wsparcie dla prowadzonych badań'
+        )
+
+    def test_65_6(self):
+        self.check_phrase_response(
+            'jakie są przykłądy używania nowoczesnej aparatury w badaniach naukowych',
+            'przykładami używania w badaniach naukowych nowoczesnej aparatury mogą być najpotężniejsze w tej części europy mikroskopy do badania struktury metali, czy tak zwana sztywna maszyna wytrzymałościowa, pozwalająca precyzyjnie badać krytyczne dla bezpiecznego górnictwa procesy pękania i kruszenia skał, mikroskopy elektronowe, aparatury do kompleksowych badań ciał stałych, a w szczególności ich powierzchni, spektrometry masowe, liczne urządzenia do badań środowiskowych i tym podobne'
+        )
+
+    def test_65_7(self):
+        self.check_phrase_response(
+            'jaka jest najbardziej unikatowa w skali świata aparatura stosowana w agh',
+            'najbardziej unikatowa w skali światowej aparatura stosowana w agh to: jeden z kilku najpotężniejszych na świecie – analityczny transmisyjny mikroskop elektronowy (s)tem fei titancubed g-2 60-300, a także rentgenowski fluorescencyjny mikroskop konfokalny'
+        )
+
+    def test_65_8(self):
+        self.check_phrase_response(
+            'czym jest kopalnia doświadczalna',
+            'w agh znajduje się kopalnia doświadczalna – unikatowe laboratorium badawczo-dydaktyczne'
+        )
+
+    def test_65_9(self):
+        self.check_phrase_response(
+            'czym jest komora bezechowa',
+            'w agh znajduje się komora bezechowa, będąca jednym z najcichszych miejsc w polsce'
+        )
+
+    def test_65_10(self):
+        self.check_phrase_response(
+            'gdzie znajduje się wykaz aparatury naukowo-badawczej',
+            'wykaz aparatury znajduje się w sieciowym katalogu aparatury naukowo-badawczej i stanowisk badawczych; zawiera on podstawowe informacje o sprzęcie, którym dysponują poszczególne jednostki uczelni'
+        )
+
+    def test_65_11(self):
+        self.check_phrase_response(
+            'co zawiera wykaz aparatury naukowo-badawczej i stanowisk badawczych',
+            'wykaz aparatury znajduje się w sieciowym katalogu aparatury naukowo-badawczej i stanowisk badawczych; zawiera on podstawowe informacje o sprzęcie, którym dysponują poszczególne jednostki uczelni'
+        )
+
+    # 66
+    def test_66_1(self):
+        self.check_phrase_response(
+            'w czym znajduje odzwierciedlenie aktywność naukowa pracowników agh',
+            'aktywność naukowa pracowników agh znajduje odzwierciedlenie między innymi w publikowanych rocznie ponad 1600 artykułach w czasopismach naukowych krajowych i zagranicznych oraz około 2000 referatów na konferencjach, z tego około 600 publikowanych w czasopismach o zasięgu międzynarodowym'
+        )
+
+    def test_66_2(self):
+        self.check_phrase_response(
+            'ile rocznie jest publikowanych artykułów w czasopismach naukowych',
+            'aktywność naukowa pracowników agh znajduje odzwierciedlenie między innymi w publikowanych rocznie ponad 1600 artykułach w czasopismach naukowych krajowych i zagranicznych oraz około 2000 referatów na konferencjach, z tego około 600 publikowanych w czasopismach o zasięgu międzynarodowym'
+        )
+
+    def test_66_3(self):
+        self.check_phrase_response(
+            'ile rocznie jest publikowanych artykółów w czasopismach o zasięgu międzynarodowym',
+            'aktywność naukowa pracowników agh znajduje odzwierciedlenie między innymi w publikowanych rocznie ponad 1600 artykułach w czasopismach naukowych krajowych i zagranicznych oraz około 2000 referatów na konferencjach, z tego około 600 publikowanych w czasopismach o zasięgu międzynarodowym'
+        )
+
+    # 67
+    def test_67_1(self):
+        self.check_phrase_response(
+            'w czym wyraża się potencjał innowacyjny agh',
+            'potencjał innowacyjny agh wyraża się w wymiarze własności intelektualnej, która obejmuje patenty, znaki towarowe, wzory użytkowe oraz projekty wynalazcze'
+        )
+
+    def test_67_2(self):
+        self.check_phrase_response(
+            'co zrobiono by ułatwić transfer innowacyjnych technologii do przedsiębiorstw',
+            'w celu stworzenia mechanizmów ułatwiających i intensyfikujących transfer innowacyjnych technologii i wiedzy z agh do przedsiębiorców i innych instytucji zewnętrznych powołano centrum transferu technologii agh'
+        )
+
+    # 68
+    def test_68_1(self):
+        self.check_phrase_response(
+            'jakie możliwości stwarzają studenckie koła naukowe',
+            'studenckie koła naukowe stwarzają możliwość poszerzania wiedzy i umiejętności pod kierunkiem najlepszych naukowców'
+        )
+
+    def test_68_2(self):
+        self.check_phrase_response(
+            'ile kół naukowych działa w agh',
+            'obecnie w agh działa łącznie blisko 120 studenckich kół naukowych'
+        )
+
+    def test_68_3(self):
+        self.check_phrase_response(
+            'jakie są najczęściej stosowane formy działalności kół naukowych',
+            'do najczęściej stosowanych form działalności kół naukowych można zaliczyć: cykliczne spotkania szkoleniowe; uczestnictwo w badaniach teoretycznych i doświadczalnych prowadzonych przez katedry i zakłady; organizację konferencji, seminariów i obozów naukowych; udział w konferencjach krajowych i międzynarodowych, w studenckiej wymianie międzynarodowej; wyjazdy badawczo-szkoleniowe, naukowo-turystyczne i rekreacyjne'
+        )
+
+    # 69
+    def test_69_1(self):
+        self.check_phrase_response(
+            'ile projektów realizuje uczelnia wspólnie z partnerami zagranicznymi',
+            'uczelnia realizuje ponad 100 projektów prowadzonych wspólnie z partnerami zagranicznymi między innymi w ramach następujących programów: programy ramowe ue w tym horyzont 2020, kic innoenergy, kic rawmaterials, europejska agencja kosmiczna, fundusz wyszehradzki, fundusz węgla i stali, eureka, cost, era, programy współpracy bilateralnej, erasmus+, europejski fundusz społeczny po wer'
+        )
+
+    def test_69_2(self):
+        self.check_phrase_response(
+            'w ramach jakich programów uczelnia realizuje projekty z partnerami zagranicznymi',
+            'uczelnia realizuje ponad 100 projektów prowadzonych wspólnie z partnerami zagranicznymi między innymi w ramach następujących programów: programy ramowe ue w tym horyzont 2020, kic innoenergy, kic rawmaterials, europejska agencja kosmiczna, fundusz wyszehradzki, fundusz węgla i stali, eureka, cost, era, programy współpracy bilateralnej, erasmus+, europejski fundusz społeczny po wer'
+        )
+
+    def test_69_3(self):
+        self.check_phrase_response(
+            'ile umów z zagranicznymi uniwersytetami posiada akademia',
+            'akademia posiada ponad 250 umów generalnych z zagranicznymi uniwersytetami, politechnikami i instytutami badawczymi w europie, ameryce północnej i południowej oraz azji, dotyczących wielokierunkowych działań w zakresie kształcenia i badań naukowych, a także ponad 450 umów z uczelniami w ramach programu erasmus+'
+        )
+
+    def test_69_4(self):
+        self.check_phrase_response(
+            'ile umów posiada uczelnia w ramach programu erasmus+',
+            'akademia posiada ponad 250 umów generalnych z zagranicznymi uniwersytetami, politechnikami i instytutami badawczymi w europie, ameryce północnej i południowej oraz azji, dotyczących wielokierunkowych działań w zakresie kształcenia i badań naukowych, a także ponad 450 umów z uczelniami w ramach programu erasmus+'
+        )
+
+    def test_69_5(self):
+        self.check_phrase_response(
+            'ile umów o podwójnym dyplomowaniu posiada agh ',
+            'agh jest stroną 26 umów o podwójnym dyplomowaniu z prestiżowymi uczelniami niemiec, francji, japonii, ukrainy oraz finlandii, w ramach których studenci zdobywają wiedzę na dwóch uczelniach wyższych równolegle'
+        )
+
+    def test_69_6(self):
+        self.check_phrase_response(
+            'czy agh posiada umowy z zakładami przemysłowymi',
+            'akademia posiada umowy z zakładami przemysłowymi, w tym dużymi międzynarodowymi korporacjami, przedmiotem umów jest współpraca naukowa, badawcza i edukacyjna, a celem wszechstronne wykorzystanie wzajemnych możliwości partnerów'
+        )
+
+    def test_69_7(self):
+        self.check_phrase_response(
+            'co jest przedmiotem umów akademii z zakładami przemysłowymi',
+            'akademia posiada umowy z zakładami przemysłowymi, w tym dużymi międzynarodowymi korporacjami, przedmiotem umów jest współpraca naukowa, badawcza i edukacyjna, a celem wszechstronne wykorzystanie wzajemnych możliwości partnerów'
+        )
+
+    # 70
+    def test_70_1(self):
+        self.check_phrase_response(
+            'czy agh dysponuje ofertą współpracy z partnerami zewnętrznymi',
+            'agh dysponuje szeroką ofertą obszarów współpracy z partnerami zewnętrznymi'
+        )
+
+    def test_70_2(self):
+        self.check_phrase_response(
+            'czy uczelnia jest silnie związana z przemysłem',
+            'Uczelnia od momentu powstania jest silnie związana z przemysłem, co skutkuje uczestnictwem przedstawicieli firm w życiu Akademii'
+        )
+
+    def test_70_3(self):
+        self.check_phrase_response(
+            'w jakim celu powołano radę społeczną i konwent agh',
+            'W celu uczestnictwa przedstawicieli firm w życiu akademii powołano Radę Społeczną AGH oraz Konwent AGH'
+        )
+
+    def test_70_4(self):
+        self.check_phrase_response(
+            'co jest zadaniem konwentu i rady społecznej agh',
+            'Zadaniem konwentu oraz rady społecznej agh jest między innymi kształtowanie modelu kształcenia pod kątem przyszłego pracodawcy oraz opiniowanie kierunków działalności naukowo-badawczej AGH'
+        )
+
+    def test_70_5(self):
+        self.check_phrase_response(
+            'czym zajmuje się dział współpracy z administracją i gospodarką',
+            'Dział Współpracy z Administracją i Gospodarką jest jednostką prowadzącą działania wspierające współpracę społeczności uczelnianej z przedsiębiorcami, instytucjami otoczenia  biznesu, jednostkami administracji państwowej i samorządowej, uczelniami oraz instytucjami badawczo-rozwojowymi'
+        )
+
+    def test_70_6(self):
+        self.check_phrase_response(
+            'przez jaką jednostkę koordynowana jest współpraca z instytucjami naukowymi i edukacyjnymi za granicą',
+            'Współpraca z instytucjami naukowymi i edukacyjnymi za granicą koordynowana jest przez Dział Współpracy z Zagranicą'
+        )
+
+    def test_70_7(self):
+        self.check_phrase_response(
+            'czym zajmuje się dział współpracy z zagranicą',
+            'Współpraca z instytucjami naukowymi i edukacyjnymi za granicą koordynowana jest przez Dział Współpracy z Zagranicą'
+        )
+
+    # 71
+    def test_71_1(self):
+        self.check_phrase_response(
+            'jaki dział zajmuje się funduszami strukturalnymi w agh',
+            'Funduszami strukturalnymi w AGH zajmuje się Dział Obsługi Funduszy Strukturalnych COP AGH - w obszarze Europejskiego Funduszu Rozwoju Regionalnego (EFRR) oraz w obszarze Europejskiego Funduszu Społecznego (EFS)'
+        )
+
+    def test_71_2(self):
+        self.check_phrase_response(
+            'czym zajmuje się dział obsługi funduszy strukturalnych',
+            'Funduszami strukturalnymi w AGH zajmuje się Dział Obsługi Funduszy Strukturalnych COP AGH - w obszarze Europejskiego Funduszu Rozwoju Regionalnego (EFRR) oraz w obszarze Europejskiego Funduszu Społecznego (EFS)'
+        )
+
+    def test_71_3(self):
+        self.check_phrase_response(
+            'czym zajmuje się centrum obsługi projektów agh',
+            'centrum obsługi projektów agh zajmuje się między innymi obsługą projektów naukowych, badawczych i edukacyjnych finansowanych ze źródeł zewnętrznych: krajowych, unijnych oraz międzynarodowych'
+        )
+
+    def test_71_4(self):
+        self.check_phrase_response(
+            'jaka jednostka w agh zajmuje się obsługą projektów naukowych badawczych i edukacyjnych finansowanych ze źródeł zewnętrznych',
+            'centrum obsługi projektów agh zajmuje się między innymi obsługą projektów naukowych, badawczych i edukacyjnych finansowanych ze źródeł zewnętrznych: krajowych, unijnych oraz międzynarodowych'
+        )
+
+    # 72
+    def test_72_1(self):
+        self.check_phrase_response(
+            'co należy do zadań działu obsługi programów międzynarodowych',
+            'do zadań działu obsługi programów międzynarodowych (dopm) należy między innymi pozyskiwanie i rozpowszechnianie informacji na temat możliwości i procedur finansowania projektów z udziałem partnerów zagranicznych z programów międzynarodowych, obsługa formalno-prawna aplikowania i realizacji projektów międzynarodowych, prowadzenie doradztwa i konsultacji dla pracowników agh, tworzenie i bieżąca aktualizacja baz danych w zakresie pozyskiwania środków pozabudżetowych'
+        )
+
+    def test_72_2(self):
+        self.check_phrase_response(
+            'czym jest dział obsługi programów międzynarodowych',
+            'do zadań działu obsługi programów międzynarodowych (dopm) należy między innymi pozyskiwanie i rozpowszechnianie informacji na temat możliwości i procedur finansowania projektów z udziałem partnerów zagranicznych z programów międzynarodowych, obsługa formalno-prawna aplikowania i realizacji projektów międzynarodowych, prowadzenie doradztwa i konsultacji dla pracowników agh, tworzenie i bieżąca aktualizacja baz danych w zakresie pozyskiwania środków pozabudżetowych'
+        )
+
+    def test_72_3(self):
+        self.check_phrase_response(
+            'jakie są możliwości uzyskania środków finansowych potrzebnych na realizację projektów',
+            'programy ramowe, kic, inicjatywy wspólnotowe to niektóre z możliwości uzyskania środków finansowych potrzebnych na realizację projektów'
+        )
+
+    # 73
+    def test_73_1(self):
+        self.check_phrase_response(
+            'kiedy powołano centrum transferu technologii agh',
+            'w celu stworzenia mechanizmów ułatwiających i intensyfikujących transfer innowacyjnych technologii z agh do przedsiębiorców i innych instytucji zewnętrznych, w 2007 roku powołano centrum transferu technologii akademii górniczo-hutniczej w krakowie (ctt agh)'
+        )
+
+    def test_73_2(self):
+        self.check_phrase_response(
+            'w jakim celu powołano centrum transferu technologii agh',
+            'w celu stworzenia mechanizmów ułatwiających i intensyfikujących transfer innowacyjnych technologii z agh do przedsiębiorców i innych instytucji zewnętrznych, w 2007 roku powołano centrum transferu technologii akademii górniczo-hutniczej w krakowie (ctt agh)'
+        )
+
+    def test_73_3(self):
+        self.check_phrase_response(
+            'co jest zadaniem centrum transferu technologii agh',
+            'Zadaniem centrum transferu technologii CTT AGH jest wsparcie procesów komercjalizacji i transferu innowacyjnych technologii i wiedzy'
+        )
+
+    def test_73_4(self):
+        self.check_phrase_response(
+            'w jakich obszarach działa centrum transferu technologii agh',
+            'Centrum Transferu Technologii AGH działa w obszarach marketingu nauki w środowisku przedsiębiorców, ochrony własności intelektualnej oraz obsługi i finansowania transferu technologii'
+        )
+
+    def test_73_5(self):
+        self.check_phrase_response(
+            'co jest zadaniem spółki krakowskie centrum innowacyjnych technologii innoagh',
+            'głównym, choć nie jedynym zadaniem spółki krakowskie centrum innowacyjnych technologii innoagh jest obejmowanie w miejsce uczelni udziałów w nowych firmach, powstających na bazie wyników prac badawczych oraz ogólnej wiedzy pochodzącej z jednostek naukowo-badawczych, w tak zwany spółkach spin-off'
+        )
+
+    def test_73_6(self):
+        self.check_phrase_response(
+            'jaki jest cel spółki krakowskie centrum innowacyjnych technologii innoagh',
+            'celem spółki krakowskie centrum innowacyjnych technologii innoagh jest doradztwo i wsparcie dla pracowników naukowych zainteresowanych zakładaniem innowacyjnych przedsiębiorstw tworzonych w oparciu o własność intelektualną powstającą na uczelni'
+        )
+
+    def test_73_7(self):
+        self.check_phrase_response(
+            'czym jest spółka krakowskie centrum innowacyjnych technologii innoagh',
+            'celem spółki krakowskie centrum innowacyjnych technologii innoagh jest doradztwo i wsparcie dla pracowników naukowych zainteresowanych zakładaniem innowacyjnych przedsiębiorstw tworzonych w oparciu o własność intelektualną powstającą na uczelni'
+        )
+
+    # 74
+    def test_74_1(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem acru',
+            'AGH jest członkiem ACRU (Association of the Carpathian Region Universities)'
+        )
+
+    def test_74_2(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Association of the Carpathian Region Universities',
+            'AGH jest członkiem ACRU (Association of the Carpathian Region Universities)'
+        )
+
+    def test_74_3(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem eua',
+            'AGH jest członkiem EUA (European University Association)'
+        )
+
+    def test_74_4(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem European University Association',
+            'AGH jest członkiem EUA (European University Association)'
+        )
+
+    def test_74_5(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem iau',
+            'AGH jest członkiem IAU (International Association of Universities)'
+        )
+
+    def test_74_6(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem International Association of Universities',
+            'AGH jest członkiem IAU (International Association of Universities)'
+        )
+
+    def test_74_7(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem sefi',
+            'AGH jest członkiem SEFI ( Société Européenne pour la Formation des Ingénieurs)'
+        )
+
+    def test_74_8(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Société Européenne pour la Formation des Ingénieurs',
+            'AGH jest członkiem SEFI ( Société Européenne pour la Formation des Ingénieurs)'
+        )
+
+    def test_74_9(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem aeua',
+            'AGH jest członkiem AEUA (Arab and European Universities Association)'
+        )
+
+    def test_74_10(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Arab and European Universities Association',
+            'AGH jest członkiem AEUA (Arab and European Universities Association)'
+        )
+
+    def test_74_11(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem KMM-VIN AISBL',
+            'AGH jest członkiem KMM-VIN AISBL (European Virtual Institute on Knowledge-based Multifunctional Material AISBL)'
+        )
+
+    def test_74_12(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem European Virtual Institute on Knowledge-based Multifunctional Material AISBL',
+            'AGH jest członkiem KMM-VIN AISBL (European Virtual Institute on Knowledge-based Multifunctional Material AISBL)'
+        )
+
+    def test_74_13(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem C-MAC NSU NPO',
+            'AGH jest członkiem C-MAC NSU NPO (European Intigrated Centre for the Development of New Metallic Alloys and Compounds)'
+        )
+
+    def test_74_14(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem European Intigrated Centre for the Development of New Metallic Alloys and Compounds',
+            'AGH jest członkiem C-MAC NSU NPO (European Intigrated Centre for the Development of New Metallic Alloys and Compounds)'
+        )
+
+    def test_74_15(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem TIME',
+            'AGH jest członkiem TIME (Top Industrial Managers for Europe)'
+        )
+
+    def test_74_16(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Top Industrial Managers for Europe',
+            'AGH jest członkiem TIME (Top Industrial Managers for Europe)'
+        )
+
+    def test_74_17(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Magalhaes Network',
+            'AGH jest członkiem Magalhaes Network'
+        )
+
+    def test_74_18(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem KIC InnoEnergy',
+            'AGH jest członkiem KIC InnoEnergy (Knowledge Innovation Community)'
+        )
+
+    def test_74_19(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Knowledge Innovation Community InnoEnergy',
+            'AGH jest członkiem KIC InnoEnergy (Knowledge Innovation Community)'
+        )
+
+    def test_74_20(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem CEEPUS',
+            'AGH jest członkiem CEEPUS (Central European Exchange Program for University Studies)'
+        )
+
+    def test_74_21(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Central European Exchange Program for University Studies',
+            'AGH jest członkiem CEEPUS (Central European Exchange Program for University Studies)'
+        )
+
+    def test_74_22(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem IROs Forum',
+            'AGH jest członkiem IROs Forum (International Relations Offices Forum)'
+        )
+
+    def test_74_23(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem International Relations Offices Forum',
+            'AGH jest członkiem IROs Forum (International Relations Offices Forum)'
+        )
+
+    def test_74_24(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem NAFSA',
+            'AGH jest członkiem NAFSA (Association of International Educators)'
+        )
+
+    def test_74_25(self):
+        self.check_phrase_response(
+            'czy agh jest członkiem Association of International Educators',
+            'AGH jest członkiem NAFSA (Association of International Educators)'
+        )
+
+    # 75
+    def test_75_1(self):
+        self.check_phrase_response(
+            'jakiemu standardowi odpowiada system punktowy stosowany w uczelni',
+            'system punktowy stosowany w uczelni odpowiada standardowi ects (european credit transfer system)'
+        )
+
+    def test_75_2(self):
+        self.check_phrase_response(
+            'czy uczelnia stosuje standard ects',
+            'system punktowy stosowany w uczelni odpowiada standardowi ects (european credit transfer system)'
+        )
+
+    def test_75_3(self):
+        self.check_phrase_response(
+            'czy uczelnia stosuje standard european credit transfer system',
+            'system punktowy stosowany w uczelni odpowiada standardowi ects (european credit transfer system)'
+        )
+
+    # 76
+    def test_76_1(self):
+        self.check_phrase_response(
+            'kto został wybrany na stanowisko rzecznika praw studenta agh',
+            'na stanowisko rzecznika praw studenta została powołana doktor habilitowany inżynier manuela reben, profesor agh'
+        )
+
+    def test_76_2(self):
+        self.check_phrase_response(
+            'kto tworzy zespół rzecznika praw studenta',
+            'zespół rzecznika praw studenta tworzą: doktor habilitowany inżynier Manuela Reben, profesor AGH – pracownik Wydziału Inżynierii Materiałowej i Ceramiki, Kierownik Katedry Technologii Szkła i Powłok Amorficznych; Marzena Stupkiewicz (asystentka rzecznika) – studentka czwartego roku z Wydziału Inżynierii Metali i Informatyki Przemysłowej; Mikołaj Gralczyk (asystent rzecznika) – student drugiego roku drugiego stopnia studiów na Wydziale Fizyki i Informatyki Stosowanej'
+        )
+
+    def test_76_3(self):
+        self.check_phrase_response(
+            'przez kogo został powołany rzecznik praw studenta',
+            'rzecznik praw studenta został powołany przez rektora agh, a jego głównym zadaniem jest pomoc studentom w egzekwowaniu ich praw, w tym między innymi w sprawach dotyczących regulaminu studiów bądź stypendiów'
+        )
+
+    def test_76_4(self):
+        self.check_phrase_response(
+            'jakie jest główne zadanie rzecznika praw studenta',
+            'rzecznik praw studenta został powołany przez rektora agh, a jego głównym zadaniem jest pomoc studentom w egzekwowaniu ich praw, w tym między innymi w sprawach dotyczących regulaminu studiów bądź stypendiów'
+        )
+
+    # 77
+    def test_77_1(self):
+        self.check_phrase_response(
+            'kiedy potrwa semestr zimowy w obecnym roku akademickim',
+            'Semestr zimowy obecnego roku akademickiego potrwa od 1 października do 16 lutego'
+        )
+
+    def test_77_2(self):
+        self.check_phrase_response(
+            'kiedy potrwają zajęcia semestru zimowego w obecnym roku akademickim',
+            'zajęcia semestru zimowego obecnego roku akademickiego potrwają od 1 października do 28 stycznia'
+        )
+
+    def test_77_3(self):
+        self.check_phrase_response(
+            'kiedy potrwają wakacje zimowe w obecnym roku akademickim',
+            'wakacje zimowe (ferie świąteczne) w obecnym roku akademickim potrwają od 23 grudnia do 2 stycznia'
+        )
+
+    def test_77_4(self):
+        self.check_phrase_response(
+            'kiedy potrwają ferie świąteczne zimowe w obecnym roku akademickim',
+            'wakacje zimowe (ferie świąteczne) w obecnym roku akademickim potrwają od 23 grudnia do 2 stycznia'
+        )
+
+    def test_77_5(self):
+        self.check_phrase_response(
+            'kiedy potrwa zimowa sesja egzaminacyjna część podstawowa w obecnym roku akademickim',
+            'zimowa sesja egzaminacyjna – część podstawowa w obecnym roku akademickim potrwa od 29 stycznia do 9 lutego'
+        )
+
+    def test_77_6(self):
+        self.check_phrase_response(
+            'kiedy potrwa zimowa sesja egzaminacyjna część poprawkowa w obecnym roku akademickim',
+            'zimowa sesja egzaminacyjna – część poprawkowa w obecnym roku akademickim potrwa od 10 lutego do 16 lutego'
+        )
+
+    def test_77_7(self):
+        self.check_phrase_response(
+            'kiedy będzie przerwa międzysemestralna w obecnym roku akademickim',
+            'przerwa międzysemestralna w obecnym roku akademickim potrwa od 17 lutego do 23 lutego'
+        )
+
+    def test_77_8(self):
+        self.check_phrase_response(
+            'kiedy potrwa semestr letni w obecnym roku akademickim',
+            'semestr letni w obecnym roku akademickim potrwa od 24 lutego do 30 września'
+        )
+
+    def test_77_9(self):
+        self.check_phrase_response(
+            'kiedy potrwają zajęcia semestru letniego w obecnym roku akademickim',
+            'zajęcia semestru letniego w obecnym roku akademickim potrwają od 24 lutego do 14 czerwca'
+        )
+
+    def test_77_10(self):
+        self.check_phrase_response(
+            'kiedy będą wakacje wiosenne w obecnym roku akademickim',
+            'wakacje wiosenne (ferie świąteczne) w obecnym roku akademickim potrwają od 9 kwietnia do 14 kwietnia'
+        )
+
+    def test_77_11(self):
+        self.check_phrase_response(
+            'kiedy będą ferie świąteczne wiosenne w obecnym roku akademickim',
+            'wakacje wiosenne (ferie świąteczne) w obecnym roku akademickim potrwają od 9 kwietnia do 14 kwietnia'
+        )
+
+    def test_77_12(self):
+        self.check_phrase_response(
+            'kiedy będzie letnia sesja egzaminacyjna część podstawowa w obecnym roku akademickim',
+            'letnia sesja egzaminacyjna – część podstawowa w obecnym roku akademickim potrwa od 15 czerwca do 30 czerwca'
+        )
+
+    def test_77_13(self):
+        self.check_phrase_response(
+            'kiedy będą wakacje letnie w obecnym roku akademickim',
+            'wakacje letnie w obecnym roku akademickim potrwają od 1 lipca do 31 sierpnia'
+        )
+
+    def test_77_14(self):
+        self.check_phrase_response(
+            'kiedy będzie letnia sesja egzaminacyjna część poprawkowa w obecnym roku akademickim',
+            'letnia sesja egzaminacyjna – część poprawkowa w obecnym roku akademickim potrwa od 1 września do 15 września'
+        )
+
+    def test_77_15(self):
+        self.check_phrase_response(
+            'w jakich terminach odbędą się zajęcia według planu dla innego dnia w obecnym roku akademickim',
+            'zajęcia odbywające się według planu innego dnia w obecnym roku akademickim w następujących terminach: 7 stycznia 2020 roku (wtorek) zajęcia odbywają się według harmonogramu zajęć ustalonych dla poniedziałku, 10 czerwca 2020 roku (środa) zajęcia odbywają się według harmonogramu zajęć ustalonego dla piątku'
+        )
+
+    def test_77_16(self):
+        self.check_phrase_response(
+            'jakie są dni ustawowo wolne od zajęć dydaktycznych',
+            'Dni ustawowo wolne od zajęć dydaktycznych: 1 listopada, 11 listopada, 1 stycznia, 6 stycznia, 1 maja, 3 maja, 11 czerwca'
+        )
+
+    def test_77_17(self):
+        self.check_phrase_response(
+            'jakie będą dni dodatkowo wolne od zajęć dydaktycznych w obecnym roku akademickim',
+            'Dni dodatkowo wolne od zajęć dydaktycznych w obecnym roku akademickim to: 18 października, 31 października, 12 czerwca'
+        )
+
+    def test_77_18(self):
+        self.check_phrase_response(
+            'kiedy przeprowadzane będą czynności związane z zakończeniem roku akademickiego 2019/2020',
+            'Okres od 16 do 30 września 2020 roku przeznaczony jest na przeprowadzenie czynności związanych z zakończeniem roku akademickiego 2019/2020 i rozpoczęciem roku akademickiego 2020/2021'
+        )
+
+    def test_77_19(self):
+        self.check_phrase_response(
+            'kiedy przeprowadzane będą czynności związane z rozpoczęciem roku akademickiego 2020/2021',
+            'Okres od 16 do 30 września 2020 roku przeznaczony jest na przeprowadzenie czynności związanych z zakończeniem roku akademickiego 2019/2020 i rozpoczęciem roku akademickiego 2020/2021'
+        )
+
+    # 78
+    def test_78_1(self):
+        self.check_phrase_response(
+            'co obejmuje system pomocy materialnej dla studentów agh',
+            'system pomocy materialnej dla studentów w akademii górniczo-hutniczej obejmuje wiele form stypendiów oraz zapomóg, w tym także dofinansowanie do wyżywienia w stołówkach agh'
+        )
+
+    def test_78_2(self):
+        self.check_phrase_response(
+            'gdzie dostępna jest informacja na temat stypendiów',
+            'informacja na temat stypendiów, zapomóg dostępna jest w dziekanatach oraz w Dziale Spraw Studenckich'
+        )
+
+    # 79
+    def test_79_1(self):
+        self.check_phrase_response(
+            'czym jest program AGH uczelnią przyjazną wobec osób niepełnosprawnych',
+            'Nasza Uczelnia od 2000 roku realizuje program „AGH uczelnią przyjazną wobec osób niepełnosprawnych”, którego celem jest kompleksowe rozwiązywanie problemów, z którymi zmagają się studenci z różnymi niepełnosprawnościami'
+        )
+
+    def test_79_2(self):
+        self.check_phrase_response(
+            'jaki jest cel programu AGH uczelnią przyjazną wobec osób niepełnosprawnych',
+            'Nasza Uczelnia od 2000 roku realizuje program „AGH uczelnią przyjazną wobec osób niepełnosprawnych”, którego celem jest kompleksowe rozwiązywanie problemów, z którymi zmagają się studenci z różnymi niepełnosprawnościami'
+        )
+
+    def test_79_3(self):
+        self.check_phrase_response(
+            'kto koordynnuje działania na rzecz osób niepełnosprawnych',
+            'Działania AGH na rzecz osób niepełnosprawnych koordynuje Biuro do spraw Osób Niepełnosprawnych, które również wspiera inicjatywy Zrzeszenia Studentów Niepełnosprawnych - pierwszej tego typu organizacji w Polsce'
+        )
+
+    def test_79_4(self):
+        self.check_phrase_response(
+            'ilu studentów z niepełnosprawnościami studiuje na agh',
+            'W naszej społeczności akademickiej studiuje znacząca liczba (około 500) studentów o różnym stopniu i rodzaju niepełnosprawności'
+        )
+
+    def test_79_5(self):
+        self.check_phrase_response(
+            'jak rozwija się oferta wsparcia studentów i doktorantów z niepełnosprawnościami',
+            'Z roku na rok oferta wsparcia studentów i doktorantów z niepełnosprawnościami ulega rozszerzeniu, a działania uczelni stają się coraz bardziej profesjonalne'
+        )
+
+    # 80
+    def test_80_1(self):
+        self.check_phrase_response(
+            'w jakich obszarach działa program adapter',
+            'Program ADAPTER powstał w odpowiedzi na oczekiwania studentów z zakresu potrzeb w obszarach: zdrowotnym, społecznym, psychologicznym'
+        )
+
+    def test_80_2(self):
+        self.check_phrase_response(
+            'co jest celem programu adapter',
+            'Celem Programu adapter jest promocja zdrowych i aktywnych postaw w środowisku akademickim, a także udzielanie wsparcia psychologicznego osobom doświadczającym trudności w adaptacji do warunków życia studenckiego'
+        )
+
+    def test_80_3(self):
+        self.check_phrase_response(
+            'jakie warsztaty prowadzone sa w ramach programu adapter',
+            'W ramach Programu adapter prowadzone są warsztaty rozwijające umiejętności psychologiczne i interpersonalne oraz Punkt Konsultacyjny z dyżurem psychologa'
+        )
+
+    def test_80_4(self):
+        self.check_phrase_response(
+            'czy program adapter zapewnia dyżur psychologa',
+            'W ramach Programu adapter prowadzone są warsztaty rozwijające umiejętności psychologiczne i interpersonalne oraz Punkt Konsultacyjny z dyżurem psychologa'
+        )
+
+    # 81
+    def test_81_1(self):
+        self.check_phrase_response(
+            'czym są juwenalia',
+            'Juwenalia to najważniejsze wydarzenie roku akademickiego, kiedy uczelnią i miastem rządzą studenci: Barwny pochód na Rynek Główny, koncerty, kabaretony, imprezy sportowe to tylko część juwenaliowych atrakcji'
+        )
+
+    def test_81_2(self):
+        self.check_phrase_response(
+            'jakie są juwenaliowe atrakcje',
+            'Juwenalia to najważniejsze wydarzenie roku akademickiego, kiedy uczelnią i miastem rządzą studenci: Barwny pochód na Rynek Główny, koncerty, kabaretony, imprezy sportowe to tylko część juwenaliowych atrakcji'
+        )
+
+    def test_81_3(self):
+        self.check_phrase_response(
+            'czym są beanalia',
+            'Beanalia są to otrzęsiny studentów I roku; podczas tej imprezy nowo przyjęci studenci wstępują w pełni w szeregi braci studenckiej'
+        )
+
+    def test_81_4(self):
+        self.check_phrase_response(
+            'czym jest babski comber',
+            'Babski comber to stara krakowska tradycja Akademii Górniczo-Hutniczej, wiąże się ona z Barbórką, czyli świętem stanu górniczego; Podczas niego kobiety biesiadują na Babskim combrze, natomiast mężczyźni świętują w ramach Karczmy piwnej'
+        )
+
+    def test_81_5(self):
+        self.check_phrase_response(
+            'jakie są tradycje związane z barbórką',
+            'Babski comber to stara krakowska tradycja Akademii Górniczo-Hutniczej, wiąże się ona z Barbórką, czyli świętem stanu górniczego; Podczas niego kobiety biesiadują na Babskim combrze, natomiast mężczyźni świętują w ramach Karczmy piwnej'
+        )
+
+    def test_81_6(self):
+        self.check_phrase_response(
+            'jakie są przykładowe bale organizowane przez wydziały',
+            'Ważnym elementem tradycji są bale organizowane cyklicznie przez Wydziały, na przykład Bal Ceramika, Elektryka, Mechanika'
+        )
+
+    # 82
+    def test_82_1(self):
+        self.check_phrase_response(
+            'gdzie można zadbać o swoją kondycję',
+            'O swoją kondycję zadbać można, korzystając z następujących obiektów: basen, nowoczesne siłownie, łaźnia parowa, boisko piłkarskie, nowoczesna hala ze sztuczną nawierzchnią i wiele innych'
+        )
+
+    def test_82_2(self):
+        self.check_phrase_response(
+            'ile sekcji sportowych ma azs agh',
+            'Uczelniany Klub AZS AGH to największy w środowisku akademickim Krakowa i jeden z największych w Polsce klub sportowy mający aż 20 sekcji sportowych'
+        )
+
+    def test_82_3(self):
+        self.check_phrase_response(
+            'czym jest klub azs agh',
+            'Uczelniany Klub AZS AGH to największy w środowisku akademickim Krakowa i jeden z największych w Polsce klub sportowy mający aż 20 sekcji sportowych'
+        )
+
+    def test_82_4(self):
+        self.check_phrase_response(
+            'jakie wydarzenia organizuje azs agh',
+            'Klub AZS AGH wspólnie ze Studium Wychowania Fizycznego i Sportu (SWFiS) organizuje między innymi szkoleniowe obozy narciarskie, żeglarskie, kajakowe, turystykę górską, Dzień Sportu AGH, Mistrzostwa AGH w narciarstwie alpejskim i snowboardzie, w tenisie stołowym, kolarstwie górskim i w pływaniu, a także turnieje z okazji Dnia Górnika i Dnia Hutnika'
+        )
+
+    def test_82_5(self):
+        self.check_phrase_response(
+            'jakie lokaty zajmują sportowcy azs agh',
+            'Najlepsi sportowcy Klubu AZS AGH biorą udział w rozgrywkach Małopolskiej Ligi Akademickiej, Akademickich Mistrzostwach Polski, Biegu Kościuszkowskim i innych zawodach, zajmując czołowe lokaty tak w środowisku krakowskim, jak i na arenie ogólnopolskiej'
+        )
+
+    # 83
+    def test_83_1(self):
+        self.check_phrase_response(
+            'czym jest program legia akademicka',
+            '„Legia Akademicka” to uruchomiony w 2017 roku przez MON pilotażowy program skierowany do studentów'
+        )
+
+    def test_83_2(self):
+        self.check_phrase_response(
+            'czym jest legia akademicka',
+            '„Legia Akademicka” to uruchomiony w 2017 roku przez MON pilotażowy program skierowany do studentów'
+        )
+
+    # 84
+    def test_84_1(self):
+        self.check_phrase_response(
+            'jakie są organizacje związane z kulturą studencką',
+            'Kultura studencka agh to między innymi organizacje: Chór i Orkiestra Smyczkowa „Con Fuoco” AGH; orkiestra reprezentacyjna agh; studencki klub taneczny agh; Zespół Pieśni i Tańca AGH „KRAKUS”'
+        )
+
+    # 85
+    def test_85_1(self):
+        self.check_phrase_response(
+            'czym jest con fuoco',
+            '„Con Fuoco” to uczelniany Chór i Orkiestra Smyczkowa Akademii Górniczo-Hutniczej'
+        )
+
+    def test_85_2(self):
+        self.check_phrase_response(
+            'w którym roku został założony zespół con fuoco',
+            'Zespół Con Fuoco został założony w 2009 roku'
+        )
+
+    def test_85_3(self):
+        self.check_phrase_response(
+            'ilu członków tworzy zepół con fuoco',
+            'Zespół con fuoco tworzy ponad 50 studentów i absolwentów uczelni'
+        )
+
+    def test_85_4(self):
+        self.check_phrase_response(
+            'kto jest dyrygentem chóru con fuoco',
+            'Dyrygentem chóru Con Fuoco jest Diana Mrugała-Gromek'
+        )
+
+    def test_85_5(self):
+        self.check_phrase_response(
+            'jakie utwory znajdują się w repertuarze chóru con fuoco',
+            'W repertuarze chóru Con Fuoco znajduje się wiele utworów, od średniowiecznych psalmów, poprzez klasyczne utwory z renesansu i baroku, skończywszy na cztero- lub nawet ośmiogłosowych aranżacjach muzyki współczesnej'
+        )
+
+    def test_85_6(self):
+        self.check_phrase_response(
+            'jaki tytuł nosi płyta zespołu con fuoco',
+            'Zwieńczeniem pracy twórczej zespołu Con Fuoco jest płyta pod tytułem „Z ogniem”, która została wydana w październiku 2012 roku'
+        )
+
+    def test_85_7(self):
+        self.check_phrase_response(
+            'kieyd została wydana płyta zespołu con fuoco',
+            'Zwieńczeniem pracy twórczej zespołu Con Fuoco jest płyta pod tytułem „Z ogniem”, która została wydana w październiku 2012 roku'
+        )
+
+    # 86
+    def test_86_1(self):
+        self.check_phrase_response(
+            'gdzie występuje orkiestra reprezentacyjna agh',
+            'Orkiestra Reprezentacyjna AGH występuje zarówno w krakowskich klubach studenckich, jak i na międzynarodowych festiwalach, nawiązując zawsze rewelacyjny kontakt z publicznością'
+        )
+
+    def test_86_2(self):
+        self.check_phrase_response(
+            'jakie wydarzenia agh wiążą się z występami orkiestry reprezentacyjnej agh',
+            'Występy muzyków Orkiestry Reprezentacyjnej AGH uświetniają wszystkie ważne wydarzenia w Akademii Górniczo-Hutniczej, takie jak: Barbórka, Dni Otwarte, Dzień Hutnika, Juwenalia czy wreszcie Dzień AGH'
+        )
+
+    def test_86_3(self):
+        self.check_phrase_response(
+            'jaką muzykę wykonuje orkiestra reprezentacyjna agh',
+            'Artyści Orkiestry Reprezentacyjnej AGH wykonują głównie muzykę rozrywkową, filmową, jak również popularne marsze'
+        )
+
+    def test_86_4(self):
+        self.check_phrase_response(
+            'jaka jest dźwiękowa paleta barw orkiestry reprezentacyjnej agh',
+            'Dźwiękowa paleta barw Orkiestry Reprezentacyjnej AGH składa się z takich instrumentów jak: flet, klarnet, saksofon, trąbka, puzon, waltornia, obój, fagot, tuba, instrumenty perkusyjne oraz gitara'
+        )
+
+    def test_86_5(self):
+        self.check_phrase_response(
+            'na jakich instrumentach gra orkiestra reprezentacyjna agh',
+            'Dźwiękowa paleta barw Orkiestry Reprezentacyjnej AGH składa się z takich instrumentów jak: flet, klarnet, saksofon, trąbka, puzon, waltornia, obój, fagot, tuba, instrumenty perkusyjne oraz gitara'
+        )
+
+    # 87
+    def test_87_1(self):
+        self.check_phrase_response(
+            'kiedy powstał studencki klub taneczny agh',
+            'Studencki Klub Taneczny AGH powstał w 1955 roku i jest najstarszym klubem tego typu w Polsce'
+        )
+
+    def test_87_2(self):
+        self.check_phrase_response(
+            'kto sprawował opiekę nad działalnością studenckiego klubu tanecznego agh gdy był zakładany',
+            'Opiekę nad działalnością studenckiego klubu tanecznego agh podczas jego założenia sprawował profesor Marian Wieczysty'
+        )
+
+    def test_87_3(self):
+        self.check_phrase_response(
+            'jak długo klub taneczny agh prowadzi kursy tańca',
+            'Od blisko 60 lat klub taneczny agh prowadzi kursy tańca, a także szkoli tancerzy w sekcji turniejowej'
+        )
+
+    def test_87_4(self):
+        self.check_phrase_response(
+            'kto jest instruktorem studenckiego klubu tanecznego',
+            'Uczestnicy zajęć studenckiego klubu tanecznego doskonalą swoje umiejętności pod okiem doświadczonych instruktorów – państwa Anny i Stanisława Smoroniów, którzy również są wychowankami studenckiego klubu tanecznego'
+        )
+
+    def test_87_5(self):
+        self.check_phrase_response(
+            'gdzie znajduje się siedziba studenckiego klubu tanecznego',
+            'Siedziba studenckiego klubu tanecznego jest zlokalizowana przy ulicy Reymonta 15, gdzie znajduje się jedna z sal ćwiczeniowych'
+        )
+
+    # 88
+    def test_88_1(self):
+        self.check_phrase_response(
+            'czym jest Zespół Pieśni i Tańca AGH',
+            'Zespół Pieśni i Tańca AGH „Krakus” jest najstarszym studenckim zespołem folklorystycznym w Polsce'
+        )
+
+    def test_88_2(self):
+        self.check_phrase_response(
+            'kto założył Zespół Pieśni i Tańca AGH „Krakus”',
+            'Zespół Pieśni i Tańca AGH „Krakus” został założony przez Wiesława Białowąsa przy Akademii Górniczo-Hutniczej w Krakowie w 1949 roku'
+        )
+
+    def test_88_3(self):
+        self.check_phrase_response(
+            'kiedy został założony Zespół Pieśni i Tańca AGH „Krakus”',
+            'Zespół Pieśni i Tańca AGH „Krakus” został założony przez Wiesława Białowąsa przy Akademii Górniczo-Hutniczej w Krakowie w 1949 roku'
+        )
+
+    def test_88_4(self):
+        self.check_phrase_response(
+            'co prezentuje Zespół Pieśni i Tańca AGH „Krakus”',
+            'Zespół Pieśni i Tańca AGH „Krakus” prezentuje oryginalny polski folklor ludowy, przetworzony i przystosowany artystycznie do wymogów sceny'
+        )
+
+    # 89
+    def test_89_1(self):
+        self.check_phrase_response(
+            'kiedy prowadzona jest rekrutacja do szkoły doktorskiej agh',
+            'Rekrutacja do Szkoły Doktorskiej AGH, prowadzona jest raz do roku w okresie poprzedzającym rozpoczęcie semestru zimowego'
+        )
+
+    def test_89_2(self):
+        self.check_phrase_response(
+            'kto ustala limit miejsc dostępnych w Szkole doktorskiej agh',
+            'Limit miejsc dostępnych w Szkole doktorskiej agh i listę dyscyplin, na które prowadzona będzie kwalifikacja ustala Prorektor do spraw Nauki po konsultacji z jednostkami zgłaszającymi zagadnienia'
+        )
+
+    def test_89_3(self):
+        self.check_phrase_response(
+            'kto ustala listę dyscyplin dostępnych w Szkole doktorskiej agh',
+            'Limit miejsc dostępnych w Szkole doktorskiej agh i listę dyscyplin, na które prowadzona będzie kwalifikacja ustala Prorektor do spraw Nauki po konsultacji z jednostkami zgłaszającymi zagadnienia'
+        )
+
+    def test_89_4(self):
+        self.check_phrase_response(
+            'kto określa kalendarz rekrutacji do szkoły doktorskiej agh',
+            'Kalendarz rekrutacji do Szkoły doktorskiej agh określa Dyrektor Szkoły Doktorskiej'
+        )
+
+    # 90
+    def test_90_1(self):
+        self.check_phrase_response(
+            'ile trwa kształcenie w szkole doktorskiej agh',
+            'Kształcenie w Szkole Doktorskiej AGH trwa osiem semestrów, z możliwością wcześniejszego zakończenia pod warunkiem zrealizowania programu kształcenia i osiągnięcia wszystkich efektów uczenia się'
+        )
+
+    def test_90_2(self):
+        self.check_phrase_response(
+            'w jakim języku prowadzone jest kształcenie w szkole doktorskiej agh',
+            'Kształcenie w Szkole Doktorskiej AGH prowadzone jest w języku polskim i angielskim'
+        )
+
+    def test_90_3(self):
+        self.check_phrase_response(
+            'w jaki sposób kończy się kształcenie doktoranta szkoły doktorskiej agh',
+            'Kształcenie doktoranta szkoły doktorskiej agh kończy się złożeniem rozprawy doktorskiej'
+        )
+
+    # 91
+    def test_91_1(self):
+        self.check_phrase_response(
+            'kto jest dyrektorem szkoły doktorskiej agh',
+            'Dyrektorem szkoły doktorskiej agh jest profesor doktor habilitowany marcin szpyrka'
+        )
+
+    def test_91_2(self):
+        self.check_phrase_response(
+            'kto jest zastępcą dyrektora szkoły doktorskiej agh',
+            'zastępcą dyrektora szkoły doktorskiej agh jest profesor doktor habilitowany inżynier marta radecka'
+        )
+
+    # 92
+    def test_92_1(self):
+        self.check_phrase_response(
+            'jakie świadczenia mogą otrzymywać doktoranci',
+            'doktoranci, którzy rozpoczęli studia doktoranckie przed rokiem akademickim 2019/2020 mogą otrzymywać świadczenia: stypendium socjalne, stypendium dla osób niepełnosprawnych, zapomogę stypendium rektora'
+        )
+
+    # 93
+    def test_93_1(self):
+        self.check_phrase_response(
+            'jakie jest minimalne stypendium doktoranckie',
+            'minimalne stypendium doktoranckie nie może wynosić mniej niż 60% minimalnego wynagrodzenia asystenta ustalonego w przepisach o wynagradzaniu nauczycieli akademickich, aktualnie jest to kwota 1470 złotych'
+        )
+
+    def test_93_2(self):
+        self.check_phrase_response(
+            'kto podejmuje decyzję o przyznaniu stypendium doktoranckiego',
+            'decyzję o przyznaniu i wysokości stypendium doktoranckiego podejmuje rektor'
+        )
+
+    def test_93_3(self):
+        self.check_phrase_response(
+            'czy doktorant na pierwszym roku może otrzymać stypendium',
+            'Stypendium doktoranckie na pierwszym roku może otrzymać doktorant, który otrzymał bardzo dobre wyniki w postępowaniu rekrutacyjnym'
+        )
+
+    # 94
+    def test_94_1(self):
+        self.check_phrase_response(
+            'jacy doktoranci powinni zgłosić się do ubezpieczenia zdrowotnego',
+            'Doktoranci niepracujący, którzy ukończyli 26 rok życia powinni zgłosić się do ubezpieczenia zdrowotnego'
+        )
+
+    # 95
+    def test_95_1(self):
+        self.check_phrase_response(
+            'czym kończy się ukończenie przewodu doktorskiego',
+            'Ukończenie przewodu doktorskiego i obrona pracy doktorskiej kończą się nadaniem przez Radę Wydziału stopnia doktora'
+        )
+
+    def test_95_2(self):
+        self.check_phrase_response(
+            'czym kończy się obrona pracy doktorskiej',
+            'Ukończenie przewodu doktorskiego i obrona pracy doktorskiej kończą się nadaniem przez Radę Wydziału stopnia doktora'
+        )
+
+    def test_95_3(self):
+        self.check_phrase_response(
+            'ilu osobom rocznie nadawane są stopnie doktora',
+            'Co roku ponad stu kilkudziesięciu osobom w AGH nadawane są stopnie doktora'
+        )
+
+    def test_95_4(self):
+        self.check_phrase_response(
+            'co otrzymują osoby którym nadano stopień doktora',
+            'Osoby, którym nadano stopień doktora otrzymują dyplom doktora'
+        )
+
+    def test_95_5(self):
+        self.check_phrase_response(
+            'kiedy wręczane są doktorom dyplomy',
+            'Dyplomy wypisywane  w Zespole Studiów Doktoranckich wręczane są doktorom na uroczystości promocji doktorskich'
+        )
+
+    def test_95_6(self):
+        self.check_phrase_response(
+            'kiedy odbyły się ostatnie promocje doktorskie',
+            'Ostatnie promocje doktorskie w roku 2019 odbyły się 8 listopada'
+        )
+
+    # 96
+    def test_96_1(self):
+        self.check_phrase_response(
+            'czym jest konkurs o nagrodę imienia profesora henryka czeczotta',
+            'konkurs o nagrodę imienia profesora henryka czeczotta nagradza za wybitne prace naukowe, obejmujące zagadnienia mieszczące się w zakresie górnictwa i dziedzin bezpośrednio z nim związanych, opublikowane w okresie ostatnich 4 lat (wlicza się rok ogłoszenia konkursu), zawierające wybitne elementy w stosunku do aktualnego stanu wiedzy i nauki w świecie'
+        )
+
+    # 97
+    def test_97_1(self):
+        self.check_phrase_response(
+            'czym jest konkurs o nagrodę imienia profesora antoniego rodziewicza-bielewicza',
+            'konkurs o nagrodę imienia profesora antoniego rodziewicza-bielewicza nagradza za wybitne prace naukowe, obejmujące zagadnienia mieszczące się w zakresie hutnictwa i dyscyplin ściśle związanych, zawierające elementy nowości w stosunku do aktualnego stanu wiedzy, nauki i techniki w świecie'
+        )
+
+    # 98
+    def test_98_1(self):
+        self.check_phrase_response(
+            'co jest tytułem do nagrody imienia profesora Władysława Taklińskiego',
+            'tytułem do nagrody imienia profesora Władysława Taklińskiego są wybitne osiągnięcia w dziedzinie dydaktyki, na które mogą się składać między innymi: tworzenie nowych metod w dydaktyce i nowych unikalnych kierunków kształcenia; przygotowanie wykładów z nowych dyscyplin; opracowanie uznanych podręczników i skryptów; wyróżniająca się działalność w tworzeniu nowoczesnych laboratoriów i pracowni problemowych dla celów dydaktyki; wyróżniająca się współpraca z kołami naukowymi i uznanie społeczności studenckiej wyrażonej w ocenie'
+        )
+
+    def test_98_2(self):
+        self.check_phrase_response(
+            'za co nadaje się nagrodę imienia profesora Władysława Taklińskiego',
+            'tytułem do nagrody imienia profesora Władysława Taklińskiego są wybitne osiągnięcia w dziedzinie dydaktyki, na które mogą się składać między innymi: tworzenie nowych metod w dydaktyce i nowych unikalnych kierunków kształcenia; przygotowanie wykładów z nowych dyscyplin; opracowanie uznanych podręczników i skryptów; wyróżniająca się działalność w tworzeniu nowoczesnych laboratoriów i pracowni problemowych dla celów dydaktyki; wyróżniająca się współpraca z kołami naukowymi i uznanie społeczności studenckiej wyrażonej w ocenie'
+        )
+
+    def test_98_3(self):
+        self.check_phrase_response(
+            'kto zgłasza kandydatów do nagrody imienia profesora Władysława Taklińskiego',
+            'kandydatów do nagrody imienia profesora Władysława Taklińskiego zgłaszają rady wydziałów oraz ich odpowiedniki w jednostkach pozawydziałowych'
+        )
+
+    # 99
+    def test_99_1(self):
+        self.check_phrase_response(
+            'czym jest centrum karier agh ',
+            'Centrum Karier agh jest jednostką Uczelni zajmującą się wszechstronnym doradztwem zawodowym, pomocą psychologiczną oraz organizacją warsztatów,szkoleń i wykładów (między innymi z zagadnień doskonalenia umiejętności interpersonalnych)'
+        )
+
+    def test_99_2(self):
+        self.check_phrase_response(
+            'czym zajmuje się centrum karier agh',
+            'Centrum Karier agh jest jednostką Uczelni zajmującą się wszechstronnym doradztwem zawodowym, pomocą psychologiczną oraz organizacją warsztatów,szkoleń i wykładów (między innymi z zagadnień doskonalenia umiejętności interpersonalnych)'
+        )
+
+    def test_99_3(self):
+        self.check_phrase_response(
+            'jakie bazy prowadzi centrum karier agh',
+            'Centrum karier agh prowadzi bank ofert pracy, praktyk i staży zawodowych oraz bazę CV poszukujących pracy studentów i absolwentów'
+        )
+
+    def test_99_4(self):
+        self.check_phrase_response(
+            'jakie informacje można uzyskać w centrum karier agh',
+            'W Centrum Karier AGH można uzyskać informacje o firmach i zasadach rekrutacji oraz o programach edukacyjnych, unijnych, wymianach zagranicznych, kursach i innych'
+        )
+
+    def test_99_5(self):
+        self.check_phrase_response(
+            'jaki jest cel działania akademickiego inkubatora przedsiębiorczości agh',
+            'Celem działania Akademickiego inkubatora przedsiębiorczości AGH jest propagowanie wśród studentów, doktorantów, absolwentów i pracowników małopolskich szkół wyższych kreatywności i samodzielności zawodowej oraz świadczenie bezpośredniej pomocy w założeniu i prowadzeniu własnej działalności gospodarczej'
+        )
+
+    def test_99_6(self):
+        self.check_phrase_response(
+            'komu udziela wsparcia akademicki inkubator przedsiębiorczości AGH',
+            'akademicki inkubator przedsiębiorczości AGH udziela wsparcia osobom zakładającym działalność gospodarczą, tak aby zniwelować do minimum koszty wynajmu i wyposażenia biura, porad prawnych, koszty prowadzenia księgowości i tym podobne'
+        )
+
+    def test_99_7(self):
+        self.check_phrase_response(
+            'w jaki sposób udziela wsparcia akademicki inkubator przedsiębiorczości AGH',
+            'akademicki inkubator przedsiębiorczości AGH udziela wsparcia osobom zakładającym działalność gospodarczą, tak aby zniwelować do minimum koszty wynajmu i wyposażenia biura, porad prawnych, koszty prowadzenia księgowości i tym podobne'
+        )
+
+    def test_99_8(self):
+        self.check_phrase_response(
+            'co jest ideą akademickiego Inkubatora przedsiębiorczości',
+            'Ideą akademickiego Inkubatora przedsiębiorczości jest umożliwienie kreatywnym i ambitnym ludziom założenia własnej firmy przy minimalnych nakładach finansowych, by po okresie inkubacji mogli już samodzielnie funkcjonować w zwykłych warunkach gospodarczych, wykorzystując zdobyte w Inkubatorze doświadczenia oraz niezbędną wiedzę'
+        )
+
+    def test_99_9(self):
+        self.check_phrase_response(
+            'na jakich etapach tworzenia firmy wsparcia udziela akademicki Inkubator przedsiębiorczości',
+            'akademicki Inkubator przedsiębiorczości jest instytucją wspomagającą swoich beneficjentów na każdym etapie tworzenia firmy, od pomysłu na biznes, poprzez jego urealnienie, do wdrożenia'
         )
 
 if __name__ == '__main__':
