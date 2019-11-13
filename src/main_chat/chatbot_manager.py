@@ -6,7 +6,7 @@ from src.common_utils.database_service import DatabaseProxy
 
 class ChatbotManager:
     def __init__(self, **kwargs):
-        self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Żwirek')  # our chatbots code names
+        self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Zwirek')  # our chatbots code names
         self._university_chatbot_name = kwargs.get('university_chatbot', 'Muchomorek')
         db = DatabaseProxy(kwargs.get('connection_uri'), kwargs.get('database_name'))
         bot_context = BotContext()

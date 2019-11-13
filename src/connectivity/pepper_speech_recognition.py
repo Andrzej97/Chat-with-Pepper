@@ -17,6 +17,8 @@ import src.common_utils.constants as constants
 
 RATE = 16000
 
+should_put_to_queue = True
+index = 0
 
 class SoundProcessingModule(object):
     """
@@ -40,7 +42,7 @@ class SoundProcessingModule(object):
         self.file = io.open("rec", 'wb')
         self.tts = ALProxy("ALTextToSpeech", constants.ROBOT_ADDRESS, constants.ROBOT_PORT)
         self.tts.setLanguage("Polish")
-        self.data_exchange_module = DataExchangeModule('127.0.0.1', 9999, self.tts)
+        self.data_exchange_module = DataExchangeModule('192.168.1.101', 9999, self.tts)
 
     def __enter__(self):
         self.audio_service.setClientPreferences(self.module_name, RATE, 3, 0)
@@ -67,9 +69,18 @@ class SoundProcessingModule(object):
         self.audio_service.unsubscribe(self.module_name)
 
     def processRemote(self, nbOfChannels, nbOfSamplesByChannel, timeStamp, inputBuffer):
-        self._buff.put(inputBuffer)
+        # print('processRemote called')
+        # print('inputBuffer: ', inputBuffer)
+        global index
+        index += 1
+        global should_put_to_queue
+        if should_put_to_queue or index == 100:
+            print('processRemote called in if')
+            index = 0
+            self._buff.put(inputBuffer)
 
     def generator(self):
+        print('generator called')
         while not self.isProcessingDone:
             # Use a blocking get() to ensure there's at least one chunk of
             # data, and stop iteration if the chunk is None, indicating the
@@ -107,8 +118,11 @@ def listen_print_loop(responses, mod):
     the next result to overwrite it, until the response is a final one. For the
     final one, print a newline to preserve the finalized transcription.
     """
+    print('listen_print_loop called')
+    should_listen = True
     num_chars_printed = 0
     for response in responses:
+        print('listen_print_loop:    new response in for should_listen = ', should_listen)
         if not response.results:
             continue
 
@@ -137,7 +151,16 @@ def listen_print_loop(responses, mod):
 
         else:
             print(transcript + overwrite_chars)
+            global should_put_to_queue
+            should_put_to_queue = False
             mod.data_exchange_module.send_data_and_tell_response(transcript + overwrite_chars)
+            should_put_to_queue = True
+            print('after telling')
+            while not mod._buff.empty():
+                print('clear elem')
+                mod._buff.get()
+            print('buffer cleared')
+            should_listen = True
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
@@ -168,13 +191,14 @@ def main(app):
         responses = client.streaming_recognize(streaming_config, requests)
 
         # Now, put the transcription responses to use.
+        print('pepper_speech_recognition    main    new stream')
         listen_print_loop(responses, stream)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="192.168.1.102",
-                        help="Robot IP address. On robot or Local Naoqi: use '192.168.1.102'.")
+    parser.add_argument("--ip", type=str, default="192.168.1.103",
+                        help="Robot IP address. On robot or Local Naoqi: use '192.168.1.103'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
 
