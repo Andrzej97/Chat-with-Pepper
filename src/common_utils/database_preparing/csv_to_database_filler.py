@@ -49,13 +49,13 @@ def make_filter_tags_csv(in_file, out_file):
         for row in readCSV:
             tags = row[:-1]
             text = row[-1:][0]
-            tags_filtered = []
+            tags_filtered = set()
             for tag in tags:
                 filtered = sentence_filter.extract_complex_lemmas_and_filter_stopwords(tag)
                 for elem in filtered:
-                    tags_filtered.append(elem)
+                    tags_filtered.add(elem)
             if len(tags_filtered) != 0:
-                csvWriter.write_tags_and_text(tags_filtered, text)
+                csvWriter.write_tags_and_text(list(tags_filtered), text)
             else:
                 csvWriter.write_tags_and_text(tags, text)
 
