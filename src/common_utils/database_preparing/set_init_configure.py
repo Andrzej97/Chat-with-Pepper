@@ -1,7 +1,8 @@
 from src.common_utils.database.database_service import DatabaseProxy
 import src.common_utils.database_preparing.initialize_database as general_data
 import src.common_utils.database_preparing.csv_to_database_filler as scrapper_data
-
+import src.common_utils.custom_exceptions as exceptions
+import configuration
 
 def initialize_language_utils_database(db):
     """
@@ -21,13 +22,21 @@ def from_txt_file_to_list(path):
     lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
     return lines
 
+def create_responses_collection(db):
+    collection = configuration.RESPONSES_COLLECTION
+    try:
+        db.create_new_collection(collection)
+    except exceptions.CollectionAlreadyExistsInDatabaseError:
+        db.remove_collection(collection)
+        db.create_new_collection(collection)
+        print("Collection Already Exists Error")
 
 def main():
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     initialize_language_utils_database(db)
     general_data.init_database(db)
     scrapper_data.initialize_main_collection_from_scrapper(db)
-
+    create_responses_collection(db)
 
 
 if __name__ == '__main__':
