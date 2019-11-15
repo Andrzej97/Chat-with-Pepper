@@ -1,16 +1,16 @@
-import pymongo
-
-from src.general_chatbot import bot
-from src.common_utils import initialize_database
-from src.common_utils.database_service import DatabaseProxy
-import src.common_utils.custom_exceptions as exceptions
+from src.common_utils.database.database_service import DatabaseProxy
 from src.main_chat.chatbot_manager import ChatbotManager
 
 
-def main():
+# from src.main_chat.response_continuation import initialize_db_with_continue_statements
 
-    chatbot_manager = ChatbotManager(general_chatbot='Bolek', university_chatbot='Lolek')
-    chatbot_manager.create_chatbots()
+
+def main():
+    # to be run once at first use of this functionality to initialize database
+    # initialize_db_with_continue_statements()
+
+    chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
+                                     database=DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB'))
     while True:
         user_input = input('>>>')
         res = chatbot_manager.ask_chatbot(user_input)
@@ -19,7 +19,7 @@ def main():
     # initialize_database.init_database()
     # bot.run_bot()
 
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    # db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     # out1 = db.add_conversation(text="Kubica", tag1="agh", tag2="sportowiec", tag3="formuła1")
     # out2 = db.add_conversation(text="Orlen", tag1="agh", tag2="sportowiec", tag3="sponsor")
     # print("Newly added conversations: ", out1, " and ", out2)
@@ -34,14 +34,14 @@ def main():
     # for idx, up in enumerate(updated_statements):
     #     print("After update = tag1 = agh, tag2 = sportowiec, updated text = ", updated[idx], " == up = ", up)
     # print()
-    try:
-        db.printDocumentsByTags(tag1="ksztalcenie")
-    except exceptions.ResponseTextByTagsNotFoundError:
-        print("Elements matching given tags not found")
+    # try:
+    #     db.printDocumentsByTags(tag1="agh", tag2="sportowiec")
+    # except exceptions.ResponseTextByTagsNotFoundError:
+    #     print("Elements matching given tags not found")
     # removed1 = db.remove_conversation(tag1="agh", tag2="sportowiec", tag3="formuła1")
     # removed2 = db.remove_conversation(tag1="agh", tag2="sportowiec", tag3="sponsor")
     # print("Removed conversations text = ", removed1, ", ", removed2)
-
+    #
     # try:
     #     db.create_new_collection('stemming1')
     # except exceptions.CollectionAlreadyExistsInDatabaseError:

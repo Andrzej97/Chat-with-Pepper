@@ -1,23 +1,27 @@
-from chatterbot.storage import MongoDatabaseAdapter
-from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
-from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
-from src.common_utils.custom_exceptions import CollectionNotExistsInDatabaseError
-from pymongo import MongoClient
 import random
 
+from chatterbot.storage import MongoDatabaseAdapter
+from pymongo import MongoClient
+
+from src.common_utils.custom_exceptions import CollectionAlreadyExistsInDatabaseError
+from src.common_utils.custom_exceptions import CollectionNotExistsInDatabaseError
+from src.common_utils.custom_exceptions import ResponseTextByTagsNotFoundError
+
+
+def is_invalid_arg(arg):
+    return arg is None
+
+
 class DatabaseProxy:
-    def __init__(self, conection_uri, database_name):
-        self.database_uri = conection_uri + database_name
+    def __init__(self, connection_uri, database_name):
+        self.database_uri = connection_uri + database_name
         self.stat_collection = MongoDatabaseAdapter(database_uri=self.database_uri)
-        mongo_client = MongoClient(conection_uri)
+        mongo_client = MongoClient(connection_uri)
         self.collections_db = mongo_client[database_name]
 
-    def is_invalid_arg(self, arg):
-        return arg is None
-
-    def add_conversation(self, **tags): # tags == kwargs
-        '''Method adds new conversation to database with specified tags
-           Returns text of added conversation's statement'''
+    def add_conversation(self, **tags):  # tags == kwargs
+        """Method adds new conversation to database with specified tags
+           Returns text of added conversation's statement"""
         try:
             tags.get('text')
         except KeyError:
@@ -27,7 +31,7 @@ class DatabaseProxy:
         return created_statement.text
 
     def get_responses_list_by_tags(self, **tags):
-        '''Method returns list of statements text list which match given tags'''
+        """Method returns list of statements text list which match given tags"""
         statement_results = list(self.stat_collection.filter(**tags))
         if len(statement_results) == 0:
             raise ResponseTextByTagsNotFoundError
@@ -37,7 +41,7 @@ class DatabaseProxy:
         return text_results
 
     def get_first_response_by_tags(self, **tags):
-        '''Method returns first statement's text which match given tags'''
+        """Method returns first statement's text which match given tags"""
         try:
             responses = self.get_responses_list_by_tags(**tags)
         except ResponseTextByTagsNotFoundError:
@@ -46,7 +50,7 @@ class DatabaseProxy:
         return responses[0]
 
     def get_random_response_by_tags(self, **tags):
-        '''Method returns random statement's text which match given tags'''
+        """Method returns random statement's text which match given tags"""
         try:
             responses = self.get_responses_list_by_tags(**tags)
         except ResponseTextByTagsNotFoundError:
@@ -60,14 +64,14 @@ class DatabaseProxy:
         '''Method removes conversation specified with tags from database
            It returns text of statement which is removed'''
         conversation_to_remove = self.get_first_response_by_tags(**tags)
-        if self.is_invalid_arg(conversation_to_remove):
+        if is_invalid_arg(conversation_to_remove):
             return None
         self.stat_collection.remove(conversation_to_remove)
         return conversation_to_remove
 
     def update_conversation_text(self, new_text, **tags):
-        '''Method updates text of statement in database with specified tags
-           Returns updated statement's text'''
+        """Method updates text of statement in database with specified tags
+           Returns updated statement's text"""
         matching_statements = list(self.stat_collection.filter(**tags))
         if len(matching_statements) == 0:
             raise ResponseTextByTagsNotFoundError
@@ -78,12 +82,12 @@ class DatabaseProxy:
             updated_statements.append(st.text)
         return updated_statements
 
-    def getCount(self):
-        '''Method returns number of documents in database'''
+    def get_count(self):
+        """Method returns number of documents in database"""
         return self.stat_collection.count()
 
-    def printDocumentsByTags(self, **tags):
-        '''Method prints documents from database with specified tags'''
+    def print_documents_by_tags(self, **tags):
+        """Method prints documents from database with specified tags"""
         result_list = list(self.stat_collection.filter(**tags))
         if len(result_list) == 0:
             raise ResponseTextByTagsNotFoundError
@@ -98,7 +102,7 @@ class DatabaseProxy:
 
     def get_docs_from_collection_by_tags_list(self, collection_name, tags_list):
         if isinstance(tags_list, list):
-            search_doc = {'tags': { '$in': tags_list }}
+            search_doc = {'tags': {'$in': tags_list}}
             docs_found = self.get_docs_from_collection(collection_name, search_doc)
             return docs_found
         raise TypeError('Argument tags_list is not list')
@@ -109,6 +113,25 @@ class DatabaseProxy:
             self.collections_db.create_collection(name=collection_name)
             return True
         raise CollectionAlreadyExistsInDatabaseError
+
+    def create_new_capped_collection(self, collection_name, max_size):
+        if collection_name not in self.collections_db.collection_names():
+            self.collections_db.create_collection(name=collection_name, capped=True,
+                                                  size=max_size * 4096,
+                                                  max=max_size)
+
+    def get_elements_of_capped_collection(self, collection_name, n=-1, m=-1):
+        """ returns elements from n-th to m-th index of collection, for n,m = -1 returns all elements """
+        try:
+            responses = []
+            for x in list(self.collections_db[collection_name].find())[::-1]:
+                responses.append(x['response'])
+            if n == -1 and m == -1:
+                return responses
+            else:
+                return responses[n:m]
+        except (IndexError, KeyError):
+            return None
 
     def remove_collection(self, collection_name):
         if collection_name in self.collections_db.collection_names():
@@ -148,7 +171,7 @@ class DatabaseProxy:
         if collection_name in self.collections_db.collection_names():
             collection = self.collections_db[collection_name]
             values_to_update = {"$set": new_values_dict}
-            collection.update_one(search_values_dict, values_to_update) # no upsert
+            collection.update_one(search_values_dict, values_to_update)  # no upsert
             return True
         raise CollectionNotExistsInDatabaseError
 

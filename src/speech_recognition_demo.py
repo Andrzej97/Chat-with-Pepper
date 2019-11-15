@@ -1,6 +1,6 @@
 import speech_recognition as speech
 
-import bot
+from src.main_chat.chatbot_manager import ChatbotManager
 
 
 def calibrate_recognizer(noise_duration, recognizer, source):
@@ -16,7 +16,7 @@ def speech_recognizer(speech_language='pl-PL'):
         audio = r.listen(source)
     try:
         result = r.recognize_google(audio, language=speech_language)
-        print('I recognized: ' + result)
+        print('>>>>>> ' + result)
         return r.recognize_google(audio, language=speech_language)
     except speech.UnknownValueError:
         return "repeat"
@@ -28,9 +28,14 @@ def startSpeechRecognition():
     r = speech.Recognizer()
     with speech.Microphone() as source:
         calibrate_recognizer(2, r, source)
+
+        chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
+                                    connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')
+
         while True:
             cmd = speech_recognizer()
-            print(bot.get_bot_response(cmd))
-
+            if len(cmd) == 0 or cmd == 'repeat' or cmd is None:
+                continue
+            print("resp: " + chatbot_manager.ask_chatbot(cmd))
 
 startSpeechRecognition()

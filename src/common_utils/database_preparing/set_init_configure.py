@@ -1,7 +1,19 @@
-import src.common_utils.database_preparing.initialize_database as general_data
-from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.database_preparing.csv_to_database_filler as scrapper_data
 import src.common_utils.custom_exceptions as Exceptions
+import src.common_utils.database_preparing.initialize_database as general_data
+from src.common_utils.database.database_service import DatabaseProxy
+
+
+def initialize_db_with_continue_statements(db):
+    # fixme: to be removed after adding to database initialization file
+
+    db.add_conversation(text="powiedzieć", tag='continue')
+    db.add_conversation(text="więcej", tag='continue')
+    # ------------------------------------------------------
+    db.add_conversation(text="przykro mi, to wszystko co wiem", tag='cannot_say_more')
+    db.add_conversation(text="to wszystko co wiem na ten temat", tag='cannot_say_more')
+    db.add_conversation(text="nie wiem więcej", tag='cannot_say_more')
+    db.add_conversation(text="na tę chwilę to musi wystarczyć", tag='cannot_say_more')
 
 
 def initialize_language_utils_database(db):
@@ -31,7 +43,7 @@ def main():
     initialize_language_utils_database(db)
     general_data.init_database(db)
     scrapper_data.initialize_main_collection_from_scrapper(db)
-
+    initialize_db_with_continue_statements(db)
 
 
 if __name__ == '__main__':
