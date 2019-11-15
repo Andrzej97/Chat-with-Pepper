@@ -1,4 +1,4 @@
-import configuration
+from configuration import Configuration as configuration
 from src.common_utils.database.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
 
@@ -38,7 +38,7 @@ class SentenceFilter:
         self.stop_words = self.prepare_stopwords_list()  # get_stop_words_from_db()
 
     def is_name(self, name):
-        if configuration.NAME in self.utils.interpret_word(name.capitalize()):
+        if configuration.NAME.value in self.utils.interpret_word(name.capitalize()):
             return True
         return False
 

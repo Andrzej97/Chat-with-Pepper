@@ -1,4 +1,3 @@
-from src.common_utils.database.database_service import DatabaseProxy
 
 
 def init_database(db):

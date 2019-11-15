@@ -1,6 +1,5 @@
-import configuration
 import src.common_utils.language_utils.statement_utils as statement
-from src.common_utils.database.database_service import DatabaseProxy
+from configuration import Configuration as configuration
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 
 
@@ -20,19 +19,19 @@ def initialize_db_with_continue_statements():
 class ResponseContinuationHandler:
     def __init__(self, db_proxy):
         self.db = db_proxy
-        self.response_length = configuration.NUMBER_OF_SENTENCES_IN_RESPONSE
+        self.response_length = configuration.NUMBER_OF_SENTENCES_IN_RESPONSE.value
         self.current_response_offset = 0 + self.response_length
 
-    def is_continuation_request_asked(self, statement):
+    def is_continuation_request_asked(self, input_statement):
         continuation_requests = set(self.db.get_responses_list_by_tags(tag="continue"))
-        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x), statement.split(' ')))
+        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x), input_statement.split(' ')))
         return len(sliced_statement.intersection(continuation_requests)) > 1
 
     def return_next_part_of_response(self, question):
         if not self.is_continuation_request_asked(question):
             self.current_response_offset = 0 + self.response_length
             return None
-        full_response = self.db.get_elements_of_capped_collection(configuration.RESPONSES_COLLECTION, 0, 1)
+        full_response = self.db.get_elements_of_capped_collection(configuration.RESPONSES_COLLECTION.value, 0, 1)
         offset = self.current_response_offset
         self.current_response_offset += self.response_length
         response = statement.prepare_shortened_statement(full_response, offset, self.response_length)
