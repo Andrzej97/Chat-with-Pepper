@@ -16,6 +16,7 @@ class Configuration(Enum):
     LOCALHOST = 'localhost'
     DATABASE_NAME = 'PepperChatDB'
     DATABASE_ADDRESS = 'mongodb://localhost:27017/'
+    BOT_ADDRESS = 'localhost'
 
     # -------- MONGO COLLECTIONS NAMES -----------#
     RESPONSES_COLLECTION = 'responses'

@@ -40,8 +40,8 @@ class DataExchangeModule(object):
             self.data_socket.sendall(bytes(data))
             response = self.data_socket.recv(1024).decode('utf-8')
             print(response)
-            if response != '':
-                self.tell(response)
+            # if response != '':
+            # self.tell(response)
         except socket.error:
             return None
 
@@ -53,7 +53,7 @@ class DataExchangeModule(object):
 
     def perform_communication_with_chatbot(self):
         while True:
-            print('in loop...')
+            # print('in loop...')
             # result_of_speech_recognition = self.speech_recognizer()
             # print("recognized:  " + result_of_speech_recognition + ";")
             user_input = raw_input('>>>')
@@ -65,4 +65,4 @@ class DataExchangeModule(object):
             #     print(send_result)
 
 
-# DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()
+DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()
