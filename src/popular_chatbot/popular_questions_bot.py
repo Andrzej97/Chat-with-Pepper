@@ -15,7 +15,12 @@ class PopularQuestionsBot:
             logic_adapters=[
                 {
                     'import_path': 'src.popular_chatbot.numbers_questions_logic_adapter'
-                                   '.UniversityAdapter',
+                                   '.NumbersQuestionsAdapter',
+                    'database_proxy': db_proxy
+                },
+                {
+                    'import_path': 'src.popular_chatbot.popular_questions_logic_adapter'
+                                   '.PopularQuestionsAdapter',
                     'database_proxy': db_proxy
                 },
             ],
