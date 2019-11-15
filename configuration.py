@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Configuration(Enum):
-    NAME = 'imię'
+    NAME = 'imie'
 
     # ----------  BOT CONFIGURATION  ------------ #
     NUMBER_OF_SENTENCES_IN_RESPONSE = 2
@@ -19,3 +19,6 @@ class Configuration(Enum):
 
     # -------- MONGO COLLECTIONS NAMES -----------#
     RESPONSES_COLLECTION = 'responses'
+    NUMBERS_QUEST_COLLECTION = 'numbers_collection'
+    POPULAR_QUEST_COLLECTION = 'popular_collection'
+

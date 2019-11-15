@@ -1,6 +1,9 @@
 import src.common_utils.database_preparing.csv_to_database_filler as scrapper_data
-import src.common_utils.database_preparing.initialize_database as general_data
+import src.common_utils.database_preparing.init_db_with_general_data as general_data
+import src.common_utils.database_preparing.init_db_with_popular_data as popular_data
+from configuration import Configuration as conf
 from src.common_utils.database.database_service import DatabaseProxy
+import src.common_utils.custom_exceptions as Exceptions
 
 
 def initialize_db_with_continue_statements(db):
@@ -13,6 +16,22 @@ def initialize_db_with_continue_statements(db):
     db.add_conversation(text="to wszystko co wiem na ten temat", tag='cannot_say_more')
     db.add_conversation(text="nie wiem więcej", tag='cannot_say_more')
     db.add_conversation(text="na tę chwilę to musi wystarczyć", tag='cannot_say_more')
+
+
+def initialize_db_with_popular_data(db):
+    COLLECTION_NAME = conf.NUMBERS_QUEST_COLLECTION.value
+    try:
+        popular_data.initialize_db_with_numbers_questions(db, COLLECTION_NAME)
+    except Exceptions.CollectionAlreadyExistsInDatabaseError:
+        db.remove_collection(COLLECTION_NAME)
+        popular_data.initialize_db_with_numbers_questions(db, COLLECTION_NAME)
+
+    COLLECTION_NAME = conf.POPULAR_QUEST_COLLECTION.value
+    try:
+        popular_data.initialize_db_with_popular_questions(db, COLLECTION_NAME)
+    except Exceptions.CollectionAlreadyExistsInDatabaseError:
+        db.remove_collection(COLLECTION_NAME)
+        popular_data.initialize_db_with_popular_questions(db, COLLECTION_NAME)
 
 
 def initialize_language_utils_database(db):
@@ -40,6 +59,7 @@ def main():
     general_data.init_database(db)
     scrapper_data.initialize_main_collection_from_scrapper(db)
     initialize_db_with_continue_statements(db)
+    initialize_db_with_popular_data(db)
 
 
 if __name__ == '__main__':
