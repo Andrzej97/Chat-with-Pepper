@@ -27,7 +27,6 @@ def find_best_tags_coverage(documents, tags):
         return result_list[0]['text'], max_ratio
     else:
         return None
-    raise TypeError("No `text` attribute found")
 
 
 class UniversityAdapter(LogicAdapter):
