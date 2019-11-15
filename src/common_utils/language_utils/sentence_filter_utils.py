@@ -95,3 +95,14 @@ class SentenceFilter:
         for word in words:
             lemmas.append(self.extract_lemma(word).lower())
         return list(filter(lambda x: x is not None, lemmas))
+
+    def is_sentence_about_numbers(self, sentence):
+        nums_exp_single_word_list = ['ile', 'ilu' ]
+        nums_exp_compl_word_list  = ['jak', 'wiele', 'dużo']
+        splitted_sen = sentence.split(' ')
+        was_word_in_complex_list = False
+        for word in splitted_sen:
+            if word in nums_exp_single_word_list: return True
+            elif word in nums_exp_compl_word_list and was_word_in_complex_list: return True
+            elif word in nums_exp_compl_word_list: was_word_in_complex_list = True
+        return False
