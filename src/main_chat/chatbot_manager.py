@@ -31,9 +31,6 @@ class ChatbotManager:
                                             or self._university_chatbot.check_was_requested_in_row_above_thresh()
         return self._is_intro_bot_unemployed
 
-    def check_is_intro_chatbot_part_employed(self):
-        return self._intro_chatbot.check_is_bot_partially_employed()
-
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
 
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
@@ -42,7 +39,7 @@ class ChatbotManager:
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)
-        elif self.check_is_intro_chatbot_part_employed():
+        else:
             (i_text, i_conf) = self._ask_intro_chatbot(user_input)
             (u_text, u_conf) = self._ask_university_chatbot(user_input)
             print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
@@ -50,9 +47,6 @@ class ChatbotManager:
             self._university_chatbot.inc_responses_in_row() if conf_res \
                 else self._university_chatbot.reset_responses_in_row()
             chatbot_response = u_text if conf_res else i_text
-        else:
-            self._university_chatbot.reset_responses_in_row()
-            chatbot_response, c2 = self._ask_intro_chatbot(user_input)
-            print('Intro Chatbot = ', user_input, ' c2 = ', c2)
+
         # self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION.value, response=chatbot_response)
         return statement_utils.prepare_shortened_statement(chatbot_response, 0, 1)

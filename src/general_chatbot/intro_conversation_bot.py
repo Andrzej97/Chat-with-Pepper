@@ -52,8 +52,3 @@ class IntroBot:
                self._context.is_name_request_processed and \
                self._context.is_after_name_response_reaction and \
                self._context.speaker_name
-
-    def check_is_bot_partially_employed(self):
-        return (self._context.is_after_greeting and
-                (self._context.is_name_request_processed or
-                 self._context.is_after_introduction))
