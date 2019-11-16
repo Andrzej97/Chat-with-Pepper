@@ -20,3 +20,5 @@ class Configuration(Enum):
 
     # -------- MONGO COLLECTIONS NAMES -----------#
     RESPONSES_COLLECTION = 'responses'
+    QUESTION_COLLECTION_CAPPED = 'question'
+    NUMBER_OF_SUGGESTED_RESPONSES = 5

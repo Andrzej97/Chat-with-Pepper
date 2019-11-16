@@ -37,6 +37,8 @@ class ChatbotManager:
 
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
 
+        self.db.add_new_doc_to_collection(configuration.QUESTION_COLLECTION_CAPPED.value, question=user_input)
+        self.db.clear_collection(configuration.RESPONSES_COLLECTION.value)
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
         if response_from_handler is not None:
             return response_from_handler
@@ -52,5 +54,5 @@ class ChatbotManager:
             self._university_chatbot.inc_responses_in_row() if conf_res \
                 else self._university_chatbot.reset_responses_in_row()
             chatbot_response = u_text if conf_res else i_text
-        self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION.value, response=chatbot_response)
+        # self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION_CAPPED.value, response=chatbot_response)
         return statement_utils.prepare_shortened_statement(chatbot_response, 0, 1)

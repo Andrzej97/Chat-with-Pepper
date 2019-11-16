@@ -1,5 +1,6 @@
 import src.common_utils.database_preparing.csv_to_database_filler as scrapper_data
 import src.common_utils.database_preparing.initialize_database as general_data
+from configuration import Configuration
 from src.common_utils.database.database_service import DatabaseProxy
 
 
@@ -34,8 +35,24 @@ def from_txt_file_to_list(path):
     return lines
 
 
+def create_collections(database):
+    collections = [collection for collection in list(Configuration) if contains('collection', collection.name)]
+    capped_collections = [capped_collection for capped_collection in collections if
+                          contains('capped', capped_collection.name)]
+    for collection in collections:
+        database.create_new_collection(collection.value)
+    for capped_collection in capped_collections:
+        database.create_new_capped_collection(capped_collection)
+
+
+def contains(key, parameter):
+    if type(parameter) is str:
+        return key in parameter.lower()
+
+
 def main():
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    create_collections(db)
     initialize_language_utils_database(db)
     general_data.init_database(db)
     scrapper_data.initialize_main_collection_from_scrapper(db)
