@@ -25,6 +25,7 @@ class ChatbotManager:
 
     def _ask_university_chatbot(self, processed_sentence):
         response = self._university_chatbot.get_bot_response(processed_sentence)
+        print('chatbot_manager.py\t_ask_university_chatbot\treturned: (response.text, response.confidence) = ', response.text, ' ', response.confidence)
         return response.text, response.confidence
 
     def _check_is_intro_chatbot_unemployed(self):
@@ -41,6 +42,7 @@ class ChatbotManager:
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
         if response_from_handler is not None:
             return response_from_handler
+        print('chatbot_manager\task_chatbot\tself._check_is_intro_chatbot_unemployed()', self._check_is_intro_chatbot_unemployed())
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)
