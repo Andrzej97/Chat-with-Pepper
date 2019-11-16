@@ -119,6 +119,8 @@ class DatabaseProxy:
             self.collections_db.create_collection(name=collection_name, capped=True,
                                                   size=max_size * 4096,
                                                   max=max_size)
+            return True
+        raise CollectionAlreadyExistsInDatabaseError
 
     def get_sorted_collection_elements(self, collection_name, field_to_sort_by, order=-1, n=5):
         """returns n elements of collection sorted in ascending(1) or descending(-1) order"""

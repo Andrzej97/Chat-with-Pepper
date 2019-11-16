@@ -38,10 +38,11 @@ class ChatbotManager:
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
 
         self.db.add_new_doc_to_collection(configuration.QUESTION_COLLECTION_CAPPED.value, question=user_input)
-        self.db.clear_collection(configuration.RESPONSES_COLLECTION.value)
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
         if response_from_handler is not None:
             return response_from_handler
+
+        self.db.clear_collection(configuration.RESPONSES_COLLECTION.value)
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)
