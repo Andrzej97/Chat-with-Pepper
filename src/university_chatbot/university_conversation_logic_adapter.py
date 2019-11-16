@@ -57,11 +57,11 @@ class UniversityAdapter(LogicAdapter):
         if confidence_by_lemmas + confidence_by_tags > -2:
             if confidence_by_tags > confidence_by_lemmas:
                 res = Statement(result_document_tags)
-                res.confidence = 1
+                res.confidence = 0.95
                 return res
             else:
                 res = Statement(result_document_lemmas)
-                res.confidence = 1
+                res.confidence = 0.95
                 return res
         else:
             return statement_utils.default_response()

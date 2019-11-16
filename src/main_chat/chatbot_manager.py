@@ -45,7 +45,7 @@ class ChatbotManager:
             return response_from_handler
 
         popular_resp, pop_conf = self._ask_pop_quest_chatbot(user_input)
-        if pop_conf == 1.0:
+        if pop_conf >= 0.98:
             return statement_utils.prepare_shortened_statement(popular_resp, 0, 1)
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)

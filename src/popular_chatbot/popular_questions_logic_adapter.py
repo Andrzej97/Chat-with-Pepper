@@ -21,5 +21,5 @@ class PopularQuestionsAdapter(LogicAdapter):
         documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, filtered_words)
         result_text, max_conf = choice_algorithm.find_best_tags_response(documents_by_tags, filtered_words)
         res = Statement(result_text)
-        res.confidence = 1.0
+        res.confidence = 0.98
         return res

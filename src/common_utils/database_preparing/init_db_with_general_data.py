@@ -14,7 +14,6 @@ def init_database(db):
     db.add_conversation(text="jak leci?", tag='greeting_response')
 
     # # nameChatbot
-    #
     db.add_conversation(text="Nauczono mnie by nie odpowiadać obcym, najpierw się poznajmy ",
                         tag='no_introduction_message')
 
