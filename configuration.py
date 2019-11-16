@@ -4,6 +4,12 @@ from enum import Enum
 class Configuration(Enum):
     NAME = 'imię'
 
+    # -------  SCRAPPER CONFIGURATION ----------- #
+    ITERS_NUM = 15
+    DATE = '191116'
+    STARTING_URL = "https://www.agh.edu.pl"
+    CHROME_DRIVER_PATH = r'C:\Users\User\chromedriver_win32\chromedriver.exe'
+
     # ----------  BOT CONFIGURATION  ------------ #
     NUMBER_OF_SENTENCES_IN_RESPONSE = 2
     REQUESTS_IN_ROW_THRESH = 5
