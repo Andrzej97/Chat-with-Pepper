@@ -1,16 +1,17 @@
 import argparse
 import io
 import re
+import qi
+import argparse
 import sys
 import time
 
 import numpy as np
-import qi
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
-from naoqi import ALProxy
 from six.moves import queue
+from naoqi import ALProxy
 
 from configuration import Configuration as configuration
 from src.connectivity.socket.socket_conn_robot import DataExchangeModule
