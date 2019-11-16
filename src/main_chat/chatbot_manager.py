@@ -1,8 +1,10 @@
 import src.common_utils.language_utils.statement_utils as statement_utils
+from configuration import Configuration as configuration
 from src.common_utils.bot_context import BotContext
 from src.general_chatbot.intro_conversation_bot import IntroBot
 from src.main_chat.response_continuation import ResponseContinuationHandler
 from src.university_chatbot.university_conversation_bot import UniversityBot
+from src.popular_chatbot.popular_questions_bot import PopularQuestionsBot
 
 
 class ChatbotManager:
@@ -13,6 +15,7 @@ class ChatbotManager:
         bot_context = BotContext()
         self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, self.db)
         self._university_chatbot = UniversityBot(self._university_chatbot_name, self.db)
+        self._pop_quest_chatbot = PopularQuestionsBot('Jarek', self.db)
         self._is_intro_bot_unemployed = False
         self.response_continuation_handler = ResponseContinuationHandler(self.db)
 
@@ -23,6 +26,10 @@ class ChatbotManager:
 
     def _ask_university_chatbot(self, processed_sentence):
         response = self._university_chatbot.get_bot_response(processed_sentence)
+        return response.text, response.confidence
+
+    def _ask_pop_quest_chatbot(self, processed_sentence):
+        response = self._pop_quest_chatbot.get_bot_response(processed_sentence)
         return response.text, response.confidence
 
     def _check_is_intro_chatbot_unemployed(self):
@@ -36,6 +43,10 @@ class ChatbotManager:
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
         if response_from_handler is not None:
             return response_from_handler
+
+        popular_resp, pop_conf = self._ask_pop_quest_chatbot(user_input)
+        if pop_conf == 1.0:
+            return statement_utils.prepare_shortened_statement(popular_resp, 0, 1)
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', user_input, ' c1 = ', c1)
@@ -43,6 +54,7 @@ class ChatbotManager:
             (i_text, i_conf) = self._ask_intro_chatbot(user_input)
             (u_text, u_conf) = self._ask_university_chatbot(user_input)
             print("U_Text = {}, u_conf = {}".format(u_text, u_conf))
+            print("i_Text = {}, i_conf = {}".format(i_text, i_conf))
             conf_res = u_conf > i_conf
             self._university_chatbot.inc_responses_in_row() if conf_res \
                 else self._university_chatbot.reset_responses_in_row()
