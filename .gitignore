@@ -1,8 +1,3 @@
 sentence_tokenizer.pickle
-src/__pycache__/
-src/common_utils/__pycache__/
-src/general_chatbot/__pycache__/
-src/university_chatbot/__pycache__/
-src/main_chat/__pycache__/
-src/common_utils/language_utils/__pycache__/
+*/__pycache__/*
 .idea/
