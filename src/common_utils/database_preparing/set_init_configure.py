@@ -57,7 +57,7 @@ def main():
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     initialize_language_utils_database(db)
     general_data.init_database(db)
-    scrapper_data.initialize_main_collection_from_scrapper(db)
+    #scrapper_data.initialize_main_collection_from_scrapper(db)
     initialize_db_with_continue_statements(db)
     initialize_db_with_popular_data(db)
 
