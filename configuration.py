@@ -5,7 +5,7 @@ class Configuration(Enum):
     NAME = 'imię'
 
     # -------  SCRAPPER CONFIGURATION ----------- #
-    ITERS_NUM = 15
+    ITERS_NUM = 4000
     DATE = '191116'
     STARTING_URL = "https://www.agh.edu.pl"
     CHROME_DRIVER_PATH = r'C:\Users\User\chromedriver_win32\chromedriver.exe'
