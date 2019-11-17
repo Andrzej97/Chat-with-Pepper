@@ -30,6 +30,19 @@ def from_txt_file_to_list(path):
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
 
+def delete_additional_info_after_colon(word):
+    index = word.find(':')
+    if index == -1:
+        return word
+    return word[:index]
+
+def list_to_str_with_colons(list):
+    # print('list_to_str_with_colons list param: ', list)
+    string = ''
+    for elem in list:
+        string += elem + ':'
+    string = string[:-1]
+    return string
 
 class SentenceFilter:
     def __init__(self):
@@ -63,17 +76,23 @@ class SentenceFilter:
             morphological_tag_set = set(morphological_tag.split(':'))
         return lemma, morphological_tag_set
 
-    def extract_lemma(self, word):
-        lemma = None
+    def extract_lemma(self, word, response_cont=None):
+        lemmas = []
         analysis_result = self.utils.morfeusz.analyse(word)
         if len(analysis_result) == 0:
-            return lemma
+            return None
         for element in analysis_result:
             try:
+                morphological_tag = element[2][2]
+                if morphological_tag == "interj":
+                    continue
                 lemma = element[2][1]
+                lemma = delete_additional_info_after_colon(lemma)
+                if lemma not in lemmas:
+                    lemmas.append(lemma)
             except IndexError:
                 return None
-        return lemma
+        return lemmas[0] if response_cont is not None else lemmas
 
     def filter_stop_words(self, word):
         return word[0] not in self.stop_words
@@ -89,11 +108,19 @@ class SentenceFilter:
                        sentence_after_extraction))
         return list(map(lambda x: x[0].lower(), sentence_filtered))
 
+    def filter_sentence_complex(self, sentence):
+        sentence_filtered = None
+        words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
+        sentence_after_extraction = list(map(lambda z: self.extract_lemma(z), words))
+        sentence_filtered = list(map(lambda x_list: list_to_str_with_colons(x_list), sentence_after_extraction))
+        sentence_filtered = list(filter(lambda y: y.lower() not in self.stop_words, sentence_filtered))
+        return sentence_filtered
+
     def extract_lemmas_and_filter_stopwords(self, sentence):
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
         lemmas = []
         for word in words:
-            lemmas.append(self.extract_lemma(word).lower())
+            lemmas.append(self.extract_lemma(word)[0].lower())
         return list(filter(lambda x: x is not None, lemmas))
 
     def is_sentence_about_numbers(self, sentence):
