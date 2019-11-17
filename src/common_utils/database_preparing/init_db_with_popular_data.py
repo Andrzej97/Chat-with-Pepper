@@ -4,20 +4,20 @@ def initialize_db_with_popular_questions(db, COLLECTION_NAME):
 
     db.create_new_collection(COLLECTION_NAME)
     db.add_doc_with_tags_list(COLLECTION_NAME,
-    ['rektor', 'uczelnia'], 'Rektorem uczelni jest profesor doktor habilitowany Tadeusz Słomka')
+    ['rektor', 'uczelnia', 'aktualny'], 'Rektorem uczelni jest profesor doktor habilitowany Tadeusz Słomka')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
-    ['miasteczko', 'studencki'], 'Miasteczko studenckie agh to najbardziej popularny kampus studencki w Polsce')
+    ['miasteczko', 'studencki', 'uczelnia'], 'Miasteczko studenckie agh to najbardziej popularny kampus studencki w Polsce')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
-    ['agh', 'założenie'], 'Akademia górniczo hutnicza została założona w 1919 roku')
+    ['agh', 'założenie', 'rok'], 'Akademia górniczo hutnicza została założona w 1919 roku')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
     ['juwenalia', 'uczelnia', 'krakowski'], 'Najpopularniejsze juwenalia w Krakowie odbywają się na miasteczku studenckim agh'
                                             ' najczęściej w drugiej połowie maja')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
-    ['informatyk', 'wydział'], 'Centrum informatyki agh znajduje się przy ul Kawiory w budynku D17')
+    ['informatyk', 'wydział', 'centrum'], 'Centrum informatyki agh znajduje się przy ul Kawiory w budynku D17')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
     ['uczelnia', 'imię'], 'Akademia górniczo hutnicza nosi imię Stanisława Staszica')
