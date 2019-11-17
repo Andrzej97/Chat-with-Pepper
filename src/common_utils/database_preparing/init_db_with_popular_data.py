@@ -13,7 +13,8 @@ def initialize_db_with_popular_questions(db, COLLECTION_NAME):
     ['agh', 'założenie'], 'Akademia górniczo hutnicza została założona w 1919 roku')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
-    ['juwenalia', 'uczelnia', 'krakowski'], 'Najpopularniejsze juwenalia w Krakowie odbywają się na miasteczku studenckim agh')
+    ['juwenalia', 'uczelnia', 'krakowski'], 'Najpopularniejsze juwenalia w Krakowie odbywają się na miasteczku studenckim agh'
+                                            ' najczęściej w drugiej połowie maja')
 
     db.add_doc_with_tags_list(COLLECTION_NAME,
     ['informatyk', 'wydział'], 'Centrum informatyki agh znajduje się przy ul Kawiory w budynku D17')

@@ -45,11 +45,11 @@ class ChatbotManager:
             return response_from_handler
 
         popular_resp, pop_conf = self._ask_pop_quest_chatbot(user_input)
-        if pop_conf >= 0.98:
+        if pop_conf >= configuration.POP_QUEST_BOT_CONST_CONF.value:
             return statement_utils.prepare_shortened_statement(popular_resp, 0, 1)
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
-            print('University chatbot = ', user_input, ' c1 = ', c1)
+            print('University chatbot = ', chatbot_response, ' c1 = ', c1)
         else:
             (i_text, i_conf) = self._ask_intro_chatbot(user_input)
             (u_text, u_conf) = self._ask_university_chatbot(user_input)
@@ -57,8 +57,8 @@ class ChatbotManager:
             print("i_Text = {}, i_conf = {}".format(i_text, i_conf))
             conf_res = u_conf > i_conf
             self._university_chatbot.inc_responses_in_row() if conf_res \
-                else self._university_chatbot.reset_responses_in_row()
+                                                            else self._university_chatbot.reset_responses_in_row()
             chatbot_response = u_text if conf_res else i_text
 
-        # self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION.value, response=chatbot_response)
+        self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION.value, response=chatbot_response)
         return statement_utils.prepare_shortened_statement(chatbot_response, 0, 1)

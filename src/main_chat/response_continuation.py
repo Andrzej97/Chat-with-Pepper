@@ -24,7 +24,7 @@ class ResponseContinuationHandler:
 
     def is_continuation_request_asked(self, input_statement):
         continuation_requests = set(self.db.get_responses_list_by_tags(tag="continue"))
-        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x), input_statement.split(' ')))
+        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x, True), input_statement.split(' ')))
         return len(sliced_statement.intersection(continuation_requests)) > 1
 
     def return_next_part_of_response(self, question):
