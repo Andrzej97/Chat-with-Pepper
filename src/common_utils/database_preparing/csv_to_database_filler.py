@@ -13,7 +13,7 @@ def initialize_main_collection_from_scrapper(db):
         make_phrases_csv('csv_files/db_provenForPhrases_100.csv', 'csv_files/DB_FINAL_100_PHRASES.csv')
 
     # to fill mongo database
-    collection = 'MAIN_COLLECTION'
+    collection = Configuration.MAIN_COLLECTION.value
     try:
         db.create_new_collection(collection)
     except exceptions.CollectionAlreadyExistsInDatabaseError:
@@ -27,7 +27,7 @@ def initialize_main_collection_from_scrapper(db):
             text = row[-1:]
             db.add_doc_with_tags_list(collection, tags, text)
 
-    collection = 'PHRASES'
+    collection = Configuration.PHRASES_COLLECTION.value
     try:
         db.create_new_collection(collection)
     except exceptions.CollectionAlreadyExistsInDatabaseError:

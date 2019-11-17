@@ -1,6 +1,6 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
-
+from configuration import Configuration
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 
@@ -41,7 +41,7 @@ class UniversityAdapter(LogicAdapter):
 
     def process(self, statement, additional_responses_parameters):
         noun_tags = self.sentence_filter.filter_sentence(statement.text, ['noun'])
-        docs_by_tags = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
+        docs_by_tags = self.db.get_docs_from_collection_by_tags_list(Configuration.MAIN_COLLECTION.value, noun_tags)
         confidence_by_tags = -1
         confidence_by_lemmas = -1
         if len(docs_by_tags) > 0:  # matching tags exist
@@ -50,7 +50,7 @@ class UniversityAdapter(LogicAdapter):
                 result_document_tags, confidence_by_tags = find_coverage_res
         if confidence_by_tags < 2:  # confidence of response based on tags is not enough (0 = 0%, 1 = 100%)
             extracted_lemmas = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
-            docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', extracted_lemmas)
+            docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list(Configuration.PHRASES_COLLECTION.value, extracted_lemmas)
             if len(docs_by_lemmas) > 0:
                 find_coverage_res = find_best_tags_coverage(docs_by_lemmas, extracted_lemmas)
                 if find_coverage_res is not None:
