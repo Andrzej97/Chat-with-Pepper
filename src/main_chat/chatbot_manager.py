@@ -39,7 +39,6 @@ class ChatbotManager:
         return self._is_intro_bot_unemployed
 
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
-
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
         if response_from_handler is not None:
             return response_from_handler
@@ -47,6 +46,7 @@ class ChatbotManager:
         popular_resp, pop_conf = self._ask_pop_quest_chatbot(user_input)
         if pop_conf >= configuration.POP_QUEST_BOT_CONST_CONF.value:
             return statement_utils.prepare_shortened_statement(popular_resp, 0, 1)
+
         if self._check_is_intro_chatbot_unemployed():
             chatbot_response, c1 = self._ask_university_chatbot(user_input)
             print('University chatbot = ', chatbot_response, ' c1 = ', c1)

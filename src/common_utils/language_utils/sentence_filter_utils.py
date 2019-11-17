@@ -83,9 +83,6 @@ class SentenceFilter:
             return None
         for element in analysis_result:
             try:
-                morphological_tag = element[2][2]
-                if morphological_tag == "interj":
-                    continue
                 lemma = element[2][1]
                 lemma = delete_additional_info_after_colon(lemma)
                 if lemma not in lemmas:
@@ -114,6 +111,7 @@ class SentenceFilter:
         sentence_after_extraction = list(map(lambda z: self.extract_lemma(z), words))
         sentence_filtered = list(map(lambda x_list: list_to_str_with_colons(x_list), sentence_after_extraction))
         sentence_filtered = list(filter(lambda y: y.lower() not in self.stop_words, sentence_filtered))
+        print("filter_sentence_complex \ SENTENCE FILTERED = ", sentence_filtered)
         return sentence_filtered
 
     def extract_lemmas_and_filter_stopwords(self, sentence):
