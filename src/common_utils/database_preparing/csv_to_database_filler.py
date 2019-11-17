@@ -1,73 +1,18 @@
-#from src.common_utils.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as exceptions
 import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-
-def correct_csv_format(file_in, file_out, file_out_phrases):
-    f_out = open(file_out, encoding="utf-8", mode="w")
-    f_out_phrases = open(file_out_phrases, encoding="utf-8", mode="w")
-
-    with open(file_in, encoding="utf-8") as csvfile:
-        readCSV = csv.reader(csvfile)
-        sentence_filter = SentenceFilter()
-        for row in readCSV:
-            row_str = str(row)
-            if row_str == '''['TAGS#TEXT']''':
-                continue
-            # print(row_str)
-            # deleting starting and ending [" ... "]
-            row_str = row_str[2 : len(row_str) - 2]
-            # print(row_str)
-            row_splitted_to_tags_and_text = row_str.split('#')
-            tags_str =row_splitted_to_tags_and_text[0]
-            plain_text = row_splitted_to_tags_and_text[1]
-            # delete starting and ending [...] in tags
-            tags_str = tags_str[1 : len(tags_str) - 1]
-            # print(tags_str)
-            # print(plain_text)
-            tags_list = tags_str.split(', ')
-            # delete first empty element: ''
-            tags_list = tags_list[1:]
-
-            # print('PLAIN_TEXT:\t', plain_text)
-            splitted_plain_text = plain_text[:-1].split('.')
-            for phrase in splitted_plain_text:
-                # print('Splitted:\t', phrase)'
-                if phrase == '':
-                    continue
-                f_out_phrases.write(phrase)
-                phrase_splitted = phrase.split()
-                for word in phrase_splitted:
-                    # print('Word:\t\t', word)
-                    if word[len(word) - 1] == ',':
-                        word = word[:-1]
-                        # print('Word after if:\t', word)
-                    filtered = sentence_filter.filter_sentence(word)
-                    if len(filtered) != 0:
-                        # print('filtered:\t', filtered[0][0])
-                        f_out_phrases.write('#' + filtered[0][0])
-                f_out_phrases.write("\n")
-
-            f_out.write(plain_text)
-            for elem in tags_list:
-                #delete starting and ending [...]
-                elem = elem[1 : len(elem) - 1]
-                # print('elem:\t\t', elem)
-                filtered = sentence_filter.filter_sentence(elem)
-                if len(filtered) != 0:
-                    # print('filtered:\t', filtered[0][0])
-                    f_out.write('#' + filtered[0][0])
-            # f_out.write(row_str)
-            f_out.write("\n")
-
-    f_out.close()
-    f_out_phrases.close()
+from csvWriter import CsvWriter
+import os.path
+from configuration import Configuration
 
 def initialize_main_collection_from_scrapper(db):
-    #db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    # to prepare necessary files from one file: DB_FINAL_<number>.csv
+    if not os.path.exists('csv_files/DB_FINAL_150_TAGS_FILTERED.csv'):
+        make_filter_tags_csv('csv_files/db_proven_150.csv', 'csv_files/DB_FINAL_150_TAGS_FILTERED.csv')
+    if not os.path.exists('csv_files/DB_FINAL_100_PHRASES.csv'):
+        make_phrases_csv('csv_files/db_provenForPhrases_100.csv', 'csv_files/DB_FINAL_100_PHRASES.csv')
 
-    correct_csv_format('./csv_files/database_100.csv', './csv_files/database_correct_filtered_100.csv', './csv_files/database_filtered_phrases_100.csv')
-
+    # to fill mongo database
     collection = 'MAIN_COLLECTION'
     try:
         db.create_new_collection(collection)
@@ -75,17 +20,12 @@ def initialize_main_collection_from_scrapper(db):
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-
-    with open('./csv_files/database_correct_filtered_100.csv', encoding="utf-8") as csvfile:
+    with open('csv_files/DB_FINAL_150_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
-            tags = row[1:len(row)]
-            text = row[0]
+            tags = row[:-1]
+            text = row[-1:]
             db.add_doc_with_tags_list(collection, tags, text)
-
-    # checking if it worked
-    print(db.get_docs_from_collection_by_tags_list(collection, ['historia']))
-
 
     collection = 'PHRASES'
     try:
@@ -94,14 +34,41 @@ def initialize_main_collection_from_scrapper(db):
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-
-    with open('./csv_files/database_filtered_phrases_100.csv', encoding="utf-8") as csvfile:
+    with open('csv_files/DB_FINAL_100_PHRASES.csv', encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)
-            tags = row[1:len(row)]
-            text = row[0]
+            tags = row[:-1]
+            text = row[-1:]
             db.add_doc_with_tags_list(collection, tags, text)
 
+def make_filter_tags_csv(in_file, out_file):
+    csvWriter = CsvWriter(out_file)
+    with open(in_file, encoding="utf-8") as f_in:
+        readCSV = csv.reader(f_in, delimiter='#')
+        sentence_filter = SentenceFilter()
+        for row in readCSV:
+            tags = row[:-1]
+            text = row[-1:][0]
+            tags_filtered = set()
+            for tag in tags:
+                filtered = sentence_filter.extract_complex_lemmas_and_filter_stopwords(tag)
+                for elem in filtered:
+                    tags_filtered.add(elem)
+            if len(tags_filtered) != 0:
+                csvWriter.write_tags_and_text(list(tags_filtered), text)
+            else:
+                csvWriter.write_tags_and_text(tags, text)
 
-
+def make_phrases_csv(in_file, out_file):
+    csvWriter = CsvWriter(out_file)
+    with open(in_file, encoding="utf-8") as f_in:
+        readCSV = csv.reader(f_in, delimiter='#')
+        sentence_filter = SentenceFilter()
+        for row in readCSV:
+            text = row[-1:][0]
+            phrases = text.split('.')
+            for phrase in phrases:
+                tags_for_words = sentence_filter.extract_complex_lemmas_and_filter_stopwords(phrase)
+                if len(tags_for_words) != 0:
+                    csvWriter.write_tags_and_text(tags_for_words, phrase)
