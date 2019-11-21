@@ -25,15 +25,6 @@ def from_txt_file_to_list(path):
     lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
     return lines
 
-def create_responses_collection(db):
-    collection = Configuration.RESPONSES_COLLECTION.value
-    try:
-        db.create_new_collection(collection)
-    except exceptions.CollectionAlreadyExistsInDatabaseError:
-        db.remove_collection(collection)
-        db.create_new_collection(collection)
-        print("Collection Already Exists Error")
-
 def main():
     db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
     initialize_language_utils_database(db)
