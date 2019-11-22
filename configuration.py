@@ -26,3 +26,5 @@ class Configuration(Enum):
 
     # -------- MONGO COLLECTIONS NAMES -----------#
     RESPONSES_COLLECTION = 'responses'
+    MAIN_COLLECTION = 'main_collection'
+    PHRASES_COLLECTION = 'phrases'

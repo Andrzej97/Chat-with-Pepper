@@ -4,36 +4,40 @@ from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from csvWriter import CsvWriter
 import os.path
 
+from configuration import Configuration
+
 def initialize_main_collection_from_scrapper(db):
+    FINAL_CSV_FILENAME_MAIN_COLLECTION = 'csv_files/db_proven_150_tagsFiltered.csv'
+    FINAL_CSV_FILENAME_PHRASES_COLLECTION = 'csv_files/dbForPhrases_proven_100_tagsFiltered.csv'
     # to prepare necessary files from one file: DB_FINAL_<number>.csv
-    if not os.path.exists('csv_files/DB_FINAL_150_TAGS_FILTERED.csv'):
-        make_filter_tags_csv('csv_files/DB_FINAL_150.csv', 'csv_files/DB_FINAL_150_TAGS_FILTERED.csv')
-    if not os.path.exists('csv_files/DB_FINAL_100_PHRASES.csv'):
-        make_phrases_csv('csv_files/db_pepper_100urls_forPhrases.csv', 'csv_files/DB_FINAL_100_PHRASES.csv')
+    if not os.path.exists(FINAL_CSV_FILENAME_MAIN_COLLECTION):
+        make_filter_tags_csv('csv_files/db_proven_150.csv', FINAL_CSV_FILENAME_MAIN_COLLECTION)
+    if not os.path.exists(FINAL_CSV_FILENAME_PHRASES_COLLECTION):
+        make_phrases_csv('csv_files/dbForPhrases_proven_100.csv', FINAL_CSV_FILENAME_PHRASES_COLLECTION)
 
     # to fill mongo database
-    collection = 'MAIN_COLLECTION'
+    collection = Configuration.MAIN_COLLECTION.value
     try:
         db.create_new_collection(collection)
     except exceptions.CollectionAlreadyExistsInDatabaseError:
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-    with open('csv_files/DB_FINAL_150_TAGS_FILTERED.csv', encoding="utf-8") as csvfile:
+    with open(FINAL_CSV_FILENAME_MAIN_COLLECTION, encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             tags = row[:-1]
             text = row[-1:]
             db.add_doc_with_tags_list(collection, tags, text)
 
-    collection = 'PHRASES'
+    collection = Configuration.PHRASES_COLLECTION.value
     try:
         db.create_new_collection(collection)
     except exceptions.CollectionAlreadyExistsInDatabaseError:
         db.remove_collection(collection)
         db.create_new_collection(collection)
         print("Collection Already Exists Error")
-    with open('csv_files/DB_FINAL_100_PHRASES.csv', encoding="utf-8") as csvfile:
+    with open(FINAL_CSV_FILENAME_PHRASES_COLLECTION, encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             print(row)

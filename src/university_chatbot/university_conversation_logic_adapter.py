@@ -1,6 +1,6 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
-
+from configuration import Configuration
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from src.common_utils.constants import GOOD_ANSWER_CONFIDENCE, RANDOM_CONF_THRESHOLD
@@ -134,31 +134,8 @@ class UniversityAdapter(LogicAdapter):
         return string
 
     def process(self, statement, additional_responses_parameters):
-        noun_tags = self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(statement.text)
-        noun_tags = list(noun_tags)
-        print("university_conversation_logic_adapter.py\tprocess1\tTAGS FROM SENTENCE FILTER QUESTION = \t", noun_tags)
-        normal_lemmas, complex_lemmas = self.sentence_filter.split_to_norm_and_complex_lemmas(noun_tags)
-        print("university_conversation_logic_adapter.py\tprocess2a\tNORMAL LEMMAS = \t", normal_lemmas)
-        print("university_conversation_logic_adapter.py\tprocess2b\tCOMPLEX LEMMAS = \t", complex_lemmas)
-        docs_by_tags = []
-        docs_by_lemmas = []
-        tags_combinations_dict = {}
-        if len(complex_lemmas) != 0:
-            tags_combinations_dict.update(self.create_tags_combinations_dict(normal_lemmas, complex_lemmas))
-            for tags in tags_combinations_dict.values():
-                tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', tags)
-                lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', tags)
-                if tag_docs: docs_by_tags.extend(tag_docs)
-                if lemma_docs: docs_by_lemmas.extend(lemma_docs)
-        else:
-            tags_combinations_dict[0] = noun_tags
-            tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
-            lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', noun_tags)
-            if tag_docs:
-                docs_by_tags.extend(tag_docs)
-            if lemma_docs:
-                docs_by_lemmas.extend(lemma_docs)
-
+        noun_tags = self.sentence_filter.filter_sentence(statement.text, ['noun'])
+        docs_by_tags = self.db.get_docs_from_collection_by_tags_list(Configuration.MAIN_COLLECTION.value, noun_tags)
         confidence_by_tags = -1
         confidence_by_lemmas = -1
         # print('university_conversation_logic_adapter.py\tprocess3\tlen(docs_by_tags):\t', len(docs_by_tags))
