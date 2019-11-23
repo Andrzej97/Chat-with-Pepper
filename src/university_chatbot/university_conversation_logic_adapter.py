@@ -69,10 +69,10 @@ class UniversityAdapter(LogicAdapter):
         else:
             return None, -1
 
-    def create_combinated_tags_list(self, normal_lemmas, complex_lemmas):
+    def create_combinated_tags_list(self, single_lemmas, complex_lemmas):
         lemmas_chosen_from_complex_list = self.sentence_filter.my_generate_filtered_words_lemmas_combinations(complex_lemmas)  # list(map(lambda lemma: lemma.split(':')[0], complex_lemmas))
         tags_list = []
-        tags_list.extend(normal_lemmas)
+        tags_list.extend(single_lemmas)
         tags_list.extend(complex_lemmas)
         tags_list.extend(lemmas_chosen_from_complex_list)
         return tags_list
@@ -94,43 +94,23 @@ class UniversityAdapter(LogicAdapter):
         return string
 
     def process(self, statement, additional_responses_parameters):
-        tags = self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(statement.text)
-        tags = list(tags)
-        print("university_conversation_logic_adapter.py\tprocess1\tTAGS FROM SENTENCE FILTER QUESTION = \t", tags)
-        normal_lemmas, complex_lemmas = self.sentence_filter.split_to_norm_and_complex_lemmas(tags)
-        print("university_conversation_logic_adapter.py\tprocess2a\tNORMAL LEMMAS = \t", normal_lemmas)
-        print("university_conversation_logic_adapter.py\tprocess2b\tCOMPLEX LEMMAS = \t", complex_lemmas)
-        docs_by_tags = []
-        docs_by_lemmas = []
-        tags_combinations_dict = {}
-        tags = tags
+        tags = list(self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(statement.text))
+        single_lemmas, complex_lemmas = self.sentence_filter.split_to_norm_and_complex_lemmas(tags)
         if len(complex_lemmas) != 0:
-            tags = self.create_combinated_tags_list(normal_lemmas, complex_lemmas)
-        tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', tags)
-        lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', tags)
-        if tag_docs:
-            docs_by_tags.extend(tag_docs)
-        if lemma_docs:
-            docs_by_lemmas.extend(lemma_docs)
+            tags = self.create_combinated_tags_list(single_lemmas, complex_lemmas)
 
-        confidence_by_tags = -1
-        confidence_by_lemmas = -1
-        # print('university_conversation_logic_adapter.py\tprocess3\tlen(docs_by_tags):\t', len(docs_by_tags))
-        # print('university_conversation_logic_adapter.py\tprocess3\tdocs_by_tags:\t', docs_by_tags)
-        if len(docs_by_tags) > 0:  # matching tags exist
-            result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_by_tags, tags)
-            print('university_conversation_logic_adapter.py\tprocess4\tresult_codument_tags:\t', result_document_tags)
-            print('university_conversation_logic_adapter.py\tprocess5\tconfidence_by_tags:\t', confidence_by_tags)
-        #docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list('PHRASES', tags)
-        # print('university_conversation_logic_adapter.py\tprocess6\tlen(docs_by_lemmas):\t', len(docs_by_lemmas))
-        if len(docs_by_lemmas) > 0:
-            # print("university_conversation_logic_adapter.py\tprocess7\tSEARCHING IN PHRASES STARTED")
-            result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_by_lemmas, tags)
-            print('university_conversation_logic_adapter.py\tprocess8\tresult_document_lemmas:\t', result_document_lemmas)
-            print('university_conversation_logic_adapter.py\tprocess9\tconfidence_by_lemmas:\t', confidence_by_lemmas)
-        if confidence_by_lemmas + confidence_by_tags > -2:
-            # print('university_conversation_logic_adapter.py\tprocess10\tresult_document_tags:\t', result_document_tags)
-            # print('university_conversation_logic_adapter.py\tprocess11\tresult_document_lemmas:\t', result_document_lemmas)
+        docs_main_collection = self.db.get_docs_from_collection_by_tags_list(Configuration.MAIN_COLLECTION.value, tags)
+        docs_phrases_collection = self.db.get_docs_from_collection_by_tags_list(Configuration.PHRASES_COLLECTION.value, tags)
+
+        confidence_by_tags = 0.0
+        confidence_by_lemmas = 0.0
+        if len(docs_main_collection) > 0:  # matching tags exist
+            result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_main_collection, tags)
+        if len(docs_phrases_collection) > 0:
+            result_document_lemmas, confidence_by_lemmas = self.find_best_tags_coverage(docs_phrases_collection, tags)
+
+        if confidence_by_lemmas >= Configuration.GOOD_ANSWER_CONFIDENCE.value \
+                or confidence_by_tags >= Configuration.GOOD_ANSWER_CONFIDENCE.value:
             if confidence_by_tags >= confidence_by_lemmas:
                 res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_tags))
