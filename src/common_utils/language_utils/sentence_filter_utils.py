@@ -135,3 +135,44 @@ class SentenceFilter:
 
     def is_stopword(self, word):
         return word.lower() in self.stop_words
+
+    def split_to_norm_and_complex_lemmas(self, lemmas_list):
+        normal_lemmas = []
+        complex_lemmas = []
+        for lemma in lemmas_list:
+            splitted_lemmas = lemma.split(':')
+            if len(splitted_lemmas) > 1 and splitted_lemmas[1] not in ['s', 's1', 's2', 's3', 'v1', 'v2', 'v3']:
+                complex_lemmas.append(lemma)
+            elif len(splitted_lemmas) > 1:
+                normal_lemmas.append(splitted_lemmas[0])
+            else:
+                normal_lemmas.append(lemma)
+        return normal_lemmas, complex_lemmas
+
+    def generate_filtered_words_lemmas_combinations(self, complex_lemmas_list):
+        comb_idx = 0
+        combinations_dict = {}
+
+        def create_lemmas_combinations(complex_lemmas_list, start_idx):
+            nonlocal comb_idx
+            if len(complex_lemmas_list) == 0:  # end of recursion
+                combinations_dict[comb_idx] = []
+                comb_idx = comb_idx + 1
+                # print("Comb_idx = ", comb_idx, ", dict = ", combinations_dict)
+                return
+
+            possibilities = complex_lemmas_list[0].split(':')
+            # print("Possibilities", possibilities)
+            for possibility in possibilities:
+                lemmas_list_copy = list(complex_lemmas_list)
+                # print("POSSIBILITY:", possibility)
+                lemma_param = lemmas_list_copy[1:] if len(lemmas_list_copy) > 1 else []
+                start_idx = comb_idx
+                create_lemmas_combinations(lemma_param, comb_idx)
+
+                for k in range(start_idx, comb_idx):
+                    combinations_dict[k].append(possibility)
+            # print("DICT:", combinations_dict)
+
+        create_lemmas_combinations(complex_lemmas_list, 0)
+        return combinations_dict

@@ -30,8 +30,6 @@ def main():
     initialize_language_utils_database(db)
     general_data.init_database(db)
     scrapper_data.initialize_main_collection_from_scrapper(db)
-    create_responses_collection(db)
-
 
 if __name__ == '__main__':
     main()
