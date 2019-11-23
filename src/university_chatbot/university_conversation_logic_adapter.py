@@ -64,49 +64,21 @@ class UniversityAdapter(LogicAdapter):
             return (conf_thresh, True) if random.uniform(0, 1) > RANDOM_CONF_THRESHOLD else (0.0, False)
 
 
-    def find_best_tags_coverage(self, documents, normal_and_complex_tags):
+    def find_best_tags_coverage(self, documents, tags):
         id_of_best_cov_doc = -1
-        # print('find_best_tags_coverage:\tnormal_and_complex_tags:\t', normal_and_complex_tags)
-        max_conf_from_covered_docs = 0
-        was_one_selected = False
-        max_coverage = -1
-        tags = normal_and_complex_tags
+        max_conf_from_covered_docs = -1
         for document in documents:
             tags_from_document = document['tags']
-            # print('tags:\t\t\t ', tags)
-            # print('document[text]:\t', document['text'])
-            # print('tags_from_document:\t', tags_from_document)
-
-
-            # coverage = len(set(tags_from_document).intersection(set(tags)))
             coverage = my_intersection(set(tags), set(tags_from_document))
-
-            # print('coverage: ', coverage)
             conf_thresh, was_accepted = self.is_accepted(coverage, len(set(tags_from_document)), tags)
-            # print('conf_thresh: ', conf_thresh)
-            if not was_one_selected:
-                max_conf_from_covered_docs = conf_thresh
-                id_of_best_cov_doc = document['_id']
-                was_one_selected = True
-                max_coverage = coverage
-
-            if coverage >= max_coverage:
-                max_coverage = coverage
-                # print('tags:\t\t\t ', tags)
-                # print('document[text]:\t', document['text'])
-                # print('tags_from_document:\t', tags_from_document)
-                # print('coverage: ', coverage)
-
             if was_accepted and conf_thresh >= max_conf_from_covered_docs:
                 id_of_best_cov_doc = document['_id']
                 max_conf_from_covered_docs = conf_thresh
-                # print("Max_coverage: tags:", tags_from_document, ", len:", coverage, ", max_conf:", max_conf_from_covered_docs, ", tags:", tags)
-
         result_list = list(filter(lambda obj: obj['_id'] == id_of_best_cov_doc, documents))
         if len(result_list) > 0:
             return result_list[0]['text'], max_conf_from_covered_docs
         else:
-            return None
+            return None, -1
 
     def create_tags_combinations_dict(self, normal_lemmas, complex_lemmas):
         tags_combinations = {}
