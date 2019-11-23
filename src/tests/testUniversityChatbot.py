@@ -4,6 +4,7 @@ from src.university_chatbot.university_conversation_logic_adapter import Univers
 from src.common_utils.database.database_service import DatabaseProxy
 from chatterbot import ChatBot
 from chatterbot.conversation import Statement
+from configuration import Configuration
 
 db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 chatbot = ChatBot(
@@ -28,14 +29,9 @@ class TestUniversistyChatbot(unittest.TestCase):
     def check_tags_response(self, question, correct_tags):
         # response = _university_chatbot.get_bot_response(question)
         resp = _university_adapter.process(Statement(question), None)
-        doc = db.get_one_doc_from_collection_by_tags_list('MAIN_COLLECTION', correct_tags)
+        doc = db.get_one_doc_from_collection_by_tags_list(Configuration.MAIN_COLLECTION.value, correct_tags)
         if doc is None:
             self.fail('get_one_doc_from_collection_by_tags_list returned None')
-        print('''doc['tags']: ''', doc['tags'])
-        # print('response.text.lower(): ', response.text.lower())
-        print('resp.lower(): ', resp.text.lower())
-        print('''doc['text']: ''', doc['text'])
-        # self.assertEqual(doc['text'].lower().strip(), response.text.lower().strip())
         self.assertEqual(doc['text'][0].lower().strip(), resp.text.lower().strip())
 
 

@@ -37,7 +37,7 @@ class UniversityAdapter(LogicAdapter):
             return None, -1
 
     def create_combinated_tags_list(self, single_lemmas, complex_lemmas):
-        lemmas_chosen_from_complex_list = self.sentence_filter.my_generate_filtered_words_lemmas_combinations(complex_lemmas)  # list(map(lambda lemma: lemma.split(':')[0], complex_lemmas))
+        lemmas_chosen_from_complex_list = self.sentence_filter.generate_single_lemmas_list(complex_lemmas)  # list(map(lambda lemma: lemma.split(':')[0], complex_lemmas))
         tags_list = []
         tags_list.extend(single_lemmas)
         tags_list.extend(complex_lemmas)
