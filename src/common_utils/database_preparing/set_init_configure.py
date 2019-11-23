@@ -16,7 +16,7 @@ def insert_polish_stop_words(db):
     try:
         db.create_new_collection('polish_stop_words')
         db.add_many_new_docs_to_collection('polish_stop_words', list)
-    except exceptions.CollectionAlreadyExistsInDatabaseError:
+    except Exceptions.CollectionAlreadyExistsInDatabaseError:
         db.add_many_new_docs_to_collection('polish_stop_words', list)
 
 
