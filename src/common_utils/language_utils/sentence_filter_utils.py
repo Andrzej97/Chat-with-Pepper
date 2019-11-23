@@ -176,3 +176,11 @@ class SentenceFilter:
 
         create_lemmas_combinations(complex_lemmas_list, 0)
         return combinations_dict
+
+    def my_generate_filtered_words_lemmas_combinations(self, complex_lemmas_list):
+        single_lemmas_list = []
+        for complex_lemma in complex_lemmas_list:
+            words = complex_lemma.split(':')
+            for word in words:
+                single_lemmas_list.append(word)
+        return single_lemmas_list
