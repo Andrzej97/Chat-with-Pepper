@@ -16,12 +16,12 @@ def insert_polish_stop_words(db):
     try:
         db.create_new_collection('polish_stop_words')
         db.add_many_new_docs_to_collection('polish_stop_words', list)
-    except Exceptions.CollectionAlreadyExistsInDatabaseError:
+    except exceptions.CollectionAlreadyExistsInDatabaseError:
         db.add_many_new_docs_to_collection('polish_stop_words', list)
 
 
 def from_txt_file_to_list(path):
-    file = open(path, "r")
+    file = open(path, mode='r', encoding='utf-8')
     lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
     return lines
 
