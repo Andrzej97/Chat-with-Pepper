@@ -79,6 +79,25 @@ class UniversityAdapter(LogicAdapter):
 
         return tags_combinations
 
+    def create_tags_combinations_dictAndrzej(self, normal_lemmas, complex_lemmas):
+        print('ANDRZEJ: normal_lemmas: ', normal_lemmas)
+        print('ANDRZEJ: complex_lemmas: ', complex_lemmas)
+        tags_combinations = {}
+        lemmas_chosen_from_complex_list = self.sentence_filter.generate_filtered_words_lemmas_combinations(complex_lemmas)  # list(map(lambda lemma: lemma.split(':')[0], complex_lemmas))
+        print('ANDRZEJ: lemmas_chosen_from_complex_list: ', lemmas_chosen_from_complex_list)
+        tags_list = []
+        tags_list.extend(normal_lemmas)
+        tags_list.extend(complex_lemmas)
+        for l in lemmas_chosen_from_complex_list:
+            print('l = ', l)
+            print('lemmas_chosen_from_complex_list[l] = ', lemmas_chosen_from_complex_list[l])
+            tags_list.extend(lemmas_chosen_from_complex_list[l])
+            # n_lemmas_copy = list(normal_lemmas)
+            # n_lemmas_copy.extend(lemmas_chosen_from_complex_list[l])
+            # tags_combinations[l] = n_lemmas_copy
+        print('tags_list: ', tags_list)
+        return tags_list
+
     def can_process(self, statement):
         return True
 
@@ -105,25 +124,20 @@ class UniversityAdapter(LogicAdapter):
         docs_by_tags = []
         docs_by_lemmas = []
         tags_combinations_dict = {}
+        tags = noun_tags
         if len(complex_lemmas) != 0:
-            tags_combinations_dict.update(self.create_tags_combinations_dict(normal_lemmas, complex_lemmas))
-            for tags in tags_combinations_dict.values():
-                tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', tags)
-                lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', tags)
-                if tag_docs: docs_by_tags.extend(tag_docs)
-                if lemma_docs: docs_by_lemmas.extend(lemma_docs)
-        else:
-            tags_combinations_dict[0] = noun_tags
-            tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', noun_tags)
-            lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', noun_tags)
-            if tag_docs:
-                docs_by_tags.extend(tag_docs)
-            if lemma_docs:
-                docs_by_lemmas.extend(lemma_docs)
+            tags = self.create_tags_combinations_dictAndrzej(normal_lemmas, complex_lemmas)
+        tag_docs = self.db.get_docs_from_collection_by_tags_list('MAIN_COLLECTION', tags)
+        lemma_docs = self.db.get_docs_from_collection_by_tags_list('PHRASES', tags)
+        if tag_docs:
+            docs_by_tags.extend(tag_docs)
+        if lemma_docs:
+            docs_by_lemmas.extend(lemma_docs)
 
         confidence_by_tags = -1
         confidence_by_lemmas = -1
         # print('university_conversation_logic_adapter.py\tprocess3\tlen(docs_by_tags):\t', len(docs_by_tags))
+        # print('university_conversation_logic_adapter.py\tprocess3\tdocs_by_tags:\t', docs_by_tags)
         if len(docs_by_tags) > 0:  # matching tags exist
             result_document_tags, confidence_by_tags = self.find_best_tags_coverage(docs_by_tags, noun_tags)
             print('university_conversation_logic_adapter.py\tprocess4\tresult_codument_tags:\t', result_document_tags)
