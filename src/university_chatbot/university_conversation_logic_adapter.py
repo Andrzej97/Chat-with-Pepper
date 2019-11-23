@@ -1,48 +1,15 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
-
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from configuration import Configuration
 
-def my_intersection(set1, set2):
-    matched = 0
-    for single_or_complex_tag in set1:
-        single_tags = extract_single_tags(single_or_complex_tag)
-        for single_tag in single_tags:
-            if isMatched(single_tag, set2):
-                matched += 1
-                break
-    return matched
-
-def extract_single_tags(single_or_complex_tag):
-    return single_or_complex_tag.split(':')
-
-# zwykly isMatched: 307/346
-# isMatched z elifem: elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}: 309/346
-def isMatched(single_tag, set):
-    for single_or_complex_tag in set:
-        single_tags = extract_single_tags(single_or_complex_tag)
-        for tag in single_tags:
-            if single_tag == tag:
-                return True
-            elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}:
-                return True
-    return False
-
 class UniversityAdapter(LogicAdapter):
+
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.db = kwargs.get('database_proxy')
         self.sentence_filter = SentenceFilter()
-
-    def find_max_coverage(self, documents, tags):
-        max_coverage = 0
-        for doc in documents:
-            tags_from_document = doc['tags']
-            coverage = len(set(tags_from_document).intersection(set(tags)))
-            max_coverage = max(max_coverage, coverage)
-        return max_coverage
 
     def is_accepted(self, coverage, doc_tags_length, tags):
         conf_thresh = (coverage / len(tags))
@@ -58,7 +25,7 @@ class UniversityAdapter(LogicAdapter):
         max_conf_from_covered_docs = -1
         for document in documents:
             tags_from_document = document['tags']
-            coverage = my_intersection(set(tags), set(tags_from_document))
+            coverage = statement_utils.my_intersection(set(tags), set(tags_from_document))
             conf_thresh, was_accepted = self.is_accepted(coverage, len(set(tags_from_document)), tags)
             if was_accepted and conf_thresh >= max_conf_from_covered_docs:
                 id_of_best_cov_doc = document['_id']
@@ -79,19 +46,6 @@ class UniversityAdapter(LogicAdapter):
 
     def can_process(self, statement):
         return True
-
-    def delete_additional_info_after_colon(self, word):
-        index = word.find(':')
-        if index == -1:
-            return word
-        return word[:index]
-
-    def set_to_str_with_colons(self, set):
-        string = ''
-        for elem in set:
-            string += elem + ':'
-        string = string[:-1]
-        return string
 
     def process(self, statement, additional_responses_parameters):
         tags = list(self.sentence_filter.extract_complex_lemmas_and_filter_stopwords(statement.text))
