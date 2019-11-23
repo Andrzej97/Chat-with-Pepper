@@ -13,6 +13,7 @@ class Configuration(Enum):
     # ----------  BOT CONFIGURATION  ------------ #
     NUMBER_OF_SENTENCES_IN_RESPONSE = 2
     REQUESTS_IN_ROW_THRESH = 5
+    GOOD_ANSWER_CONFIDENCE = 0.1
 
     # ---------- PORTS AND ADDRESSES -------------#
     ROBOT_ADDRESS = '192.168.1.102'

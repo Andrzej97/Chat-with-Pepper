@@ -3,7 +3,7 @@ from chatterbot.logic import LogicAdapter
 
 import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-import random
+from configuration import Configuration
 
 def my_intersection(set1, set2):
     matched = 0
@@ -45,24 +45,13 @@ class UniversityAdapter(LogicAdapter):
         return max_coverage
 
     def is_accepted(self, coverage, doc_tags_length, tags):
-        # conf_thresh = (coverage / doc_tags_length) * (1 - 1/(3*len(tags)))
         conf_thresh = (coverage / len(tags))
-        # print('conf_thresh = ', conf_thresh)
         if conf_thresh > 0:
-            # conf_thresh -= (doc_tags_length + len(tags) - 1) / (doc_tags_length + len(tags))
             conf_thresh -= (1 / len(tags)) * (doc_tags_length / (doc_tags_length + 1))
-        # print('conf_thresh = ', conf_thresh)
-        # print('coverage = ', coverage)
-        # print('doc_tags_length = ', doc_tags_length)
-        # print('tags = ', tags)
-        # print('len(tags) = ', len(tags))
-        GOOD_ANSWER_CONFIDENCE = 0.1
-        if conf_thresh >= GOOD_ANSWER_CONFIDENCE:
+        if conf_thresh >= Configuration.GOOD_ANSWER_CONFIDENCE.value:
             return conf_thresh, True
         else:
-            RANDOM_CONF_THRESHOLD = 0.2
-            return (conf_thresh, True) if random.uniform(0, 1) > RANDOM_CONF_THRESHOLD else (0.0, False)
-
+            return (0.0, False)
 
     def find_best_tags_coverage(self, documents, tags):
         id_of_best_cov_doc = -1
