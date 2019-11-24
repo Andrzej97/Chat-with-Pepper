@@ -1,0 +1,7 @@
+U Andrzeja na komputerze tak się mongo odpala: /bin/mongodb/mongodb/usr/bin/mongod
+Dobry python jest tu:                          /home/andrzej/Python-3.6.9/python
+
+Statystyki funkcji w statement_utils: isMatched: (24.11.2019)
+# isMatched z elifem: elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}: 303/346
+# isMatched z elifem: elif single_tag in {'agh', 'akademia', 'uczelnia'} and tag in {'agh', 'akademia', 'uczelnia'}: 305/346
+# isMatched bezz elif: 300/346

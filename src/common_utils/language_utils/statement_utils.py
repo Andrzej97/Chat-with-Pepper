@@ -70,4 +70,6 @@ def isMatched(single_tag, set):
         for tag in single_tags:
             if single_tag == tag:
                 return True
+            elif single_tag in {'agh', 'akademia', 'uczelnia'} and tag in {'agh', 'akademia', 'uczelnia'}:
+                return True
     return False
