@@ -136,15 +136,12 @@ class SentenceFilter:
     def is_stopword(self, word):
         return word.lower() in self.stop_words
 
-    def split_to_norm_and_complex_lemmas(self, lemmas_list):
+    def split_to_single_and_complex_lemmas(self, lemmas_list):
         normal_lemmas = []
         complex_lemmas = []
         for lemma in lemmas_list:
-            splitted_lemmas = lemma.split(':')
-            if len(splitted_lemmas) > 1 and splitted_lemmas[1] not in ['s', 's1', 's2', 's3', 'v1', 'v2', 'v3']:
+            if ':' in lemma:
                 complex_lemmas.append(lemma)
-            elif len(splitted_lemmas) > 1:
-                normal_lemmas.append(splitted_lemmas[0])
             else:
                 normal_lemmas.append(lemma)
         return normal_lemmas, complex_lemmas
