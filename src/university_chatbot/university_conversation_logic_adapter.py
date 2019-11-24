@@ -1,8 +1,9 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
+
 import src.common_utils.language_utils.statement_utils as statement_utils
-from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from configuration import Configuration
+from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 
 class UniversityAdapter(LogicAdapter):
 
@@ -13,6 +14,33 @@ class UniversityAdapter(LogicAdapter):
 
     def can_process(self, statement):
         return True
+
+    def find_best_tags_coverage(self, documents, tags):
+        max_ratio = -1
+        id_of_max_ratio_doc = -1
+        tags_len = len(tags)
+        for document in documents:
+            tags_from_document = document['tags']
+            coverage = len(set(tags_from_document).intersection(set(tags)))
+            coverage_ratio = coverage / tags_len
+            length_ratio = 1 - (abs(len(tags_from_document) - tags_len) /
+                                len(tags_from_document))  # this variable is to enable choosing
+            # document which tags are closest to searching phrase, e.g. for ['agh','wydział'] as searching phrase, and
+            # (['agh','wydział'], ['agh','wydział','najlepszy']) as tags from documents, the better one is the first of them
+            overall_ratio = coverage_ratio * length_ratio
+            self.db.add_new_doc_to_collection(Configuration.RESPONSES_COLLECTION.value,
+                                              confidence=overall_ratio,
+                                              response=document['text'])
+            if overall_ratio > max_ratio:
+                max_ratio = overall_ratio
+                id_of_max_ratio_doc = document['_id']
+
+        result_list = list(filter(lambda obj: obj['_id'] == id_of_max_ratio_doc, documents))
+        if len(result_list) > 0:
+            return result_list[0]['text'], max_ratio
+        else:
+            return None
+        raise TypeError("No `text` attribute found")
 
     def process(self, statement, additional_responses_parameters):
         tags = self.create_tags(statement)

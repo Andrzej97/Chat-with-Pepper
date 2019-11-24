@@ -74,3 +74,13 @@ def make_phrases_csv(in_file, out_file):
                 tags_for_words = sentence_filter.extract_complex_lemmas_and_filter_stopwords(phrase)
                 if len(tags_for_words) != 0:
                     csvWriter.write_tags_and_text(tags_for_words, phrase)
+
+def inert_into_database(file_name, db):
+    with open(file_name, encoding="utf-8") as csvfile:
+        readCSV = csv.reader(csvfile, delimiter='#')
+        for row in readCSV:
+            if len(row) > 0 and '//' not in row[0]:
+                print(row)
+                tags = row[1:len(row)]
+                text = row[0]
+                db.add_conversation(text=text, tag=tags[0])
