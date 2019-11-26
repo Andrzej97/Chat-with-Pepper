@@ -114,18 +114,24 @@ class DatabaseProxy:
             return True
         raise CollectionAlreadyExistsInDatabaseError
 
-    def create_new_capped_collection(self, collection_name, max_size):
+    def create_new_capped_collection(self, collection_name, max_size=1):
         if collection_name not in self.collections_db.collection_names():
             self.collections_db.create_collection(name=collection_name, capped=True,
                                                   size=max_size * 4096,
                                                   max=max_size)
+            return True
+        raise CollectionAlreadyExistsInDatabaseError
 
-    def get_elements_of_capped_collection(self, collection_name, n=-1, m=-1):
+    def get_sorted_collection_elements(self, collection_name, field_to_sort_by, order=-1, n=5):
+        """returns n elements of collection sorted in ascending(1) or descending(-1) order"""
+        return self.collections_db[collection_name].find().sort(field_to_sort_by, order).limit(n)
+
+    def get_elements_of_capped_collection(self, collection_name, dict_key, n=-1, m=-1):
         """ returns elements from n-th to m-th index of collection, for n,m = -1 returns all elements """
         try:
             responses = []
             for x in list(self.collections_db[collection_name].find())[::-1]:
-                responses.append(x['response'])
+                responses.append(x[dict_key])
             if n == -1 and m == -1:
                 return responses
             else:
@@ -139,10 +145,16 @@ class DatabaseProxy:
             return True
         raise CollectionNotExistsInDatabaseError
 
+    def clear_collection(self, collection_name):
+        if collection_name in self.collections_db.collection_names():
+            self.collections_db[collection_name].remove({})
+            return True
+        raise CollectionNotExistsInDatabaseError
+
     def add_new_doc_to_collection(self, collection_name, **doc):
         if collection_name in self.collections_db.collection_names():
             collection = self.collections_db[collection_name]
-            res = collection.insert_one(doc)
+            collection.insert_one(doc)
             return True
         raise CollectionNotExistsInDatabaseError
 

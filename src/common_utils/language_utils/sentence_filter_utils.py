@@ -5,7 +5,6 @@ from src.common_utils.language_utils.polish_language_utils import PolishLanguage
 word_class_name = {'noun': {'subst', 'depr'}
                    }
 
-
 def initialize_database():
     """
         run this method just when you use this code first time to initialize database with words from file
@@ -20,12 +19,10 @@ def initialize_database():
         list.append({'text': r})
     db.add_many_new_docs_to_collection('polish_stop_words', list)
 
-
 def from_txt_file_to_list(path):
     file = open(path, "r")
     lines = list(map(lambda x: x.rstrip(), list(file.readlines())))
     return lines
-
 
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
@@ -70,6 +67,8 @@ class SentenceFilter:
         for element in analysis_result:
             try:
                 morphological_tag = element[2][2]
+                if 'interp' == morphological_tag:
+                    continue
                 lemma = element[2][1]
             except IndexError:
                 print('No word class available after analysis in: ``extract_lemma_and_morphologic_tag``')
@@ -131,3 +130,31 @@ class SentenceFilter:
             elif word in nums_exp_compl_word_list and was_word_in_complex_list: return True
             elif word in nums_exp_compl_word_list: was_word_in_complex_list = True
         return False
+
+    def extract_complex_lemmas_and_filter_stopwords(self, phrase):
+        analysis = self.utils.morfeusz.analyse(phrase)
+        tags = set([])
+        old_word_index = 0
+        single_tag = set([])
+        for interpretation in analysis:
+            new_word_index = interpretation[0]
+            if 'interp' == interpretation[2][2]:
+                continue
+            if new_word_index != old_word_index:
+                if len(single_tag) > 0:
+                    single_tags_list = list(single_tag)
+                    single_tags_list.sort()
+                    tags.add(list_to_str_with_colons(single_tags_list))
+                old_word_index = new_word_index
+                single_tag = set([])
+            word_form = delete_additional_info_after_colon(interpretation[2][1])
+            if not self.is_stopword(word_form):
+                single_tag.add(word_form.lower())
+        if len(single_tag) > 0:
+            single_tags_list = list(single_tag)
+            single_tags_list.sort()
+            tags.add(list_to_str_with_colons(single_tags_list))
+        return tags
+
+    def is_stopword(self, word):
+        return word.lower() in self.stop_words
