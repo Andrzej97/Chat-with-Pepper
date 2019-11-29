@@ -22,7 +22,7 @@ def isMatched(single_tag, set):
         for tag in single_tags:
             if single_tag == tag:
                 return True
-            elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}:
+            elif single_tag in {'agh', 'akademia', 'uczelnia'} and tag in {'agh', 'akademia', 'uczelnia'}:
                 return True
     return False
 
@@ -47,7 +47,7 @@ def find_best_tags_response(documents, tags):
             tags_len_diff = len(tags) - coverage if len(tags) > coverage else 0
             conf = (coverage / len(tags_from_document)) - (tags_len_diff * 0.1)
             if conf > max_confidence:
-                print('MAX_CONFIDENCE IN FIND BEST COV = ', conf, 'TAGS_FROM_DOC = ', doc['tags'], ', TEXT = ', doc['text'])
+                #print('MAX_CONFIDENCE IN FIND BEST COV = ', conf, 'TAGS_FROM_DOC = ', doc['tags'], ', TEXT = ', doc['text'])
                 max_confidence = conf
                 max_id = doc['_id']
 

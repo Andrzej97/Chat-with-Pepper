@@ -47,6 +47,8 @@ class UniversityAdapter(LogicAdapter):
         docs_by_tags = self.db.get_docs_from_collection_by_tags_list(Configuration.MAIN_COLLECTION.value, noun_tags)
         confidence_by_tags = -1
         confidence_by_lemmas = -1
+        result_document_tags = None
+        result_document_lemmas = None
         if len(docs_by_tags) > 0:  # matching tags exist
             find_coverage_res = self.find_best_tags_coverage(docs_by_tags, noun_tags)
             if find_coverage_res is not None:

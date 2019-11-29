@@ -1,7 +1,6 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
-import src.common_utils.language_utils.statement_utils as statement_utils
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from src.common_utils.language_utils.statement_utils import default_response
 import src.popular_chatbot.choice_algorithm as choice_algorithm
@@ -19,7 +18,7 @@ class PopularQuestionsAdapter(LogicAdapter):
 
     def process(self, statement, additional_response_selection_parameters=None):
         filtered_words = self.sentence_filter.filter_sentence_complex(statement.text)
-        print("FILTERED WORDS IN POPULAR BOT       = ", filtered_words)
+        #print("FILTERED WORDS IN POPULAR BOT       = ", filtered_words)
         if len(filtered_words) == 0:
             return default_response()
 

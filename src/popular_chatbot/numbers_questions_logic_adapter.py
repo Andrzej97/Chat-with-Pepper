@@ -19,7 +19,7 @@ class NumbersQuestionsAdapter(LogicAdapter):
 
     def process(self, statement, additional_response_selection_parameters=None):
         filtered_words = self.sentence_filter.filter_sentence_complex(statement.text)
-        print("FILTERED WORDS IN NUMBER BOT       = ", filtered_words)
+        #print("FILTERED WORDS IN NUMBER BOT       = ", filtered_words)
         if len(filtered_words) == 0:
             return default_response()
 
