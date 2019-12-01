@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Configuration(Enum):
-    NAME = 'imie'
+    NAME = 'imię'
 
     # -------  SCRAPPER CONFIGURATION ----------- #
     ITERS_NUM = 4000
