@@ -18,7 +18,7 @@ def prepare_statement(*words):
 
 
 def filter_unexpected_signs(sentence):
-    unexpected_signs = '[\',-'
+    unexpected_signs = '[\''
     return ''.join(c for c in sentence if c not in unexpected_signs)
 
 
@@ -31,11 +31,11 @@ def split_to_single_words(words_set, words):
 
 def prepare_shortened_statement(many_sentence_response, first_index=0, length=1):
     if many_sentence_response is not None:
-        if type(many_sentence_response) is list:
-            to_split = many_sentence_response[0]
-        else:
-            to_split = many_sentence_response
-        splitted_to_sentences = to_split.split('.')
+        while type(many_sentence_response) is list:
+            if len(many_sentence_response) < 1:
+                return default_response()
+            many_sentence_response = many_sentence_response[0]
+        splitted_to_sentences = many_sentence_response.split('.')
         if first_index + length > len(splitted_to_sentences):
             return None
         return prepare_statement(splitted_to_sentences[first_index:first_index + length])

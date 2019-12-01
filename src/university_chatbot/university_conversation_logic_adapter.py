@@ -1,6 +1,6 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
-from configuration import Configuration
+
 import src.common_utils.language_utils.statement_utils as statement_utils
 from configuration import Configuration
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
@@ -53,7 +53,8 @@ class UniversityAdapter(LogicAdapter):
                 result_document_tags, confidence_by_tags = find_coverage_res
         if confidence_by_tags < 2:  # confidence of response based on tags is not enough (0 = 0%, 1 = 100%)
             extracted_lemmas = self.sentence_filter.extract_lemmas_and_filter_stopwords(statement.text)
-            docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list(Configuration.PHRASES_COLLECTION.value, extracted_lemmas)
+            docs_by_lemmas = self.db.get_docs_from_collection_by_tags_list(Configuration.PHRASES_COLLECTION.value,
+                                                                           extracted_lemmas)
             if len(docs_by_lemmas) > 0:
                 find_coverage_res = self.find_best_tags_coverage(docs_by_lemmas, extracted_lemmas)
                 if find_coverage_res is not None:
@@ -69,4 +70,3 @@ class UniversityAdapter(LogicAdapter):
                 return res
         else:
             return statement_utils.default_response()
-
