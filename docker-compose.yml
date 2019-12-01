@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  db:
+    image: mongo:3.2
+    ports:
+      - 27017
+  app:
+    image: pepper
+    expose:
+      - 9999
+    links:
+      - db
+    volumes:
+      - '.:/opt/'
+    command: /bin/bash

@@ -1,0 +1,6 @@
+ChatterBot==1.0.5
+Flask==1.1.1
+Flask-Jsonpify==1.5.0
+Flask-RESTful==0.3.7
+chatterbot-corpus==1.2.0
+jsonify==0.5
