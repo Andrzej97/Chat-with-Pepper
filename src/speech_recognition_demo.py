@@ -1,5 +1,6 @@
 import speech_recognition as speech
 
+import configuration
 from src.main_chat.chatbot_manager import ChatbotManager
 
 
@@ -30,7 +31,8 @@ def startSpeechRecognition():
         calibrate_recognizer(2, r, source)
 
         chatbot_manager = ChatbotManager(intro_chatbot='Bolek', university_chatbot='Lolek',
-                                    connection_uri='mongodb://localhost:27017/', database_name='PepperChatDB')
+                                         connection_uri=configuration.DATABASE_ADDRESS.value,
+                                         database_name='PepperChatDB')
 
         while True:
             cmd = speech_recognizer()

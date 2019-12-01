@@ -11,7 +11,7 @@ def initialize_database():
     """
     path = "./language_utils/polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()`
     # command is useful
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    db = DatabaseProxy(configuration.DATABASE_ADDRESS.value, 'PepperChatDB')
     db.create_new_collection('polish_stop_words')
     result = from_txt_file_to_list(path)
     list = []
@@ -44,7 +44,7 @@ def list_to_str_with_colons(list):
 class SentenceFilter:
     def __init__(self):
         self.utils = PolishLanguageUtils()
-        self.database = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+        self.database = DatabaseProxy(configuration.DATABASE_ADDRESS.value, 'PepperChatDB')
         self.stop_words = self.prepare_stopwords_list()  # get_stop_words_from_db()
 
     def is_name(self, name):

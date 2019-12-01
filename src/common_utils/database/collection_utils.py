@@ -13,6 +13,6 @@ def parse_documents(documents, keys):
     return result
 
 
-database = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+database = DatabaseProxy(Configuration.DATABASE_ADDRESS.value, 'PepperChatDB')
 docs = database.get_sorted_collection_elements(Configuration.RESPONSES_COLLECTION.value, 'confidence')
 res = parse_documents(docs, ['confidence', 'response'])

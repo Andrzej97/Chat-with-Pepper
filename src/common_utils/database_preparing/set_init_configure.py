@@ -50,7 +50,7 @@ def contains(key, parameter):
 
 
 def main():
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    db = DatabaseProxy(Configuration.DATABASE_ADDRESS.value, 'PepperChatDB')
     create_collections(db)
     insert_polish_stop_words(db)
     scrapper_data.initialize_main_collection_from_scrapper(db)
