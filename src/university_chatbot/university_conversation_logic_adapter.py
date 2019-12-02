@@ -19,8 +19,8 @@ class UniversityAdapter(LogicAdapter):
         tags = self.create_tags(statement)
         docs_main_collection = self.db.get_docs_from_collection_by_tags_list(Configuration.MAIN_COLLECTION.value, tags)
         docs_phrases_collection = self.db.get_docs_from_collection_by_tags_list(Configuration.PHRASES_COLLECTION.value, tags)
-        result_main_collection = ['', 0.0]
-        result_phrases_collection = ['', 0.0]
+        result_main_collection = ('', 0.0)
+        result_phrases_collection = ('', 0.0)
         if len(docs_main_collection) > 0:
             result_main_collection = self.find_best_tags_coverage(docs_main_collection, tags)
         if len(docs_phrases_collection) > 0:
@@ -47,16 +47,16 @@ class UniversityAdapter(LogicAdapter):
         max_conf_from_covered_docs = 0.0
         for document in documents:
             tags_from_document = document['tags']
-            coverage = statement_utils.my_intersection(set(tags), set(tags_from_document))
+            coverage = statement_utils.complex_intersection(set(tags), set(tags_from_document))
             confidence, was_accepted = self.is_accepted(coverage, len(set(tags_from_document)), tags)
             if was_accepted and confidence >= max_conf_from_covered_docs:
                 id_of_best_cov_doc = document['_id']
                 max_conf_from_covered_docs = confidence
         result_list = list(filter(lambda obj: obj['_id'] == id_of_best_cov_doc, documents))
         if len(result_list) > 0:
-            return [result_list[0]['text'], max_conf_from_covered_docs]
+            return (result_list[0]['text'], max_conf_from_covered_docs)
         else:
-            return [None, 0.0]
+            return (None, 0.0)
 
     def is_accepted(self, coverage, doc_tags_length, tags):
         confidence = (coverage / len(tags))

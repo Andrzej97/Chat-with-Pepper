@@ -108,10 +108,11 @@ class DatabaseProxy:
         raise TypeError('Argument tags_list is not list')
 
     def get_one_doc_from_collection_by_tags_list(self, collection_name, tags_list):
-        docs_found = self.get_docs_from_collection_by_tags_list(collection_name, tags_list)
-        for elem in docs_found:
-            if set(elem['tags']) == set(tags_list):
-                return elem
+        if isinstance(tags_list, list):
+            docs_found = self.get_docs_from_collection_by_tags_list(collection_name, tags_list)
+            for elem in docs_found:
+                if set(elem['tags']) == set(tags_list):
+                    return elem
         return None
 
     # part of code for collections other than statements

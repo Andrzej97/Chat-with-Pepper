@@ -14,7 +14,7 @@ def prepare_statement(*words):
     for word in words:
         response += word
         response += " "
-    return response
+    return filter_unexpected_signs(response)
 
 
 def filter_unexpected_signs(sentence):
@@ -46,12 +46,12 @@ def default_response():
     return Statement(DEFAULT_RESPONSE)
 
 
-def my_intersection(set1, set2):
+def complex_intersection(set1, set2):
     matched = 0
     for single_or_complex_tag in set1:
         single_tags = extract_single_tags(single_or_complex_tag)
         for single_tag in single_tags:
-            if isMatched(single_tag, set2):
+            if isPresentInSet(single_tag, set2):
                 matched += 1
                 break
     return matched
@@ -61,15 +61,13 @@ def extract_single_tags(single_or_complex_tag):
     return single_or_complex_tag.split(':')
 
 
-# isMatched z elifem: elif single_tag in {'agh', 'akademia'} and tag in {'agh', 'uczelnia'}: 303/346
-# isMatched z elifem: elif single_tag in {'agh', 'akademia', 'uczelnia'} and tag in {'agh', 'akademia', 'uczelnia'}: 305/346
-# isMatched bezz elif: 300/346
-def isMatched(single_tag, set):
+def isPresentInSet(single_tag, set):
+    SYNONYMS = {'agh', 'akademia', 'uczelnia'}
     for single_or_complex_tag in set:
         single_tags = extract_single_tags(single_or_complex_tag)
         for tag in single_tags:
             if single_tag == tag:
                 return True
-            elif single_tag in {'agh', 'akademia', 'uczelnia'} and tag in {'agh', 'akademia', 'uczelnia'}:
+            elif single_tag in SYNONYMS and tag in SYNONYMS:
                 return True
     return False
