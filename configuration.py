@@ -18,9 +18,7 @@ class Configuration(Enum):
     DEFAULT_CONF = 0.0
     MAX_CONF = 1.0
 
-    # OTHER POPULAR BOT UTILS
-    SINGLE_NUM_KEYWORDS = ['ile', 'ilu' ]
-    COMP_NUM_KEYWORDS = ['jak', 'wiele', 'dużo', 'wielu']
+    GOOD_ANSWER_CONFIDENCE = 0.1
 
     # ---------- PORTS AND ADDRESSES -------------#
     ROBOT_ADDRESS = '192.168.1.102'
