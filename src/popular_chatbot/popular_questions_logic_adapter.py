@@ -12,21 +12,24 @@ class PopularQuestionsAdapter(LogicAdapter):
         self.db = kwargs.get('database_proxy')
         self.collection_name = config.POPULAR_QUEST_COLLECTION.value
         self.sentence_filter = SentenceFilter()
+        self.filtered_words = []
+        self.documents_by_tags = []
 
     def can_process(self, statement):
+        self.filtered_words = self.sentence_filter.filter_sentence_complex(statement.text)
+        print("FILTERED WORDS IN POPULAR BOT       = ", self.filtered_words)
+        if len(self.filtered_words) == 0:
+            return False
+
+        self.documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, self.filtered_words)
+        if len(self.documents_by_tags) == 0:
+            return False
         return True
 
     def process(self, statement, additional_response_selection_parameters=None):
-        filtered_words = self.sentence_filter.filter_sentence_complex(statement.text)
-        #print("FILTERED WORDS IN POPULAR BOT       = ", filtered_words)
-        if len(filtered_words) == 0:
+        result_text, max_conf = choice_algorithm.find_best_tags_response(self.documents_by_tags, self.filtered_words)
+        if result_text is None:
             return default_response()
-
-        documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, filtered_words)
-
-        if len(documents_by_tags) == 0:
-            return default_response()
-        result_text, max_conf = choice_algorithm.find_best_tags_response(documents_by_tags, filtered_words)
         res = Statement(result_text)
         res.confidence = config.POP_QUEST_BOT_CONST_CONF.value if max_conf >= config.POP_QUEST_BOT_CONF_THRESH.value\
                                                                else config.DEFAULT_CONF.value

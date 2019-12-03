@@ -1,5 +1,5 @@
 from chatterbot import ChatBot
-
+from src.common_utils.language_utils.statement_utils import default_response
 
 class PopularQuestionsBot:
     def __init__(self, name, db_proxy):
@@ -27,5 +27,8 @@ class PopularQuestionsBot:
         )
 
     def get_bot_response(self, input):
-        response = self._bot.get_response(input)
+        try:
+            response = self._bot.get_response(input)
+        except AttributeError:
+            return default_response()
         return response
