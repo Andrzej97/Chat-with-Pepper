@@ -31,17 +31,17 @@ def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
 
 
-def delete_additional_info_after_colon(word):
-    index = word.find(':')
+def delete_additional_info_after_colon(word, separator=':'):
+    index = word.find(separator)
     if index == -1:
         return word
     return word[:index]
 
 
-def list_to_str_with_colons(list):
+def list_to_str_with_colons(list, separator=':'):
     string = ''
     for elem in list:
-        string += elem + ':'
+        string += elem + separator
     string = string[:-1]
     return string
 
@@ -54,10 +54,19 @@ class SentenceFilter:
         self.utils = PolishLanguageUtils()
         self.database = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
         self.stop_words = self.prepare_stopwords_list()
+        self.nums_single_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_single_keyword")
+        self.nums_compl_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_compl_keyword")
 
     def is_name(self, name):
         if configuration.NAME.value in self.utils.interpret_word(name.capitalize()):
             return True
+        return False
+
+    def is_complex_lem_in_stop_words(self, complex_lemmas, separator=':'):
+        splitted_lemmas = complex_lemmas.split(separator)
+        for lemma in splitted_lemmas:
+            if lemma in self.stop_words:
+                return True
         return False
 
     def prepare_stopwords_list(self):
@@ -85,6 +94,7 @@ class SentenceFilter:
 
     def extract_lemma(self, word, response_cont=None):
         lemmas = []
+        lemmas_collector = []
         analysis_result = self.utils.morfeusz.analyse(word)
         if len(analysis_result) == 0:
             return None
@@ -93,14 +103,16 @@ class SentenceFilter:
                 morphological_tag = element[2][2]
                 if 'interp' == morphological_tag:
                     continue
-                if filter_word_form('verb', set(morphological_tag.split(':'))):
-                    continue
+                if response_cont is None and filter_word_form('verb', set(morphological_tag.split(':'))):
+                    lemmas_collector.clear()
+                    break
                 lemma = element[2][1]
                 lemma = delete_additional_info_after_colon(lemma)
-                if lemma not in lemmas:
-                    lemmas.append(lemma)
+                if lemma not in lemmas_collector:
+                    lemmas_collector.append(lemma)
             except IndexError:
                 return None
+        lemmas = lemmas_collector
         return lemmas if response_cont is None else lemmas[0] if len(lemmas) != 0 else ""
 
     def filter_stop_words(self, word):
@@ -121,10 +133,9 @@ class SentenceFilter:
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
         sentence_after_extraction = list(map(lambda z: self.extract_lemma(z), words))
         sentence_after_extraction = list(filter(lambda x_list: not is_empty_list(x_list), sentence_after_extraction))
-        sentence_filtered = list(map(lambda x_list: list_to_str_with_colons(x_list), sentence_after_extraction))
-        sentence_filtered = list(filter(lambda y: y.lower() not in self.stop_words, sentence_filtered))
-        sentence_filtered = list(map(lambda y: y.lower(), sentence_filtered))
-        #print("filter_sentence_complex \ SENTENCE FILTERED = ", sentence_filtered)
+        sent_filt_to_col_lemmas = list(map(lambda x_list: list_to_str_with_colons(x_list), sentence_after_extraction))
+        sentence_filtered = list(map(lambda y: y.lower(), sent_filt_to_col_lemmas))
+        sentence_filtered = list(filter(lambda y: not self.is_complex_lem_in_stop_words(y), sentence_filtered))
         return sentence_filtered
 
     def extract_lemmas_and_filter_stopwords(self, sentence):
@@ -138,14 +149,12 @@ class SentenceFilter:
         return list(filter(lambda x: x is not None, lemmas))
 
     def is_sentence_about_numbers(self, sentence):
-        nums_exp_single_word_list = configuration.SINGLE_NUM_KEYWORDS.value #['ile', 'ilu' ]
-        nums_exp_compl_word_list  = configuration.COMP_NUM_KEYWORDS.value   #['jak', 'wiele', 'dużo', 'wielu']
         splitted_sen = sentence.split(' ')
         was_word_in_complex_list = False
         for word in splitted_sen:
-            if word in nums_exp_single_word_list: return True
-            elif word in nums_exp_compl_word_list and was_word_in_complex_list: return True
-            elif word in nums_exp_compl_word_list: was_word_in_complex_list = True
+            if word in self.nums_single_word_list: return True
+            elif word in self.nums_compl_word_list and was_word_in_complex_list: return True
+            elif word in self.nums_compl_word_list: was_word_in_complex_list = True
         return False
 
     def extract_complex_lemmas_and_filter_stopwords(self, phrase):
