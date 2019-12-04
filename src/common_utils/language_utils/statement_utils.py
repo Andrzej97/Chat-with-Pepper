@@ -4,7 +4,7 @@ from functools import reduce
 from chatterbot.conversation import Statement
 
 DEFAULT_RESPONSE = "Przykro mi, nie znam odpowiedzi"
-
+NOT_FULL_MEANINGFUL_SYNONYMS = {'agh', 'akademia', 'uczelnia'}
 
 def prepare_statement(*words):
     response = ""
