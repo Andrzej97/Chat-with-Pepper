@@ -44,7 +44,6 @@ class IntroBot:
 
     def get_bot_response(self, input):
         response = self._bot.get_response(input)
-        print("IntroBot response confidence = ", response.confidence)
         return response
 
     def check_is_bot_unemployed(self):

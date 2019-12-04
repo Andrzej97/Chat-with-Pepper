@@ -3,7 +3,6 @@ import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from csvWriter import CsvWriter
 import os.path
-
 from configuration import Configuration
 
 def initialize_main_collection_from_scrapper(db):

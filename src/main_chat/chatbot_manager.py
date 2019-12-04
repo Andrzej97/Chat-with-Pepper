@@ -24,7 +24,6 @@ class ChatbotManager:
 
     def _ask_university_chatbot(self, processed_sentence):
         response = self._university_chatbot.get_bot_response(processed_sentence)
-        print('chatbot_manager.py\t_ask_university_chatbot\treturned: (response.text, response.confidence) = ', response.text, ' ', response.confidence)
         return response.text, response.confidence
 
     def _check_is_intro_chatbot_unemployed(self):
