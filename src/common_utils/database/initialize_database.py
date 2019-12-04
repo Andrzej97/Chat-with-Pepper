@@ -1,8 +1,8 @@
 from src.common_utils.database.database_service import DatabaseProxy
 
 
-def init_database():
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+def init_database(db):
+
     # basic greetings
 
     print(db.add_conversation(text="cześć", tag='greeting'))
