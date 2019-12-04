@@ -6,8 +6,6 @@ def find_max_coverage(documents, tags):
     for doc in documents:
         tags_from_document = doc['tags']
         coverage = complex_intersection(set(tags_from_document), set(tags))
-        if len(tags_from_document) == 1 and (len(tags) != 1 or coverage != 1):
-            continue
         max_coverage = max(max_coverage, coverage)
     return max_coverage
 
@@ -28,7 +26,6 @@ def find_best_tags_response(documents, tags):
             tags_len_diff = len(tags) - coverage if len(tags) > coverage else 0
             conf = (coverage / len(tags_from_document)) - (tags_len_diff * 0.1)
             if conf > max_confidence:
-                print('MAX_CONFIDENCE IN FIND BEST COV = ', conf, 'TAGS_FROM_DOC = ', doc['tags'], ', TEXT = ', doc['text'])
                 max_confidence = conf
                 max_id = doc['_id']
 

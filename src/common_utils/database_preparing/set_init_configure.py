@@ -5,11 +5,11 @@ from src.common_utils.database.database_service import DatabaseProxy
 import src.common_utils.custom_exceptions as Exceptions
 
 
-def initialize_polish_stopwords_collection(db):
+def initialize_polish_stopwords_collection(db, path):
     """
         run this method just when you use this code first time to initialize database with words from file
     """
-    path = "./polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
+    # in case of errors make sure that path is ok, `os.getcwd()` command is useful
     result = from_txt_file_to_list(path)
     list = []
     for r in result:
@@ -51,9 +51,9 @@ def contains(key, parameter):
 
 
 def main():
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    db = DatabaseProxy(conf.DATABASE_ADDRESS.value, conf.DATABASE_NAME.value)
     create_collections(db)
-    initialize_polish_stopwords_collection(db)
+    initialize_polish_stopwords_collection(db, "./polish_stopwords.txt")
     csv_data.initialize_main_collection_from_scrapper(db)
     csv_data.insert_into_database('./csv_files/main_statements.csv', db)
     csv_data.insert_into_database('./csv_files/numbers_log_adapter_init_data.csv', db, conf.NUMBERS_QUEST_COLLECTION.value)

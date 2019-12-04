@@ -13,12 +13,15 @@ class Configuration(Enum):
     # ----------  BOT CONFIGURATION  ------------ #
     NUMBER_OF_SENTENCES_IN_RESPONSE = 2
     REQUESTS_IN_ROW_THRESH = 3
+
     POP_QUEST_BOT_CONF_THRESH = 0.65
     POP_QUEST_BOT_CONST_CONF = 0.98
     DEFAULT_CONF = 0.0
     MAX_CONF = 1.0
 
     GOOD_ANSWER_CONFIDENCE = 0.1
+
+    NUMBER_OF_SUGGESTED_RESPONSES = 5
 
     # ---------- PORTS AND ADDRESSES -------------#
     ROBOT_ADDRESS = '192.168.1.102'
@@ -42,4 +45,3 @@ class Configuration(Enum):
     POLISH_STOP_WORDS_COLLECTION = 'polish_stop_words'
     STATEMENTS_COLLECTION = 'statements'
 
-    NUMBER_OF_SUGGESTED_RESPONSES = 5

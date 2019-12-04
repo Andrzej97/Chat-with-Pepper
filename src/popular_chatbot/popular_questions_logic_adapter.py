@@ -17,7 +17,6 @@ class PopularQuestionsAdapter(LogicAdapter):
 
     def can_process(self, statement):
         self.filtered_words = self.sentence_filter.filter_sentence_complex(statement.text)
-        print("FILTERED WORDS IN POPULAR BOT       = ", self.filtered_words)
         if len(self.filtered_words) == 0:
             return False
 
