@@ -16,6 +16,11 @@ def main():
         res = chatbot_manager.ask_chatbot(user_input)
         print('Answer = ', res)
 
+    # database = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    # database.remove_collection(Configuration.RESPONSES_COLLECTION.value)
+    # database.create_new_collection(Configuration.RESPONSES_COLLECTION.value)
+
+
     # initialize_database.init_database()
     # bot.run_bot()
 
