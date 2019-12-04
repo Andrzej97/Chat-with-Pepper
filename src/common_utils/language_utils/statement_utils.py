@@ -16,6 +16,7 @@ def prepare_statement(*words):
         response += " "
     return filter_unexpected_signs(response)
 
+
 def filter_unexpected_signs(sentence):
     unexpected_signs = '[\''
     return ''.join(c for c in sentence if c not in unexpected_signs)
@@ -51,7 +52,10 @@ def complex_intersection(set1, set2):
         single_tags = extract_single_tags(single_or_complex_tag)
         for single_tag in single_tags:
             if isPresentInSet(single_tag, set2):
-                matched += 1
+                if single_tag in NOT_FULL_MEANINGFUL_SYNONYMS:
+                    matched += 0.5
+                else:
+                    matched += 1
                 break
     return matched
 
@@ -61,12 +65,11 @@ def extract_single_tags(single_or_complex_tag):
 
 
 def isPresentInSet(single_tag, set):
-    SYNONYMS = {'agh', 'akademia', 'uczelnia'}
     for single_or_complex_tag in set:
         single_tags = extract_single_tags(single_or_complex_tag)
         for tag in single_tags:
             if single_tag == tag:
                 return True
-            elif single_tag in SYNONYMS and tag in SYNONYMS:
+            elif single_tag in NOT_FULL_MEANINGFUL_SYNONYMS and tag in NOT_FULL_MEANINGFUL_SYNONYMS:
                 return True
     return False
