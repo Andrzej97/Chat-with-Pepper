@@ -1,14 +1,15 @@
 import src.common_utils.custom_exceptions as Exceptions
-import src.common_utils.database_preparing.csv_to_database_filler as scrapper_data
-from configuration import Configuration
+import src.common_utils.database_preparing.csv_to_database_filler as csv_data
+from configuration import Configuration as conf
 from src.common_utils.database.database_service import DatabaseProxy
+import src.common_utils.custom_exceptions as Exceptions
 
 
-def insert_polish_stop_words(db):
+def initialize_polish_stopwords_collection(db, path):
     """
         run this method just when you use this code first time to initialize database with words from file
     """
-    path = "./polish_stopwords.txt"  # in case of errors make sure that path is ok, `os.getcwd()` command is useful
+    # in case of errors make sure that path is ok, `os.getcwd()` command is useful
     result = from_txt_file_to_list(path)
     list = []
     for r in result:
@@ -27,7 +28,7 @@ def from_txt_file_to_list(path):
 
 
 def create_collections(database):
-    collections = [collection for collection in list(Configuration) if contains('collection', collection.name)]
+    collections = [collection for collection in list(conf) if contains('collection', collection.name)]
     capped_collections = [capped_collection for capped_collection in collections if
                           contains('capped', capped_collection.name)]
     for collection in collections:
@@ -50,11 +51,14 @@ def contains(key, parameter):
 
 
 def main():
-    db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
+    db = DatabaseProxy(conf.DATABASE_ADDRESS.value, conf.DATABASE_NAME.value)
     create_collections(db)
-    insert_polish_stop_words(db)
-    scrapper_data.initialize_main_collection_from_scrapper(db)
-    scrapper_data.inert_into_database('./csv_files/main_statements.csv', db)
+    initialize_polish_stopwords_collection(db, "./polish_stopwords.txt")
+    csv_data.initialize_main_collection_from_scrapper(db)
+    csv_data.insert_into_database('./csv_files/main_statements.csv', db)
+    csv_data.insert_into_database('./csv_files/numbers_log_adapter_init_data.csv', db, conf.NUMBERS_QUEST_COLLECTION.value)
+    csv_data.insert_into_database('./csv_files/popular_log_adapter_init_data.csv', db, conf.POPULAR_QUEST_COLLECTION.value)
+
 
 
 if __name__ == '__main__':
