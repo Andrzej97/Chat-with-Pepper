@@ -15,7 +15,6 @@ class ResponseContinuationHandler:
         continuation_requests = set(self.db.get_responses_list_by_tags(tag="continue"))
         sliced_statement = set(map(lambda x: self.sf.list_to_str_with_colons(self.sf.extract_lemma(x, True)),
                                                                    input_statement.split(' ')))
-        print("RESPONSE CONT = ", sliced_statement)
         return statement.complex_intersection(sliced_statement, continuation_requests) > 1
 
     def return_next_part_of_response(self, question):
@@ -24,7 +23,6 @@ class ResponseContinuationHandler:
             return None
         full_response = self.db.get_sorted_collection_elements(configuration.RESPONSES_COLLECTION.value, 'confidence',
                                                                n=1)
-        print("ASKED============")
         full_response = parse_documents(full_response, ['response'])
         offset = self.current_response_offset
         self.current_response_offset += self.response_length

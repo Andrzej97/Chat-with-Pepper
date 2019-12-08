@@ -1,7 +1,7 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
-import src.common_utils.language_utils.statement_utils as statement_utils
+from src.common_utils.language_utils.statement_utils import default_response, contains_synonym, UNIV_SYNONYMS
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from src.common_utils.language_utils.statement_utils import default_response
 import src.popular_chatbot.choice_algorithm as choice_algorithm
@@ -22,7 +22,11 @@ class NumbersQuestionsAdapter(LogicAdapter):
         if len(filtered_words) == 0:
             return default_response()
 
-        documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, filtered_words)
+        db_search_words = list(filtered_words)
+        if contains_synonym(db_search_words):
+            db_search_words.extend(UNIV_SYNONYMS)
+            db_search_words = list(set(db_search_words))
+        documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, db_search_words)
 
         if len(documents_by_tags) == 0:
             return default_response()

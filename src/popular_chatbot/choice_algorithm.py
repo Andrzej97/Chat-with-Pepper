@@ -16,7 +16,7 @@ def find_best_tags_response(documents, tags):
     max_cov = find_max_coverage(documents, tags)
     if max_cov == 0:
         return None, None
-    is_single_tag = len(tags) == 1
+    is_single_tag = (len(tags) == 1)
     for doc in documents:
         tags_from_document = doc['tags']
         if not is_single_tag and len(tags_from_document) == 1:
