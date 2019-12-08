@@ -7,13 +7,16 @@ from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 class ResponseContinuationHandler:
     def __init__(self, db_proxy):
         self.db = db_proxy
+        self.sf = SentenceFilter()
         self.response_length = configuration.NUMBER_OF_SENTENCES_IN_RESPONSE.value
         self.current_response_offset = 0 + self.response_length
 
     def is_continuation_request_asked(self, input_statement):
         continuation_requests = set(self.db.get_responses_list_by_tags(tag="continue"))
-        sliced_statement = set(map(lambda x: SentenceFilter().extract_lemma(x, True), input_statement.split(' ')))
-        return len(sliced_statement.intersection(continuation_requests)) > 1
+        sliced_statement = set(map(lambda x: self.sf.list_to_str_with_colons(self.sf.extract_lemma(x, True)),
+                                                                   input_statement.split(' ')))
+        print("RESPONSE CONT = ", sliced_statement)
+        return statement.complex_intersection(sliced_statement, continuation_requests) > 1
 
     def return_next_part_of_response(self, question):
         if not self.is_continuation_request_asked(question):
@@ -21,6 +24,7 @@ class ResponseContinuationHandler:
             return None
         full_response = self.db.get_sorted_collection_elements(configuration.RESPONSES_COLLECTION.value, 'confidence',
                                                                n=1)
+        print("ASKED============")
         full_response = parse_documents(full_response, ['response'])
         offset = self.current_response_offset
         self.current_response_offset += self.response_length
