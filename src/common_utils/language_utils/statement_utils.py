@@ -17,8 +17,11 @@ def prepare_statement(*words):
     return filter_unexpected_signs(response)
 
 
-def filter_unexpected_signs(sentence):
-    unexpected_signs = '[\''
+def filter_unexpected_signs(sentence, signs=None):
+    if signs is None:
+        unexpected_signs = '[\''
+    else:
+        unexpected_signs = signs
     return ''.join(c for c in sentence if c not in unexpected_signs)
 
 
