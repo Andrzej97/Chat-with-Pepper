@@ -52,6 +52,9 @@ class UniversityAdapter(LogicAdapter):
             if was_accepted and confidence >= max_conf_from_covered_docs:
                 id_of_best_cov_doc = document['_id']
                 max_conf_from_covered_docs = confidence
+            self.db.add_new_doc_to_collection(Configuration.RESPONSES_COLLECTION.value,
+                                          confidence=confidence,
+                                          response=document['text'])
         result_list = list(filter(lambda obj: obj['_id'] == id_of_best_cov_doc, documents))
         if len(result_list) > 0:
             return (result_list[0]['text'], max_conf_from_covered_docs)
