@@ -4,7 +4,7 @@ from functools import reduce
 from chatterbot.conversation import Statement
 
 DEFAULT_RESPONSE = "Przykro mi, nie znam odpowiedzi"
-
+UNIV_SYNONYMS = ['agh', 'uczelnia', 'akademia']
 
 def prepare_statement(*words):
     response = ""
@@ -70,4 +70,11 @@ def is_present_in_set(single_tag, set):
                 return True
             elif single_tag in SYNONYMS and tag in SYNONYMS:
                 return True
+    return False
+
+
+def contains_synonym(words):
+    for word in words:
+        if word in UNIV_SYNONYMS:
+            return True
     return False
