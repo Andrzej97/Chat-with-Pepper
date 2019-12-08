@@ -17,14 +17,6 @@ def delete_additional_info_after_colon(word, separator=':'):
     return word[:index]
 
 
-def list_to_str_with_colons(list, separator=':'):
-    string = ''
-    for elem in list:
-        string += elem + separator
-    string = string[:-1]
-    return string
-
-
 def is_empty_list(arg_list):
     return len(arg_list) == 0
 
@@ -40,6 +32,14 @@ class SentenceFilter:
         if conf.NAME.value in self.utils.interpret_word(name.capitalize()):
             return True
         return False
+
+    @staticmethod
+    def list_to_str_with_colons(list, separator=':'):
+        string = ''
+        for elem in list:
+            string += elem + separator
+        string = string[:-1]
+        return string
 
     def is_complex_lem_in_stop_words(self, complex_lemmas, separator=':'):
         splitted_lemmas = complex_lemmas.split(separator)
@@ -73,7 +73,6 @@ class SentenceFilter:
 
     def extract_lemma(self, word, response_cont=None):
         lemmas = []
-        lemmas_collector = []
         analysis_result = self.utils.morfeusz.analyse(word)
         if len(analysis_result) == 0:
             return None
@@ -83,16 +82,15 @@ class SentenceFilter:
                 if 'interp' == morphological_tag:
                     continue
                 if response_cont is None and filter_word_form('verb', set(morphological_tag.split(':'))):
-                    lemmas_collector.clear()
+                    lemmas.clear()
                     break
                 lemma = element[2][1]
                 lemma = delete_additional_info_after_colon(lemma)
-                if lemma not in lemmas_collector:
-                    lemmas_collector.append(lemma)
+                if lemma not in lemmas:
+                    lemmas.append(lemma)
             except IndexError:
                 return None
-        lemmas = lemmas_collector
-        return lemmas if response_cont is None else lemmas[0] if len(lemmas) != 0 else ""
+        return lemmas if response_cont is None else lemmas if len(lemmas) != 0 else ""
 
     def filter_stop_words(self, word):
         return word[0] not in self.stop_words
@@ -112,7 +110,7 @@ class SentenceFilter:
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
         sentence_after_extraction = list(map(lambda z: self.extract_lemma(z), words))
         sentence_after_extraction = list(filter(lambda x_list: not is_empty_list(x_list), sentence_after_extraction))
-        sent_filt_to_col_lemmas = list(map(lambda x_list: list_to_str_with_colons(x_list), sentence_after_extraction))
+        sent_filt_to_col_lemmas = list(map(lambda x_list: self.list_to_str_with_colons(x_list), sentence_after_extraction))
         sentence_filtered = list(map(lambda y: y.lower(), sent_filt_to_col_lemmas))
         sentence_filtered = list(filter(lambda y: not self.is_complex_lem_in_stop_words(y), sentence_filtered))
         return sentence_filtered
@@ -149,7 +147,7 @@ class SentenceFilter:
                 if len(single_tag) > 0:
                     single_tags_list = list(single_tag)
                     single_tags_list.sort()
-                    tags.add(list_to_str_with_colons(single_tags_list))
+                    tags.add(self.list_to_str_with_colons(single_tags_list))
                 old_word_index = new_word_index
                 single_tag = set([])
             word_form = delete_additional_info_after_colon(interpretation[2][1])
@@ -158,7 +156,7 @@ class SentenceFilter:
         if len(single_tag) > 0:
             single_tags_list = list(single_tag)
             single_tags_list.sort()
-            tags.add(list_to_str_with_colons(single_tags_list))
+            tags.add(self.list_to_str_with_colons(single_tags_list))
         return tags
 
     def is_stopword(self, word):
