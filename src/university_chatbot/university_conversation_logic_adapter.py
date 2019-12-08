@@ -80,11 +80,11 @@ class UniversityAdapter(LogicAdapter):
             if confidence_main_collection >= confidence_phrases_collection:
                 res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_main_collection))
-                res.confidence = 1.0
+                res.confidence = confidence_main_collection
                 return res
             else:
                 res = Statement(
                     statement_utils.prepare_shortened_statement(result_document_phrases_collection))
-                res.confidence = 1.0
+                res.confidence = confidence_phrases_collection
                 return res
         return statement_utils.default_response()

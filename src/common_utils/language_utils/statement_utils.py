@@ -51,7 +51,7 @@ def complex_intersection(set1, set2):
     for single_or_complex_tag in set1:
         single_tags = extract_single_tags(single_or_complex_tag)
         for single_tag in single_tags:
-            if isPresentInSet(single_tag, set2):
+            if is_present_in_set(single_tag, set2):
                 if single_tag in NOT_FULL_MEANINGFUL_SYNONYMS:
                     matched += 0.5
                 else:
@@ -60,11 +60,13 @@ def complex_intersection(set1, set2):
     return matched
 
 
-def extract_single_tags(single_or_complex_tag):
-    return single_or_complex_tag.split(':')
+def extract_single_tags(single_or_complex_tag, separator=':'):
+    return single_or_complex_tag.split(separator)
 
 
-def isPresentInSet(single_tag, set):
+
+def is_present_in_set(single_tag, set):
+    SYNONYMS = {'agh', 'akademia', 'uczelnia'}
     for single_or_complex_tag in set:
         single_tags = extract_single_tags(single_or_complex_tag)
         for tag in single_tags:

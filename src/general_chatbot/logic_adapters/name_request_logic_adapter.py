@@ -94,10 +94,11 @@ class NameRequestAdapter(LogicAdapter):
                 name_conversation_end_responses,
                 self.context.speaker_name,
                 general_conversation_intro
-            ), confidence=0.4, in_response_to=TypeOfOperation.CONTEXT_NAME.value)
+            ), in_response_to=TypeOfOperation.CONTEXT_NAME.value)
             self.db.add_new_doc_to_collection(Configuration.RESPONSES_COLLECTION.value,
                                               confidence=result.confidence,
                                               response=result.text)
+            result.confidence = 0.4
             return result
         return statement_utils.default_response()
 
