@@ -66,7 +66,6 @@ def extract_single_tags(single_or_complex_tag, separator=':'):
 
 
 def is_present_in_set(single_tag, set):
-    SYNONYMS = {'agh', 'akademia', 'uczelnia'}
     for single_or_complex_tag in set:
         single_tags = extract_single_tags(single_or_complex_tag)
         for tag in single_tags:
