@@ -1,9 +1,10 @@
 import src.common_utils.custom_exceptions as exceptions
 import csv
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-from csvWriter import CsvWriter
+from src.common_utils.database_preparing.csvWriter import CsvWriter
 import os.path
 from configuration import Configuration
+
 
 def initialize_main_collection_from_scrapper(db):
     FINAL_CSV_FILENAME_MAIN_COLLECTION = 'csv_files/db_proven_150_tagsFiltered.csv'
@@ -44,6 +45,7 @@ def initialize_main_collection_from_scrapper(db):
             text = row[-1:]
             db.add_doc_with_tags_list(collection, tags, text)
 
+
 def make_filter_tags_csv(in_file, out_file):
     csvWriter = CsvWriter(out_file)
     with open(in_file, encoding="utf-8") as f_in:
@@ -62,6 +64,7 @@ def make_filter_tags_csv(in_file, out_file):
             else:
                 csvWriter.write_tags_and_text(tags, text)
 
+
 def make_phrases_csv(in_file, out_file):
     csvWriter = CsvWriter(out_file)
     with open(in_file, encoding="utf-8") as f_in:
@@ -75,12 +78,18 @@ def make_phrases_csv(in_file, out_file):
                 if len(tags_for_words) != 0:
                     csvWriter.write_tags_and_text(tags_for_words, phrase)
 
-def inert_into_database(file_name, db):
+
+def insert_into_database(file_name, db, collection=None):
     with open(file_name, encoding="utf-8") as csvfile:
         readCSV = csv.reader(csvfile, delimiter='#')
         for row in readCSV:
             if len(row) > 0 and '//' not in row[0]:
                 print(row)
-                tags = row[1:len(row)]
-                text = row[0]
-                db.add_conversation(text=text, tag=tags[0])
+                if collection is None:
+                    tags = row[1:len(row)]
+                    text = row[0]
+                    db.add_conversation(text=text, tag=tags[0])
+                else:
+                    tags = row[:-1]
+                    text = row[-1:][0]
+                    db.add_doc_with_tags_list(collection, tags, text)

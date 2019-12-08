@@ -44,3 +44,30 @@ def prepare_shortened_statement(many_sentence_response, first_index=0, length=1)
 
 def default_response():
     return Statement(DEFAULT_RESPONSE)
+
+
+def complex_intersection(set1, set2):
+    matched = 0
+    for single_or_complex_tag in set1:
+        single_tags = extract_single_tags(single_or_complex_tag)
+        for single_tag in single_tags:
+            if is_present_in_set(single_tag, set2):
+                matched += 1
+                break
+    return matched
+
+
+def extract_single_tags(single_or_complex_tag, separator=':'):
+    return single_or_complex_tag.split(separator)
+
+
+def is_present_in_set(single_tag, set):
+    SYNONYMS = {'agh', 'akademia', 'uczelnia'}
+    for single_or_complex_tag in set:
+        single_tags = extract_single_tags(single_or_complex_tag)
+        for tag in single_tags:
+            if single_tag == tag:
+                return True
+            elif single_tag in SYNONYMS and tag in SYNONYMS:
+                return True
+    return False
