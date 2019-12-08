@@ -5,7 +5,7 @@ def find_max_coverage(documents, tags):
     max_coverage = 0
     for doc in documents:
         tags_from_document = doc['tags']
-        coverage = complex_intersection(set(tags_from_document), set(tags))
+        coverage = complex_intersection(set(tags_from_document), set(tags), "popular_bot")
         max_coverage = max(max_coverage, coverage)
     return max_coverage
 
@@ -21,7 +21,7 @@ def find_best_tags_response(documents, tags):
         tags_from_document = doc['tags']
         if not is_single_tag and len(tags_from_document) == 1:
             continue
-        coverage = complex_intersection(set(tags_from_document), set(tags))
+        coverage = complex_intersection(set(tags_from_document), set(tags), "popular_bot")
         if coverage == max_cov:
             tags_len_diff = len(tags) - coverage if len(tags) > coverage else 0
             conf = (coverage / len(tags_from_document)) - (tags_len_diff * 0.1)

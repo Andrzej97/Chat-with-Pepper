@@ -46,13 +46,15 @@ def default_response():
     return Statement(DEFAULT_RESPONSE)
 
 
-def complex_intersection(set1, set2):
+def complex_intersection(set1, set2, is_from_popular_bot=None):
     matched = 0
     for single_or_complex_tag in set1:
         single_tags = extract_single_tags(single_or_complex_tag)
         for single_tag in single_tags:
             if is_present_in_set(single_tag, set2):
-                if single_tag in UNIV_SYNONYMS:
+                if is_from_popular_bot is not None:
+                    matched += 1
+                elif single_tag in UNIV_SYNONYMS:
                     matched += 0.5
                 else:
                     matched += 1
