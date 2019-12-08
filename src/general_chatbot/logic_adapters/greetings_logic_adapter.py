@@ -31,7 +31,7 @@ class GreetingAdapter(LogicAdapter):
                     greetings,
                     greetings_request),
                 in_response_to=TypeOfOperation.GREETING.value)
-            result.confidence = 1
+            result.confidence = 1.0
             self.db.add_new_doc_to_collection(Configuration.RESPONSES_COLLECTION.value,
                                               confidence=result.confidence,
                                               response=result.text)

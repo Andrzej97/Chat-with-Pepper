@@ -37,7 +37,7 @@ class BasicQuestionAdapter(LogicAdapter):
                 basic_question_responses,
                 basic_question_responses_end),
                 in_response_to=TypeOfOperation.BASIC_QUESTION.value)
-            result.confidence = 1
+            result.confidence = 1.0
             self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION.value,
                                               confidence=result.confidence,
                                               response=result.text)

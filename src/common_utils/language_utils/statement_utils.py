@@ -4,7 +4,7 @@ from functools import reduce
 from chatterbot.conversation import Statement
 
 DEFAULT_RESPONSE = "Przykro mi, nie znam odpowiedzi"
-
+NOT_FULL_MEANINGFUL_SYNONYMS = {'agh', 'akademia', 'uczelnia'}
 
 def prepare_statement(*words):
     response = ""
@@ -52,7 +52,10 @@ def complex_intersection(set1, set2):
         single_tags = extract_single_tags(single_or_complex_tag)
         for single_tag in single_tags:
             if is_present_in_set(single_tag, set2):
-                matched += 1
+                if single_tag in NOT_FULL_MEANINGFUL_SYNONYMS:
+                    matched += 0.5
+                else:
+                    matched += 1
                 break
     return matched
 
@@ -61,13 +64,13 @@ def extract_single_tags(single_or_complex_tag, separator=':'):
     return single_or_complex_tag.split(separator)
 
 
+
 def is_present_in_set(single_tag, set):
-    SYNONYMS = {'agh', 'akademia', 'uczelnia'}
     for single_or_complex_tag in set:
         single_tags = extract_single_tags(single_or_complex_tag)
         for tag in single_tags:
             if single_tag == tag:
                 return True
-            elif single_tag in SYNONYMS and tag in SYNONYMS:
+            elif single_tag in NOT_FULL_MEANINGFUL_SYNONYMS and tag in NOT_FULL_MEANINGFUL_SYNONYMS:
                 return True
     return False
