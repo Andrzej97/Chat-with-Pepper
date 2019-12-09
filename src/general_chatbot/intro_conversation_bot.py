@@ -1,5 +1,6 @@
 from chatterbot import ChatBot
 
+
 class IntroBot:
     def __init__(self, name, bot_context, db_proxy):
         self.name = name
@@ -50,5 +51,4 @@ class IntroBot:
         return self._context.is_after_greeting and \
                self._context.is_after_introduction and \
                self._context.is_name_request_processed and \
-               self._context.is_after_name_response_reaction and \
-               self._context.speaker_name
+               self._context.is_after_name_response_reaction
