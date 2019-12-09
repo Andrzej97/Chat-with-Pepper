@@ -126,7 +126,7 @@ class SentenceFilter:
         return list(filter(lambda x: x is not None, lemmas))
 
     def is_sentence_about_numbers(self, sentence):
-        splitted_sen = sentence.split(' ')
+        splitted_sen = sentence.lower().split(' ')
         was_word_in_complex_list = False
         for word in splitted_sen:
             if word in self.nums_single_word_list: return True
