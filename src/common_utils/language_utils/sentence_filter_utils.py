@@ -36,6 +36,8 @@ class SentenceFilter:
     @staticmethod
     def list_to_str_with_colons(list, separator=':'):
         string = ''
+        if list is None:
+            return ""
         for elem in list:
             string += elem + separator
         string = string[:-1]

@@ -30,7 +30,7 @@ class NumbersQuestionsAdapter(LogicAdapter):
 
         if len(documents_by_tags) == 0:
             return default_response()
-        result_text, max_conf = choice_algorithm.find_best_tags_response(documents_by_tags,filtered_words)
+        result_text, max_conf = choice_algorithm.find_best_tags_response(documents_by_tags, filtered_words)
         res = Statement(result_text)
         res.confidence = config.MAX_CONF.value  # 1.0
         self.db.add_new_doc_to_collection(config.RESPONSES_COLLECTION.value,
