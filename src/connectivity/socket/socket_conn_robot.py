@@ -58,7 +58,7 @@ class DataExchangeModule(object):
         # print("tuuuuuu ", type("coś"))
         # print('socket_conn_robot\ttell')
         self.tts.say(text.encode("utf-8"))
-        self.tts.say("Stół z powy... poływamy ... powymaływa ... powyłamywanomi nogami.")
+        #self.tts.say()
 
     def perform_communication_with_chatbot(self):
         while True:
@@ -74,4 +74,4 @@ class DataExchangeModule(object):
             #     print(send_result)
 
 
-DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()
+#DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()

@@ -43,7 +43,7 @@ class SoundProcessingModule(object):
         self.file = io.open("rec", 'wb')
         self.tts = ALProxy("ALTextToSpeech", configuration.ROBOT_ADDRESS.value, configuration.ROBOT_PORT.value)
         self.tts.setLanguage("Polish")
-        self.data_exchange_module = DataExchangeModule(configuration.ROBOT_ADDRESS.value,
+        self.data_exchange_module = DataExchangeModule(configuration.BOT_ADDRESS.value,
                                                        configuration.ROBOT_SOCKET_PORT.value, self.tts)
 
         #self.data_exchange_module = DataExchangeModule('192.168.1.101', 9999, self.tts)
@@ -204,7 +204,7 @@ def main(app):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="192.168.1.103",
+    parser.add_argument("--ip", type=str, default=configuration.ROBOT_ADDRESS.value,
                         help="Robot IP address. On robot or Local Naoqi: use '192.168.1.103'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
