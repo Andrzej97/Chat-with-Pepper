@@ -1,11 +1,12 @@
 import argparse
 import io
 import re
+import qi
 import sys
 import time
 
 import numpy as np
-import qi
+#import qi
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
