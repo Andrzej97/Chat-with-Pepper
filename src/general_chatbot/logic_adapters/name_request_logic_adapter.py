@@ -24,12 +24,21 @@ class NameRequestAdapter(LogicAdapter):
         for x in statement.text.lower().split():
             statement_elements_set.add(x)
         name_requests = self.db.get_responses_list_by_tags(tag="name_request")
+        name_responses = self.db.get_responses_list_by_tags(tag="name_response")
         splitted_name_requests = set()
 
-        splitted_name_requests = statement_utils.split_to_single_words(splitted_name_requests, name_requests)
+        splitted_name_requests = statement_utils.split_to_single_words(splitted_name_requests,
+                                                                       map(lambda
+                                                                               x: statement_utils.filter_unexpected_signs(
+                                                                           x.lower(), ','), name_requests))
+        splitted_name_requests = statement_utils.split_to_single_words(splitted_name_requests,
+                                                                       map(lambda
+                                                                               x: statement_utils.filter_unexpected_signs(
+                                                                           x.lower(), ','), name_responses))
+
 
         if len(statement_elements_set.intersection(
-                splitted_name_requests)) > 1:
+                splitted_name_requests)) >= 1:
             if self.context.is_name_request_processed and not self.context.is_after_name_response_reaction:
                 self.name_response = True  # case when speaker introduced himself
                 return True

@@ -12,7 +12,7 @@ rest_controller_port=$(python src/common_utils/parameter_provider.py "REST_API_P
 robot_socket_port=$(python src/common_utils/parameter_provider.py "ROBOT_SOCKET_PORT" 2>&1)
 
 initialize_database(){
-   python src/common_utils/database_preparing/set_init_configure.py &
+  ./initialize_db.sh
 }
 
 start_rest_service(){
