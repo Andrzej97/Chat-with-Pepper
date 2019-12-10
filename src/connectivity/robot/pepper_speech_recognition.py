@@ -81,7 +81,7 @@ class SoundProcessingModule(object):
         index += 1
         global should_put_to_queue
         if should_put_to_queue or index == 100:
-            print('processRemote called in if')
+            #print('processRemote called in if')
             index = 0
             self._buff.put(inputBuffer)
 
@@ -127,54 +127,57 @@ def listen_print_loop(responses, mod):
     print('listen_print_loop called')
     should_listen = True
     num_chars_printed = 0
-    for response in responses:
-        print('listen_print_loop:    new response in for should_listen = ', should_listen)
-        if not response.results:
-            continue
+    try:
+        for response in responses:
+            print('listen_print_loop:    new response in for should_listen = ', should_listen)
+            if not response.results:
+                continue
 
-        # The `results` list is consecutive. For streaming, we only care about
-        # the first result being considered, since once it's `is_final`, it
-        # moves on to considering the next utterance.
-        result = response.results[0]
-        if not result.alternatives:
-            continue
+            # The `results` list is consecutive. For streaming, we only care about
+            # the first result being considered, since once it's `is_final`, it
+            # moves on to considering the next utterance.
+            result = response.results[0]
+            if not result.alternatives:
+                continue
 
-        # Display the transcription of the top alternative.
-        transcript = result.alternatives[0].transcript
+            # Display the transcription of the top alternative.
+            transcript = result.alternatives[0].transcript
 
-        # Display interim results, but with a carriage return at the end of the
-        # line, so subsequent lines will overwrite them.
-        #
-        # If the previous result was longer than this one, we need to print
-        # some extra spaces to overwrite the previous result
-        overwrite_chars = ' ' * (num_chars_printed - len(transcript))
+            # Display interim results, but with a carriage return at the end of the
+            # line, so subsequent lines will overwrite them.
+            #
+            # If the previous result was longer than this one, we need to print
+            # some extra spaces to overwrite the previous result
+            overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
-        if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + '\r')
-            sys.stdout.flush()
+            if not result.is_final:
+                sys.stdout.write(transcript + overwrite_chars + '\r')
+                sys.stdout.flush()
 
-            num_chars_printed = len(transcript)
+                num_chars_printed = len(transcript)
 
-        else:
-            print(transcript + overwrite_chars)
-            global should_put_to_queue
-            should_put_to_queue = False
-            mod.data_exchange_module.send_data_and_tell_response(transcript + overwrite_chars)
-            should_put_to_queue = True
-            print('after telling')
-            while not mod._buff.empty():
-                print('clear elem')
-                mod._buff.get()
-            print('buffer cleared')
-            should_listen = True
-            # Exit recognition if any of the transcribed phrases could be
-            # one of our keywords.
-            if re.search(r'\b(exit|quit)\b', transcript, re.I):
-                print('Exiting..')
-                mod.isProcessingDone = True
-                mod.closed = True
-                break
-            num_chars_printed = 0
+            else:
+                print(transcript + overwrite_chars)
+                global should_put_to_queue
+                should_put_to_queue = False
+                mod.data_exchange_module.send_data_and_tell_response(transcript + overwrite_chars)
+                should_put_to_queue = True
+                print('after telling')
+                while not mod._buff.empty():
+                    print('clear elem')
+                    mod._buff.get()
+                print('buffer cleared')
+                should_listen = True
+                # Exit recognition if any of the transcribed phrases could be
+                # one of our keywords.
+                if re.search(r'\b(exit|quit)\b', transcript, re.I):
+                    print('Exiting..')
+                    mod.isProcessingDone = True
+                    mod.closed = True
+                    break
+                num_chars_printed = 0
+    except Exception as e:
+        print("===========================================================================================================OUR EXCEPTION ", e)
 
 
 def main(app):
