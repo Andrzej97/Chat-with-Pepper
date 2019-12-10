@@ -9,7 +9,7 @@ from src.popular_chatbot.popular_questions_bot import PopularQuestionsBot
 
 class ChatbotManager:
     def __init__(self, **kwargs):
-        self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Żwirek')  # our chatbots code names
+        self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Zwirek')  # our chatbots code names
         self._university_chatbot_name = kwargs.get('university_chatbot', 'Muchomorek')
         self.db = kwargs.get('database')
         bot_context = BotContext()

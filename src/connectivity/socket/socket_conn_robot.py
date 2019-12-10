@@ -36,12 +36,18 @@ class DataExchangeModule(object):
         """
             send data via socket
         """
+        # print("in data connector: " + data)
         try:
+            data_cp = data
+            data = unicode(data).encode('utf8')
+            # print("!!!! " + data)
+            print('socket_conn_robot\tsend_data_and_tell_response\tsending:\t', data_cp)
             self.data_socket.sendall(bytes(data))
             response = self.data_socket.recv(1024).decode('utf-8')
-            print(response)
-            # if response != '':
-            # self.tell(response)
+            # print(type(response))
+            print('socket_conn_robot\treceived response:\t', response)
+            if response != '':
+                self.tell(response)
         except socket.error:
             return None
 
@@ -49,7 +55,10 @@ class DataExchangeModule(object):
         """
             cause Pepper say `text`
         """
-        self.tts.say(text)
+        # print("tuuuuuu ", type("coś"))
+        # print('socket_conn_robot\ttell')
+        self.tts.say(text.encode("utf-8"))
+        self.tts.say("Stół z powy... poływamy ... powymaływa ... powyłamywanomi nogami.")
 
     def perform_communication_with_chatbot(self):
         while True:
