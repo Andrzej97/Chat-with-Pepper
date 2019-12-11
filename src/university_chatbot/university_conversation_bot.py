@@ -17,8 +17,10 @@ class UniversityBot:
 
     def inc_responses_in_row(self):
         self._responses_in_row += 1
+        print('Responses_in_row = ', self._responses_in_row)
 
     def reset_responses_in_row(self):
+        print('Responses_in_row reset = ', self._responses_in_row)
         self._responses_in_row = 0
 
     def initialize_chatbot(self, db_proxy):
