@@ -26,7 +26,10 @@ class ResponseContinuationHandler:
         full_response = parse_documents(full_response, ['response'])
         offset = self.current_response_offset
         self.current_response_offset += self.response_length
-        response = statement.prepare_shortened_statement(full_response[0]['response'], offset, self.response_length)
+        if len(full_response) == 0:
+            response = None
+        else:
+            response = statement.prepare_shortened_statement(full_response[0]['response'], offset, self.response_length)
         if response is None:
             return self.db.get_random_response_by_tags(tag="cannot_say_more")
         return response

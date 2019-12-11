@@ -11,7 +11,7 @@ class Configuration(Enum):
     CHROME_DRIVER_PATH = r'C:\Users\User\chromedriver_win32\chromedriver.exe'
 
     # ----------  BOT CONFIGURATION  ------------ #
-    NUMBER_OF_SENTENCES_IN_RESPONSE = 2
+    NUMBER_OF_SENTENCES_IN_RESPONSE = 1
     REQUESTS_IN_ROW_THRESH = 3
 
     POP_QUEST_BOT_CONF_THRESH = 0.65
