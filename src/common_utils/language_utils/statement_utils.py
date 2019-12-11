@@ -39,8 +39,11 @@ def prepare_shortened_statement(many_sentence_response, first_index=0, length=1)
                 return default_response()
             many_sentence_response = many_sentence_response[0]
         splitted_to_sentences = many_sentence_response.split('.')
-        if first_index + length > len(splitted_to_sentences):
+
+        if first_index >= len(splitted_to_sentences):
             return None
+        elif first_index + length > len(splitted_to_sentences):
+            length = len(splitted_to_sentences)
         return prepare_statement(splitted_to_sentences[first_index:first_index + length])
     return default_response()
 

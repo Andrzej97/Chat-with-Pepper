@@ -19,7 +19,7 @@ class ResponseContinuationHandler:
 
     def return_next_part_of_response(self, question):
         if not self.is_continuation_request_asked(question):
-            self.current_response_offset = 0 + self.response_length
+            self.current_response_offset = 1 #0 + self.response_length
             return None
         full_response = self.db.get_sorted_collection_elements(configuration.RESPONSES_COLLECTION.value, 'confidence',
                                                                n=1)
