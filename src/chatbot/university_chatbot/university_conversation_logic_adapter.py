@@ -5,6 +5,7 @@ import src.common_utils.language_utils.statement_utils as statement_utils
 from configuration import Configuration
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 
+
 class UniversityAdapter(LogicAdapter):
 
     def __init__(self, chatbot, **kwargs):

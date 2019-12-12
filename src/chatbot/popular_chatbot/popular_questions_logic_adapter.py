@@ -1,10 +1,11 @@
 from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
+import src.chatbot.popular_chatbot.choice_algorithm as choice_algorithm
+from configuration import Configuration as config
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
 from src.common_utils.language_utils.statement_utils import default_response, contains_synonym, UNIV_SYNONYMS
-import src.popular_chatbot.choice_algorithm as choice_algorithm
-from configuration import Configuration as config
+
 
 class PopularQuestionsAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):

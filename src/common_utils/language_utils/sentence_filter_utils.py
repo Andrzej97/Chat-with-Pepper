@@ -1,10 +1,11 @@
 from configuration import Configuration as conf
-from src.common_utils.database.database_service import DatabaseProxy
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
+from src.database.database.database_service import DatabaseProxy
 
 word_class_name = {'noun': {'subst', 'depr'},
                    'verb': {'perf', 'imperf'}}
 
+NAME = 'imię'
 
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
@@ -29,7 +30,7 @@ class SentenceFilter:
         self.nums_compl_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_compl_keyword")
 
     def is_name(self, name):
-        if conf.NAME.value in self.utils.interpret_word(name.capitalize()):
+        if NAME in self.utils.interpret_word(name.capitalize()):
             return True
         return False
 

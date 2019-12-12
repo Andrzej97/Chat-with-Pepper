@@ -37,11 +37,10 @@ nazwano mnie                                                                    
 jestem                                                                            ,a ty#name_response
 ja jestem                                                                         ,a ty#name_response
 
-
-miło cię poznać#name_response_end
-bardzo mi miło#name_response_end
-cieszę się#name_response_end
-fajne imię#name_response_end
+miło cię poznać #name_response_end
+bardzo mi miło #name_response_end
+cieszę się #name_response_end
+fajne imię #name_response_end
 
 // prompting sentence
 w czym mogę ci pomóc?#general_conversation_intro

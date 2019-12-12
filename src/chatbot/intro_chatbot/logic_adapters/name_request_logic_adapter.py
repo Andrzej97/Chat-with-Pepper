@@ -19,6 +19,39 @@ class NameRequestAdapter(LogicAdapter):
         self.name_response = False
         self.polish_sentence_tokenizer = SentenceFilter()
 
+    def perform_checking(self, input, name_requests):
+        check_if_input_is_name_request(input, name_requests) \
+        or self.check_if_user_name_given(input) \
+        or self.check_if_not_after_introduction(input) \
+        or self.check_if_user_introduced_itself(input)
+
+    def check_if_user_name_given(self, input):
+        if any(self.polish_sentence_tokenizer.is_name(x) for x in input) \
+                and self.context.is_name_request_processed \
+                and not self.context.is_after_name_response_reaction:
+            self.name_response = True
+            return True
+        return False
+
+    def check_if_not_after_introduction(self, input):
+        if not self.context.is_after_introduction:
+            self.confidence = 0.5  # case when there was no introduction, robot will response with its name, and ask for speaker name
+            return True
+        return False
+
+    def check_if_user_introduced_itself(self, input):
+        if self.context.is_name_request_processed and not self.context.is_after_name_response_reaction:
+            self.name_response = True  # case when speaker introduced himself
+            return True
+        return False
+
+    def check_if_input_is_name_request(self, input, name_requests):
+        if len(input.intersection(name_requests)) > 1:
+            self.confidence = 0.6
+            self.robot_name_request = True  # case when speaker asked about robot name
+            return True
+        return False
+
     def can_process(self, statement):
         statement_elements_set = set()
         for x in statement.text.lower().split():
@@ -36,24 +69,30 @@ class NameRequestAdapter(LogicAdapter):
                                                                                x: statement_utils.filter_unexpected_signs(
                                                                            x.lower(), ','), name_responses))
 
+        return self.perform_checking(statement_elements_set, splitted_name_requests)
 
-        if len(statement_elements_set.intersection(
-                splitted_name_requests)) >= 1:
-            if self.context.is_name_request_processed and not self.context.is_after_name_response_reaction:
-                self.name_response = True  # case when speaker introduced himself
-                return True
-            self.confidence = 0.6
-            self.robot_name_request = True  # case when speaker asked about robot name
-            return True
-        if not self.context.is_after_introduction:
-            self.confidence = 0.5  # case when there was no introduction, robot will response with its name,
-            # and ask for speaker name
-            return True
-        if len(statement_elements_set) == 1 and self.context.is_name_request_processed \
-                and not self.context.is_after_name_response_reaction:
-            self.name_response = True
-            return True
-        return False
+        # if len(statement_elements_set.intersection(
+        #         splitted_name_requests)) > 1:
+        #     if self.context.is_name_request_processed and not self.context.is_after_name_response_reaction:
+        #         self.name_response = True  # case when speaker introduced himself
+        #         return True
+        #     self.confidence = 0.6
+        #     self.robot_name_request = True  # case when speaker asked about robot name
+        #     return True
+        #
+        # if not self.context.is_after_introduction:
+        #     self.confidence = 0.5  # case when there was no introduction, robot will response with its name,
+        #     # and ask for speaker name
+        #     return True
+        # if len(statement_elements_set) == 1 and self.context.is_name_request_processed \
+        #         and not self.context.is_after_name_response_reaction:
+        #     self.name_response = True
+        #     return True
+        #
+        # if any(self.polish_sentence_tokenizer.is_name(x) for x in statement_elements_set):
+        #     self.name_response = True
+        #     return True
+        # return False
 
     def process_name_request(self, statement):
         name_responses = self.db.get_responses_list_by_tags(tag="name_response")
@@ -81,10 +120,11 @@ class NameRequestAdapter(LogicAdapter):
             result = Statement(statement_utils.prepare_statement(
                 response),
                 in_response_to=TypeOfOperation.NAME.value)
-            result.confidence = 0.3
+            result.confidence = 0.9
             self.db.add_new_doc_to_collection(Configuration.RESPONSES_COLLECTION.value,
                                               confidence=result.confidence,
                                               response=result.text)
+            self.robot_name_request = False
             return result
         return statement_utils.default_response()
 

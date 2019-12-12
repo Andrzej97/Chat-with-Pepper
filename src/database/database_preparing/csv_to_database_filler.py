@@ -1,9 +1,10 @@
-import src.common_utils.custom_exceptions as exceptions
 import csv
-from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-from src.common_utils.database_preparing.csvWriter import CsvWriter
 import os.path
+
+import src.common_utils.custom_exceptions as exceptions
 from configuration import Configuration
+from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
+from src.database.database_preparing.csvWriter import CsvWriter
 
 
 def initialize_main_collection_from_scrapper(db):

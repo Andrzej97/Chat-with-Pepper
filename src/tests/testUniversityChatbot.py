@@ -1,10 +1,12 @@
 import unittest
-from src.university_chatbot.university_conversation_bot import UniversityBot
-from src.university_chatbot.university_conversation_logic_adapter import UniversityAdapter
-from src.common_utils.database.database_service import DatabaseProxy
+
 from chatterbot import ChatBot
 from chatterbot.conversation import Statement
+
 from configuration import Configuration
+from src.chatbot.university_chatbot import UniversityAdapter
+from src.chatbot.university_chatbot.university_conversation_bot import UniversityBot
+from src.database.database.database_service import DatabaseProxy
 
 db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 chatbot = ChatBot(

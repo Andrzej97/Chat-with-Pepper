@@ -28,7 +28,7 @@ class UniversityBot:
             self.name,
             logic_adapters=[
                 {
-                    'import_path': 'src.university_chatbot.university_conversation_logic_adapter'
+                    'import_path': 'src.chatbot.university_chatbot.university_conversation_logic_adapter'
                                    '.UniversityAdapter',
                     'database_proxy': db_proxy
                 },

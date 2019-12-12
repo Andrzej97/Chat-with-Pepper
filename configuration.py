@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Configuration(Enum):
-    NAME = 'imię'
+    # NAME = 'imię'
 
     # -------  SCRAPPER CONFIGURATION ----------- #
     ITERS_NUM = 4000
@@ -31,7 +31,7 @@ class Configuration(Enum):
     LOCALHOST = 'localhost'
     DATABASE_NAME = 'PepperChatDB'
     DATABASE_ADDRESS = 'mongodb://localhost:27017/'
-    BOT_ADDRESS = 'localhost'
+    BOT_ADDRESS = '192.168.1.112'
 
     # -------- MONGO COLLECTIONS NAMES -----------#
     # note: each enum name which refers to collections should contain
@@ -44,4 +44,4 @@ class Configuration(Enum):
     PHRASES_COLLECTION = 'phrases'
     POLISH_STOP_WORDS_COLLECTION = 'polish_stop_words'
     STATEMENTS_COLLECTION = 'statements'
-
+    CONTEXT_COLLECTION = 'bot_context'

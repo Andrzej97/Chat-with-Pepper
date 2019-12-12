@@ -64,5 +64,4 @@ class DataExchangeModule(object):
             # if send_result != '':
             #     print(send_result)
 
-
-DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()
+# DataExchangeModule('127.0.0.1', 9999, None).perform_communication_with_chatbot()

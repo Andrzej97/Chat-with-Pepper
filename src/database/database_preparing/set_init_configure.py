@@ -1,8 +1,8 @@
 import src.common_utils.custom_exceptions as Exceptions
-import src.common_utils.database_preparing.csv_to_database_filler as csv_data
+import src.database.database_preparing.csv_to_database_filler as csv_data
 from configuration import Configuration as conf
-from src.common_utils.database.database_service import DatabaseProxy
-import src.common_utils.custom_exceptions as Exceptions
+from src.common_utils.bot_context import BotContext
+from src.database.database.database_service import DatabaseProxy
 
 
 def initialize_polish_stopwords_collection(db, path):
@@ -19,6 +19,11 @@ def initialize_polish_stopwords_collection(db, path):
         db.add_many_new_docs_to_collection('polish_stop_words', list)
     except Exceptions.CollectionAlreadyExistsInDatabaseError:
         db.add_many_new_docs_to_collection('polish_stop_words', list)
+
+
+def initialize_context(db):
+    bot_context = BotContext(db)
+    db.add_new_doc_to_collection(conf.CONTEXT_COLLECTION.value, context=bot_context.value)
 
 
 def from_txt_file_to_list(path):
@@ -54,11 +59,13 @@ def main():
     db = DatabaseProxy(conf.DATABASE_ADDRESS.value, conf.DATABASE_NAME.value)
     create_collections(db)
     initialize_polish_stopwords_collection(db, "./polish_stopwords.txt")
+    initialize_context(db)
     csv_data.initialize_main_collection_from_scrapper(db)
     csv_data.insert_into_database('./csv_files/main_statements.csv', db)
-    csv_data.insert_into_database('./csv_files/numbers_log_adapter_init_data.csv', db, conf.NUMBERS_QUEST_COLLECTION.value)
-    csv_data.insert_into_database('./csv_files/popular_log_adapter_init_data.csv', db, conf.POPULAR_QUEST_COLLECTION.value)
-
+    csv_data.insert_into_database('./csv_files/numbers_log_adapter_init_data.csv', db,
+                                  conf.NUMBERS_QUEST_COLLECTION.value)
+    csv_data.insert_into_database('./csv_files/popular_log_adapter_init_data.csv', db,
+                                  conf.POPULAR_QUEST_COLLECTION.value)
 
 
 if __name__ == '__main__':

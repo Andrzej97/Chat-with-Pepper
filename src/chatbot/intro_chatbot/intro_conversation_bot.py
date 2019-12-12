@@ -15,19 +15,19 @@ class IntroBot:
             self.name,
             logic_adapters=[
                 {
-                    'import_path': 'src.general_chatbot.logic_adapters.greetings_logic_adapter.GreetingAdapter',
+                    'import_path': 'src.chatbot.intro_chatbot.logic_adapters.greetings_logic_adapter.GreetingAdapter',
                     'conversation_context': self._context,
                     'database_proxy': db_proxy
 
                 },
                 {
-                    'import_path': 'src.general_chatbot.logic_adapters.name_request_logic_adapter.NameRequestAdapter',
+                    'import_path': 'src.chatbot.intro_chatbot.logic_adapters.name_request_logic_adapter_refactored.NameRequestAdapter',
                     'conversation_context': self._context,
                     'database_proxy': db_proxy
 
                 },
                 {
-                    'import_path': 'src.general_chatbot.logic_adapters.basic_question_logic_adapter'
+                    'import_path': 'src.chatbot.intro_chatbot.logic_adapters.basic_question_logic_adapter'
                                    '.BasicQuestionAdapter',
                     'conversation_context': self._context,
                     'database_proxy': db_proxy

@@ -1,11 +1,14 @@
-from selenium import webdriver
-from bs4 import BeautifulSoup
-import pandas as pd
 import itertools
 import re
+
+import pandas as pd
+from bs4 import BeautifulSoup
 from csvWriter import CsvWriter
-from configuration import Configuration
+from selenium import webdriver
 from shortcutsExpander import ShortcutsExpander
+
+from configuration import Configuration
+
 
 class Scrapper:
     def __init__(self):
