@@ -1,17 +1,18 @@
 import src.common_utils.language_utils.statement_utils as statement_utils
 from configuration import Configuration as configuration
 from src.common_utils.bot_context import BotContext
+from src.common_utils.database.database_service import DatabaseProxy
 from src.general_chatbot.intro_conversation_bot import IntroBot
 from src.main_chat.response_continuation import ResponseContinuationHandler
-from src.university_chatbot.university_conversation_bot import UniversityBot
 from src.popular_chatbot.popular_questions_bot import PopularQuestionsBot
+from src.university_chatbot.university_conversation_bot import UniversityBot
 
 
 class ChatbotManager:
     def __init__(self, **kwargs):
         self._intro_chatbot_name = kwargs.get('intro_chatbot', 'Żwirek')  # our chatbots code names
         self._university_chatbot_name = kwargs.get('university_chatbot', 'Muchomorek')
-        self.db = kwargs.get('database')
+        self.db = DatabaseProxy(configuration.DATABASE_ADDRESS.value, configuration.DATABASE_NAME.value)
         bot_context = BotContext()
         self._intro_chatbot = IntroBot(self._intro_chatbot_name, bot_context, self.db)
         self._university_chatbot = UniversityBot(self._university_chatbot_name, self.db)
