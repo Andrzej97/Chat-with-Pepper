@@ -72,6 +72,7 @@ def extract_single_tags(single_or_complex_tag, separator=':'):
     return single_or_complex_tag.split(separator)
 
 
+
 def is_present_in_set(single_tag, set):
     for single_or_complex_tag in set:
         single_tags = extract_single_tags(single_or_complex_tag)
