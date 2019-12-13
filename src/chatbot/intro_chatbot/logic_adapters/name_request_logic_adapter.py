@@ -25,12 +25,8 @@ class NameRequestAdapter(LogicAdapter):
         self.robot_name_request = False
         self.name_response = False
         self.polish_sentence_tokenizer = SentenceFilter()
-        # self.name_requests = self.prepare_name_requests_set()
 
     def can_process(self, statement):
-        # if self.context.get_state('is_after_name_processing') is True:
-        #     return False
-
         return self.check_if_input_contains_name_request(parse_input(statement)) \
                or self.context.get_state('is_during_name_processing')
 

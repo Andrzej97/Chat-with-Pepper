@@ -2,8 +2,6 @@ from enum import Enum
 
 
 class Configuration(Enum):
-    # NAME = 'imię'
-
     # -------  SCRAPPER CONFIGURATION ----------- #
     ITERS_NUM = 4000
     DATE = '191116'
