@@ -21,7 +21,7 @@ class IntroBot:
 
                 },
                 {
-                    'import_path': 'src.chatbot.intro_chatbot.logic_adapters.name_request_logic_adapter_refactored.NameRequestAdapter',
+                    'import_path': 'src.chatbot.intro_chatbot.logic_adapters.name_request_logic_adapter.NameRequestAdapter',
                     'conversation_context': self._context,
                     'database_proxy': db_proxy
 

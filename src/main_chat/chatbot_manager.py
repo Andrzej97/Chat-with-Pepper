@@ -1,7 +1,7 @@
 import src.common_utils.language_utils.statement_utils as statement_utils
 from configuration import Configuration as configuration
 from src.chatbot.intro_chatbot.intro_conversation_bot import IntroBot
-from src.chatbot.popular_chatbot.popular_questions_bot import PopularQuestionsBot
+from src.chatbot.popular_questions_chatbot.popular_questions_bot import PopularQuestionsBot
 from src.chatbot.university_chatbot.university_conversation_bot import UniversityBot
 from src.common_utils.bot_context import BotContext
 from src.database.database.database_service import DatabaseProxy

@@ -16,12 +16,12 @@ class PopularQuestionsBot:
             self.name,
             logic_adapters=[
                 {
-                    'import_path': 'src.chatbot.popular_chatbot.numbers_questions_logic_adapter'
+                    'import_path': 'src.chatbot.popular_questions_chatbot.numbers_questions_logic_adapter'
                                    '.NumbersQuestionsAdapter',
                     'database_proxy': db_proxy
                 },
                 {
-                    'import_path': 'src.chatbot.popular_chatbot.popular_questions_logic_adapter'
+                    'import_path': 'src.chatbot.popular_questions_chatbot.popular_questions_logic_adapter'
                                    '.PopularQuestionsAdapter',
                     'database_proxy': db_proxy
                 },

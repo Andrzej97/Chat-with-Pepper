@@ -82,3 +82,7 @@ jak#numb_adpt_compl_keyword
 wiele#numb_adpt_compl_keyword
 wielu#numb_adpt_compl_keyword
 dużo#numb_adpt_compl_keyword
+
+masz                                                                              ,imię#robot_name_request
+cię                                                                               ,nazwano#robot_name_request
+się                                                                               ,nazywasz#robot_name_request

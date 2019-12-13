@@ -6,6 +6,8 @@ word_class_name = {'noun': {'subst', 'depr'},
                    'verb': {'perf', 'imperf'}}
 
 NAME = 'imię'
+IGNORED_NAMES = ['masz']
+
 
 def filter_word_form(word_form, morphologic_tag):
     return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
@@ -21,6 +23,7 @@ def delete_additional_info_after_colon(word, separator=':'):
 def is_empty_list(arg_list):
     return len(arg_list) == 0
 
+
 class SentenceFilter:
     def __init__(self):
         self.utils = PolishLanguageUtils()
@@ -30,6 +33,8 @@ class SentenceFilter:
         self.nums_compl_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_compl_keyword")
 
     def is_name(self, name):
+        if name in IGNORED_NAMES:
+            return False
         if NAME in self.utils.interpret_word(name.capitalize()):
             return True
         return False
@@ -113,7 +118,8 @@ class SentenceFilter:
         words = list(filter(lambda y: y.lower() not in self.stop_words, sentence.split(' ')))
         sentence_after_extraction = list(map(lambda z: self.extract_lemma(z), words))
         sentence_after_extraction = list(filter(lambda x_list: not is_empty_list(x_list), sentence_after_extraction))
-        sent_filt_to_col_lemmas = list(map(lambda x_list: self.list_to_str_with_colons(x_list), sentence_after_extraction))
+        sent_filt_to_col_lemmas = list(
+            map(lambda x_list: self.list_to_str_with_colons(x_list), sentence_after_extraction))
         sentence_filtered = list(map(lambda y: y.lower(), sent_filt_to_col_lemmas))
         sentence_filtered = list(filter(lambda y: not self.is_complex_lem_in_stop_words(y), sentence_filtered))
         return sentence_filtered
@@ -132,9 +138,12 @@ class SentenceFilter:
         splitted_sen = sentence.lower().split(' ')
         was_word_in_complex_list = False
         for word in splitted_sen:
-            if word in self.nums_single_word_list: return True
-            elif word in self.nums_compl_word_list and was_word_in_complex_list: return True
-            elif word in self.nums_compl_word_list: was_word_in_complex_list = True
+            if word in self.nums_single_word_list:
+                return True
+            elif word in self.nums_compl_word_list and was_word_in_complex_list:
+                return True
+            elif word in self.nums_compl_word_list:
+                was_word_in_complex_list = True
         return False
 
     def extract_complex_lemmas_and_filter_stopwords(self, phrase):
