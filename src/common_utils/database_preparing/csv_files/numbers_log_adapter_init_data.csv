@@ -1,6 +1,6 @@
 //data for numbers_quest_logic_adapter
-uczelnia#kierunek#na akademii górniczo hutniczej działa 62 kierunki
-uczelnia#student#na akademi górniczo hutniczej studiuje około 27 i pół tysiąca studentów włączając słuchaczy studiów podyplomowych
+uczelnia#kierunek#ina akademii górniczo hutniczej działa 62 kierunki
+uczelnia#student#osoba#na akademi górniczo hutniczej studiuje około 27 i pół tysiąca studentów włączając słuchaczy studiów podyplomowych
 studia#stacjonarny#pierwszy#drugi#student#na akademi górniczo hutniczej na studia stacjonarne pierwszego  i drugiego stopnia uczęszcza ponad 20 tysięcy studentów
 studia#niestacjonarny#pierwszy#drugi#student#na studia niestacjonarne pierwszego  i drugiego stopnia uczęszcza około 3 o pół tysiąca studentów
 studia#doktor#doktorancki#doktorant#na studia doktoranckie stacjonarne i niestacjonarne uczęszcza ponad tysiąc doktorantów
@@ -21,6 +21,9 @@ uczelnia#studia#inżynierski#polska#uczelnia ma najlepsze studia inżynierskie w
 uczelnia#polski#diament#forbesa#ranking#uczelnia ma pierwsze miejsce wśród polskich uczelni w rankingu Diamenty Forbesa stan na 2017
 uczelnia#ranking#kuźnia#prezes#rzeczpospolita#uczelnia zajęła trzecie miejsce w rankingu Kuźnia Prezesów Rzeczpospolitej stan na 2018
 uczelnia#ranking#zagraniczny#miejsce#techniczny#polski#akademia zajęła drugie miejsce wśród polskich uczelni technicznych w zestawieniu QS World University Rankings 2020 a także pierwsze miejsce wśród polskich uczelni technicznych w University Ranking by Academic Performance stan na 2019
+uczelnia#absolwent#studia#Akademia wykształciła ponad 170 000 inżynierów i magistrów zapewniając kadrę dla polskiej gospodarki
+
+
 
 
 

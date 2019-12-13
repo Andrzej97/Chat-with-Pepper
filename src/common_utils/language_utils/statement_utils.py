@@ -4,7 +4,7 @@ from functools import reduce
 from chatterbot.conversation import Statement
 
 DEFAULT_RESPONSE = "Przykro mi, nie znam odpowiedzi"
-NOT_FULL_MEANINGFUL_SYNONYMS = {'agh', 'akademia', 'uczelnia'}
+UNIV_SYNONYMS = ['agh', 'uczelnia', 'akademia']
 
 def prepare_statement(*words):
     response = ""
@@ -39,8 +39,11 @@ def prepare_shortened_statement(many_sentence_response, first_index=0, length=1)
                 return default_response()
             many_sentence_response = many_sentence_response[0]
         splitted_to_sentences = many_sentence_response.split('.')
-        if first_index + length > len(splitted_to_sentences):
+
+        if first_index >= len(splitted_to_sentences):
             return None
+        elif first_index + length > len(splitted_to_sentences):
+            length = len(splitted_to_sentences)
         return prepare_statement(splitted_to_sentences[first_index:first_index + length])
     return default_response()
 
@@ -49,13 +52,15 @@ def default_response():
     return Statement(DEFAULT_RESPONSE)
 
 
-def complex_intersection(set1, set2):
+def complex_intersection(set1, set2, is_from_popular_bot=False):
     matched = 0
     for single_or_complex_tag in set1:
         single_tags = extract_single_tags(single_or_complex_tag)
         for single_tag in single_tags:
             if is_present_in_set(single_tag, set2):
-                if single_tag in NOT_FULL_MEANINGFUL_SYNONYMS:
+                if is_from_popular_bot:
+                    matched += 1
+                elif single_tag in UNIV_SYNONYMS:
                     matched += 0.5
                 else:
                     matched += 1
@@ -74,6 +79,10 @@ def is_present_in_set(single_tag, set):
         for tag in single_tags:
             if single_tag == tag:
                 return True
-            elif single_tag in NOT_FULL_MEANINGFUL_SYNONYMS and tag in NOT_FULL_MEANINGFUL_SYNONYMS:
+            elif single_tag in UNIV_SYNONYMS and tag in UNIV_SYNONYMS:
                 return True
     return False
+
+
+def contains_synonym(words):
+    return any(word in words for word in UNIV_SYNONYMS)

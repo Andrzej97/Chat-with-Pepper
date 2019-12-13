@@ -2,7 +2,7 @@ from chatterbot.conversation import Statement
 from chatterbot.logic import LogicAdapter
 
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-from src.common_utils.language_utils.statement_utils import default_response
+from src.common_utils.language_utils.statement_utils import default_response, contains_synonym, UNIV_SYNONYMS
 import src.popular_chatbot.choice_algorithm as choice_algorithm
 from configuration import Configuration as config
 
@@ -14,13 +14,19 @@ class PopularQuestionsAdapter(LogicAdapter):
         self.sentence_filter = SentenceFilter()
         self.filtered_words = []
         self.documents_by_tags = []
+        self.db_search_words = []
 
     def can_process(self, statement):
         self.filtered_words = self.sentence_filter.filter_sentence_complex(statement.text)
         if len(self.filtered_words) == 0:
             return False
 
-        self.documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, self.filtered_words)
+        self.db_search_words = list(self.filtered_words)
+        if contains_synonym(self.db_search_words):
+            self.db_search_words.extend(UNIV_SYNONYMS)
+            self.db_search_words = list(set(self.db_search_words))
+
+        self.documents_by_tags = self.db.get_docs_from_collection_by_tags_list(self.collection_name, self.db_search_words)
         if len(self.documents_by_tags) == 0:
             return False
         return True

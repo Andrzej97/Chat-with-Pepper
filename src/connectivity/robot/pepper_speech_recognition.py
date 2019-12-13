@@ -1,17 +1,16 @@
 import argparse
 import io
 import re
-import qi
-import argparse
 import sys
 import time
 
 import numpy as np
+import qi
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
-from six.moves import queue
 from naoqi import ALProxy
+from six.moves import queue
 
 from configuration import Configuration as configuration
 from src.connectivity.socket.socket_conn_robot import DataExchangeModule
@@ -35,6 +34,7 @@ class SoundProcessingModule(object):
         self.isProcessingDone = True
         self.nbOfFramesToProcess = 20
         self.framesCount = 0
+        self.closed = True
         self.micFront = []
         self.module_name = "SoundProcessingModule"
         self._buff = queue.Queue()
@@ -45,6 +45,7 @@ class SoundProcessingModule(object):
                                                        configuration.ROBOT_SOCKET_PORT.value, self.tts)
 
     def __enter__(self):
+        self.closed = False
         self.audio_service.setClientPreferences(self.module_name, RATE, 3, 0)
         self.audio_service.subscribe(self.module_name)
         self.isProcessingDone = False
@@ -53,6 +54,7 @@ class SoundProcessingModule(object):
     def __exit__(self, type, value, traceback):
         self.audio_service.unsubscribe(self.module_name)
         self.isProcessingDone = True
+        self.closed = True
         self._buff.put(None)
 
     def startProcessing(self):
@@ -145,6 +147,7 @@ def listen_print_loop(responses, mod):
             if re.search(r'\b(exit|quit)\b', transcript, re.I):
                 print('Exiting..')
                 mod.isProcessingDone = True
+                mod.closed = True
                 break
             num_chars_printed = 0
 
@@ -162,15 +165,16 @@ def main(app):
         interim_results=True)
 
     with SoundProcessingModule(app) as stream:
-        audio_generator = stream.generator()
+        while not stream.closed:
+            audio_generator = stream.generator()
 
-        requests = (types.StreamingRecognizeRequest(audio_content=content.tobytes())
-                    for content in audio_generator)
+            requests = (types.StreamingRecognizeRequest(audio_content=content.tobytes())
+                        for content in audio_generator)
 
-        responses = client.streaming_recognize(streaming_config, requests)
+            responses = client.streaming_recognize(streaming_config, requests)
 
-        # Now, put the transcription responses to use.
-        listen_print_loop(responses, stream)
+            # Now, put the transcription responses to use.
+            listen_print_loop(responses, stream)
 
 
 if __name__ == "__main__":
