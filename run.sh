@@ -12,21 +12,22 @@ rest_controller_port=$(python src/common_utils/parameter_provider.py "REST_API_P
 robot_socket_port=$(python src/common_utils/parameter_provider.py "ROBOT_SOCKET_PORT" 2>&1)
 
 initialize_database(){
-   python src/common_utils/database_preparing/set_init_configure.py &
+#   python src/common_utils/database_preparing/set_init_configure.py &
+  ./initialize_db.sh
 }
 
 start_rest_service(){
    echo "Initializing REST service..."
-   python src/connectivity/rest/rest_controller.py &
+   python3 src/connectivity/rest/rest_controller.py &
    echo "REST service initilized successfuly!"
 }
 
 start_bot(){
   if [ $response_from_console_enabled == true ]
   then
-    python src/connectivity/socket/socket_conn_bot.py -c
+    python3 src/connectivity/socket/socket_conn_bot.py -c
   else
-    python src/connectivity/socket/socket_conn_bot.py
+    python3 src/connectivity/socket/socket_conn_bot.py
   fi
 }
 

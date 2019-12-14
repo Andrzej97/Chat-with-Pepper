@@ -3,7 +3,7 @@
 def init_database(db):
 
     # basic greetings
-    print(db.add_conversation(text="cześć", tag='greeting'))
+    db.add_conversation(text="cześć", tag='greeting')
     db.add_conversation(text="siemka", tag='greeting')
     db.add_conversation(text="hejooo", tag='greeting')
     db.add_conversation(text="witaj", tag='greeting')

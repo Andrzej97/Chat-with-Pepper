@@ -37,4 +37,5 @@ RUN echo docker | sudo apt install -y morfeusz2
 
 COPY . ./Chat-with-Pepper
 RUN echo docker |sudo -S find /Chat-with-Pepper -type d -exec chmod 777 {} \;
+RUN echo docker |sudo -S chmod +777 ./Chat-with-Pepper/db.sqlite*
 

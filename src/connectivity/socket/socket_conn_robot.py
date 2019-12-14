@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 """
  python2 -m  pip install --user SpeechRecognition
  This file should be run with Python 2
@@ -12,7 +9,11 @@
   This file requires to be run with Python 2
 """
 import socket
+import sys
 from time import sleep
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 from pip._vendor.distlib.compat import raw_input
 
@@ -38,8 +39,9 @@ class DataExchangeModule(object):
         """
         try:
             self.data_socket.sendall(bytes(data))
-            response = self.data_socket.recv(1024).decode('utf-8')
-            print(response)
+            response = self.data_socket.recv(1024).encode('utf-8')
+            print('response: ')
+            print str(response)
             # if response != '':
             # self.tell(response)
         except socket.error:
