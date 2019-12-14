@@ -45,13 +45,15 @@ class UniversityAdapter(LogicAdapter):
     def find_best_tags_coverage(self, documents, tags):
         id_of_best_cov_doc = -1
         max_conf_from_covered_docs = 0.0
+        should_accept_first = True
         for document in documents:
             tags_from_document = document['tags']
             coverage = statement_utils.complex_intersection(set(tags), set(tags_from_document))
             confidence, was_accepted = self.is_accepted(coverage, len(set(tags_from_document)), tags)
-            if was_accepted and confidence >= max_conf_from_covered_docs:
+            if (was_accepted and confidence >= max_conf_from_covered_docs) or should_accept_first:
                 id_of_best_cov_doc = document['_id']
                 max_conf_from_covered_docs = confidence
+                should_accept_first = False
             self.db.add_new_doc_to_collection(Configuration.RESPONSES_COLLECTION.value,
                                           confidence=confidence,
                                           response=document['text'])
@@ -68,7 +70,7 @@ class UniversityAdapter(LogicAdapter):
         if confidence >= Configuration.GOOD_ANSWER_CONFIDENCE.value:
             return confidence, True
         else:
-            return (0.0, False)
+            return (confidence, False)
 
     def prepare_correct_answer(self, result_main_collection, result_phrases_collection):
         result_document_main_collection = result_main_collection[0]
