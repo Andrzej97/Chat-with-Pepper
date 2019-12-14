@@ -25,6 +25,7 @@ class NameRequestAdapter(LogicAdapter):
         self.robot_name_request = False
         self.name_response = False
         self.polish_sentence_tokenizer = SentenceFilter()
+        self.name_requests = self.db.get_responses_list_by_tags(tag="robot_name_request")
 
     def can_process(self, statement):
         return self.check_if_input_contains_name_request(parse_input(statement)) \
@@ -81,8 +82,7 @@ class NameRequestAdapter(LogicAdapter):
         return response
 
     def check_if_input_contains_name_request(self, input):
-        name_requests = self.db.get_responses_list_by_tags(tag="robot_name_request")
-        for name_request in name_requests:
+        for name_request in self.name_requests:
             parsed_name_request = name_request.split(',')
             if len(input.intersection(set(parsed_name_request))) >= len(parsed_name_request):
                 return True

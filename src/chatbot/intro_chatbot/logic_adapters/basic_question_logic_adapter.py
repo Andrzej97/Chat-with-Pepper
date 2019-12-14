@@ -30,7 +30,7 @@ class BasicQuestionAdapter(LogicAdapter):
                                                                                x: statement_utils.filter_unexpected_signs(
                                                                            x.lower(), '?'), greeting_responses))
 
-        if len(statement_elements_set.intersection(splitted_name_requests)) > 2:
+        if len(statement_elements_set.intersection(splitted_name_requests)) > 1:
             return True
         return False
 
@@ -43,7 +43,7 @@ class BasicQuestionAdapter(LogicAdapter):
                 basic_question_responses,
                 basic_question_responses_end),
                 in_response_to=TypeOfOperation.BASIC_QUESTION.value)
-            result.confidence = 0.95
+            result.confidence = 0.85
             self.db.add_new_doc_to_collection(configuration.RESPONSES_COLLECTION.value,
                                               confidence=result.confidence,
                                               response=result.text)

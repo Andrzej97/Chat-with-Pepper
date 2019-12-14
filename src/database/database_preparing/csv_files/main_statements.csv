@@ -8,6 +8,9 @@ witam#greeting
 siemasz#greeting
 serwus#greeting
 dzień dobry#greeting
+hej#greeting
+siema#greeting
+
 
 // statements used just after greeting
 jak się masz?#greeting_response
@@ -58,8 +61,7 @@ jest okej#basic_question_response
 bez problemów#basic_question_response
 
 ,miło że pytasz#basic_question_response_end
-,dzięki#basic_question_response_end
-                                                                                  ,ładnie z twojej strony że pytasz#basic_question_response_end
+                                                                                  ,dzięki#basic_question_response_end           ,ładnie z twojej strony że pytasz#basic_question_response_end
 
 a ty#basic_question_request
 a tobie#basic_question_request
