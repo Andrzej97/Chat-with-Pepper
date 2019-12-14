@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Configuration(Enum):
-    NAME = 'imię'
+    NAME = 'imie'
 
     # -------  SCRAPPER CONFIGURATION ----------- #
     ITERS_NUM = 4000
@@ -21,8 +21,8 @@ class Configuration(Enum):
     REST_API_PORT = 5007
     LOCALHOST = 'localhost'
     DATABASE_NAME = 'PepperChatDB'
-    # DATABASE_ADDRESS = 'mongodb://db:27017/'
-    DATABASE_ADDRESS = 'mongodb://localhost:27017/'
+    DATABASE_ADDRESS = 'mongodb://db:27017/'
+    # DATABASE_ADDRESS = 'mongodb://localhost:27017/'
     BOT_ADDRESS = 'localhost'
 
     # -------- MONGO COLLECTIONS NAMES -----------#

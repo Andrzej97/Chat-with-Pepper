@@ -6,7 +6,7 @@ services:
     ports:
       - 27017
   app:
-    image: pepper
+    image: pepper 
     expose:
       - 9999
     links:

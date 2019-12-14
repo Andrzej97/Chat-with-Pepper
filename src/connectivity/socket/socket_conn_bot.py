@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 """
 
 Code in this file provides server functionality which receives user input as bytes of text via socket connection.
 It tries to reach response form `ChatbotManager` and than, sends it back to client.
 
 """
-
 import socket
 import sys
 
@@ -46,7 +46,7 @@ class ResponseProvider:
                 while True:
                     data = conn.recv(1024).decode("utf-8")
                     if data:
-                        print('received: ' + data)
+                        # print('received: ' + str(data.encode('utf-8')))
                         result = self.response_source(data)
                         res = bytes(result, "utf-8")
                         conn.sendall(res)
