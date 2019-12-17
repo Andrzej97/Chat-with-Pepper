@@ -13,13 +13,13 @@ class ResponseContinuationHandler:
 
     def is_continuation_request_asked(self, input_statement):
         continuation_requests = set(self.db.get_responses_list_by_tags(tag="continue"))
-        sliced_statement = set(map(lambda x: self.sf.list_to_str_with_colons(self.sf.extract_lemma(x, True)),
-                                                                   input_statement.split(' ')))
+        sliced_statement = set(map(lambda x: SentenceFilter.list_to_str_with_colons(self.sf.extract_lemma(x, True)),
+                                                            input_statement.split(' ')))
         return statement.complex_intersection(sliced_statement, continuation_requests) > 1
 
     def return_next_part_of_response(self, question):
         if not self.is_continuation_request_asked(question):
-            self.current_response_offset = 0 + self.response_length
+            self.current_response_offset = 1 #0 + self.response_length
             return None
         full_response = self.db.get_sorted_collection_elements(configuration.RESPONSES_COLLECTION.value, 'confidence',
                                                                n=1)

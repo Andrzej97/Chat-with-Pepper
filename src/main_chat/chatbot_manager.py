@@ -43,11 +43,11 @@ class ChatbotManager:
     def ask_chatbot(self, user_input):  # this is key method which is called from main.py
         self.db.add_new_doc_to_collection(configuration.QUESTION_COLLECTION_CAPPED.value, question=user_input)
         response_from_handler = self.response_continuation_handler.return_next_part_of_response(user_input)
+
         if response_from_handler is not None:
             return response_from_handler
 
         self.db.clear_collection(configuration.RESPONSES_COLLECTION.value)
-
         popular_resp, pop_conf = self._ask_pop_quest_chatbot(user_input)
         if pop_conf >= configuration.POP_QUEST_BOT_CONST_CONF.value:
             return statement_utils.prepare_shortened_statement(popular_resp, 0, 1)
