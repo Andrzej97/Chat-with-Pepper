@@ -17,6 +17,13 @@ class SentenceFilter:
         self.nums_single_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_single_keyword")
         self.nums_compl_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_compl_keyword")
 
+    def is_name(self, name):
+        if name in IGNORED_NAMES:
+            return False
+        if NAME in self.utils.interpret_word(name.capitalize()):
+            return True
+        return False
+
     @staticmethod
     def filter_word_form(word_form, morphologic_tag):
         return len(morphologic_tag.intersection(word_class_name.get(word_form))) > 0
@@ -32,22 +39,6 @@ class SentenceFilter:
     def is_empty_list(arg_list):
         return len(arg_list) == 0
 
-
-class SentenceFilter:
-    def __init__(self):
-        self.utils = PolishLanguageUtils()
-        self.database = DatabaseProxy(conf.DATABASE_ADDRESS.value, conf.DATABASE_NAME.value)
-        self.stop_words = self.prepare_stopwords_list()
-        self.nums_single_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_single_keyword")
-        self.nums_compl_word_list = self.database.get_responses_list_by_tags(tag="numb_adpt_compl_keyword")
-
-    def is_name(self, name):
-        if name in IGNORED_NAMES:
-            return False
-        if NAME in self.utils.interpret_word(name.capitalize()):
-            return True
-        return False
-
     @staticmethod
     def list_to_str_with_colons(list, separator=':'):
         string = ''
@@ -59,7 +50,9 @@ class SentenceFilter:
         return string
 
     def is_name(self, name):
-        if conf.NAME.value in self.utils.interpret_word(name.capitalize()):
+        if name in IGNORED_NAMES:
+            return False
+        if NAME in self.utils.interpret_word(name.capitalize()):
             return True
         return False
 
