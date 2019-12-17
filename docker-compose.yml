@@ -7,7 +7,7 @@ services:
       - 27017
   app:
     build: .
-    image: pepper 
+    image: pepper
     expose:
       - 9999
     links:
