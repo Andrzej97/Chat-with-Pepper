@@ -34,11 +34,11 @@ jak cię nazwano#name_request
 jakie jest twoje imię#name_request
 
 // introduction expressions
-mam na imię                                                                       ,a ty#name_response
-moje imię to                                                                      ,a twoje#name_response
-nazwano mnie                                                                      ,a ciebie#name_response
-jestem                                                                            ,a ty#name_response
-ja jestem                                                                         ,a ty#name_response
+mam na imię , a ty#name_response
+moje imię to , a twoje#name_response
+nazwano mnie , a ciebie#name_response
+jestem , a ty#name_response
+ja jestem , a ty#name_response
 
 miło cię poznać #name_response_end
 bardzo mi miło #name_response_end
@@ -61,7 +61,7 @@ jest okej#basic_question_response
 bez problemów#basic_question_response
 
 ,miło że pytasz#basic_question_response_end
-                                                                                  ,dzięki#basic_question_response_end           ,ładnie z twojej strony że pytasz#basic_question_response_end
+,dzięki#basic_question_response_end,ładnie z twojej strony że pytasz#basic_question_response_end
 
 a ty#basic_question_request
 a tobie#basic_question_request
@@ -72,7 +72,7 @@ więcej#continue
 dużo#continue
 
 
-przykro mi                                                                        ,to wszystko co wiem#cannot_say_more
+przykro mi ,to wszystko co wiem#cannot_say_more
 to wszystko co wiem na ten temat#cannot_say_more
 nie wiem więcej#cannot_say_more
 na tę chwilę to musi wystarczyć#cannot_say_more
@@ -85,6 +85,6 @@ wiele#numb_adpt_compl_keyword
 wielu#numb_adpt_compl_keyword
 dużo#numb_adpt_compl_keyword
 
-masz                                                                              ,imię#robot_name_request
-cię                                                                               ,nazwano#robot_name_request
-się                                                                               ,nazywasz#robot_name_request
+masz,imię#robot_name_request
+cię,nazwano#robot_name_request
+się,nazywasz#robot_name_request

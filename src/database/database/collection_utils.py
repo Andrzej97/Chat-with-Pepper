@@ -7,7 +7,3 @@ def parse_documents(documents, keys):
     for document in documents:
         result.append(dict([(key, document[key]) for key in keys]))
     return result
-
-# database = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
-# docs = database.get_sorted_collection_elements(Configuration.RESPONSES_COLLECTION.value, 'confidence')
-# res = parse_documents(docs, ['confidence', 'response'])
