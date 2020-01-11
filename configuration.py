@@ -22,16 +22,16 @@ class Configuration(Enum):
     NUMBER_OF_SUGGESTED_RESPONSES = 5
 
     # ---------- PORTS AND ADDRESSES -------------#
-    # ROBOT_ADDRESS = '192.168.1.102'
-    ROBOT_ADDRESS = 'localhost'
+    ROBOT_ADDRESS = '192.168.1.123'
+    # ROBOT_ADDRESS = 'localhost' # for local development purposes
     ROBOT_PORT = 9559
-    ROBOT_SOCKET_PORT = 9999
+    ROBOT_SOCKET_PORT = 9997
     REST_API_PORT = 5007
     LOCALHOST = 'localhost'
     DATABASE_NAME = 'PepperChatDB'
     DATABASE_ADDRESS = 'mongodb://localhost:27017/'
-    # BOT_ADDRESS = '192.168.1.112'
-    BOT_ADDRESS = 'localhost'
+    BOT_ADDRESS = '192.168.1.112'
+    # BOT_ADDRESS = 'localhost'  # for local development purposes
 
     # -------- MONGO COLLECTIONS NAMES -----------#
     # note: each enum name which refers to collections should contain

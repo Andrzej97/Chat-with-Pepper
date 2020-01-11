@@ -1,6 +1,6 @@
 from configuration import Configuration as conf
 from src.common_utils.language_utils.polish_language_utils import PolishLanguageUtils
-from src.database.database.database_service import DatabaseProxy
+from src.database.database_service import DatabaseProxy
 
 word_class_name = {'noun': {'subst', 'depr'},
                    'verb': {'perf', 'imperf'}}

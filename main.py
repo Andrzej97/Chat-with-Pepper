@@ -1,5 +1,5 @@
 from configuration import Configuration as conf
-from src.database.database.database_service import DatabaseProxy
+from src.database.database_service import DatabaseProxy
 from src.main_chat.chatbot_manager import ChatbotManager
 
 

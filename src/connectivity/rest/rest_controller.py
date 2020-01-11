@@ -5,8 +5,8 @@ from flask_jsonpify import jsonify
 from flask_restful import Resource, Api
 
 from configuration import Configuration as configuration
-from src.database.database.collection_utils import parse_documents
-from src.database.database.database_service import DatabaseProxy
+from src.database.collection_utils import parse_documents
+from src.database.database_service import DatabaseProxy
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')

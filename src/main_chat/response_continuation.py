@@ -1,7 +1,7 @@
 import src.common_utils.language_utils.statement_utils as statement
 from configuration import Configuration as configuration
 from src.common_utils.language_utils.sentence_filter_utils import SentenceFilter
-from src.database.database.collection_utils import parse_documents
+from src.database.collection_utils import parse_documents
 
 
 class ResponseContinuationHandler:

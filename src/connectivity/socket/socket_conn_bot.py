@@ -10,7 +10,7 @@ import sys
 
 import src.main_chat.chatbot_manager
 from configuration import Configuration
-from src.database.database.database_service import DatabaseProxy
+from src.database.database_service import DatabaseProxy
 
 PORT = 9999  # Port to listen on (non-privileged ports are > 1023)
 

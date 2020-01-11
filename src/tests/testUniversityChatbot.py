@@ -6,7 +6,7 @@ from chatterbot.conversation import Statement
 from configuration import Configuration
 from src.chatbot.university_chatbot import UniversityAdapter
 from src.chatbot.university_chatbot.university_conversation_bot import UniversityBot
-from src.database.database.database_service import DatabaseProxy
+from src.database.database_service import DatabaseProxy
 
 db = DatabaseProxy('mongodb://localhost:27017/', 'PepperChatDB')
 chatbot = ChatBot(

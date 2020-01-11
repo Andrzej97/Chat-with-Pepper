@@ -2,7 +2,7 @@ import src.common_utils.custom_exceptions as Exceptions
 import src.database.database_preparing.csv_to_database_filler as csv_data
 from configuration import Configuration as conf
 from src.common_utils.bot_context import BotContext
-from src.database.database.database_service import DatabaseProxy
+from src.database.database_service import DatabaseProxy
 
 
 def initialize_polish_stopwords_collection(db, path):
